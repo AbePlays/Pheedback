@@ -9,7 +9,7 @@ export const meta: MetaFunction = () => {
 }
 
 // https://remix.run/guides/routing#index-routes
-export default function Index() {
+const IndexRoute = () => {
   return (
     <div>
       <main className="text-center">
@@ -22,3 +22,5 @@ export default function Index() {
     </div>
   )
 }
+
+export default IndexRoute
