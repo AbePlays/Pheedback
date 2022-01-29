@@ -12,9 +12,12 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
-      <main>
-        <h2 className="text-red-900 font-bold">Welcome to Pheedback!</h2>
+      <main className="text-center">
+        <h2 className="font-bold text-red-900 first-letter:text-xl">
+          Welcome to Pheedback!
+        </h2>
         <p className="text-green-800">We're stoked that you're here. 🥳</p>
+        <p className="text-cyan-500">Content coming soon!</p>
       </main>
     </div>
   )

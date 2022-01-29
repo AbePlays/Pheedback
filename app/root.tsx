@@ -9,11 +9,15 @@ import {
 } from 'remix'
 import type { LinksFunction } from 'remix'
 
+import globalStyles from '@styles/global.css'
 import appStyles from '@styles/tailwind.css'
 
 // https://remix.run/api/app#links
 export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: appStyles }]
+  return [
+    { rel: 'stylesheet', href: globalStyles },
+    { rel: 'stylesheet', href: appStyles },
+  ]
 }
 
 // https://remix.run/api/conventions#default-export
