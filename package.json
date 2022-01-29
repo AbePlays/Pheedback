@@ -1,15 +1,17 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "pheedback",
   "description": "",
   "license": "",
   "scripts": {
-    "build": "remix build",
+    "build:css": "tailwindcss --output ./app/styles/tailwind.css --config ./tailwind.config.js --minify",
+    "build": "npm run build:css && remix build",
     "check-format": "npm run prettier -- --list-different",
     "check-types": "tsc",
-    "dev": "remix dev",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
+    "dev:css": "tailwindcss --output ./app/styles/tailwind.css --config ./tailwind.config.js --watch",
+    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "format": "npm run prettier -- --write",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
     "postinstall": "remix setup node",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "validate": "npm run check-types && npm run check-format && npm run lint && npm run build"
@@ -28,10 +30,14 @@
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
+    "autoprefixer": "^10.4.2",
+    "concurrently": "^7.0.0",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.28.0",
+    "postcss": "^8.4.5",
     "prettier": "^2.5.1",
+    "tailwindcss": "^3.0.18",
     "typescript": "^4.5.5"
   },
   "engines": {

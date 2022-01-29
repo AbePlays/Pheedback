@@ -6,4 +6,4 @@ module.exports = {
   browserBuildDirectory: 'public/build',
   publicPath: '/build/',
   serverBuildDirectory: 'api/_build',
-};
+}
