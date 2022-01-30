@@ -85,3 +85,18 @@ export const createUserSession = async (userId: string, redirectTo: string) => {
     headers: { 'Set-Cookie': await commitSession(session) },
   })
 }
+
+export const getUser = async (request: Request) => {
+  const session = await getSession(request.headers.get('Cookie'))
+  const userId = session.get('userId')
+  if (typeof userId !== 'string') return null
+  console.log({ userId })
+
+  try {
+    const user = await db.user.findUnique({ where: { id: userId } })
+    console.log({ user })
+    return user
+  } catch {
+    throw logout(request)
+  }
+}

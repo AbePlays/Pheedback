@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Form, useActionData, useTransition } from 'remix'
 import type { ActionFunction, MetaFunction } from 'remix'
+import { Form, useActionData, useTransition } from 'remix'
 
-import validateForm from '~/utils/validateForm'
-import { login, register } from '~/lib/db'
+import { login, register } from '~/lib/db.server'
+import { validateForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
