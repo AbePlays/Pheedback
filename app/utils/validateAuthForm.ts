@@ -1,4 +1,4 @@
-const validateForm = (data: Record<string, unknown>) => {
+const validateAuthForm = (data: Record<string, unknown>) => {
   if (data?.loginType === 'login') {
     // Validate login form
     if (!data?.username || !data?.password) {
@@ -59,4 +59,4 @@ const validateUsername = (username: unknown) => {
   }
 }
 
-export default validateForm
+export default validateAuthForm

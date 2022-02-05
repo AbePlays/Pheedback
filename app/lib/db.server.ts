@@ -78,6 +78,13 @@ export const logout = async (request: Request) => {
   })
 }
 
+export async function getUserId(request: Request) {
+  const session = await getSession(request.headers.get('Cookie'))
+  const userId = session.get('userId')
+  if (!userId || typeof userId !== 'string') return null
+  return userId
+}
+
 export const createUserSession = async (userId: string, redirectTo: string) => {
   const session = await getSession()
   session.set('userId', userId)
@@ -87,16 +94,31 @@ export const createUserSession = async (userId: string, redirectTo: string) => {
 }
 
 export const getUser = async (request: Request) => {
-  const session = await getSession(request.headers.get('Cookie'))
-  const userId = session.get('userId')
-  if (typeof userId !== 'string') return null
-  console.log({ userId })
+  const userId = await getUserId(request)
+  if (!userId) return null
 
   try {
     const user = await db.user.findUnique({ where: { id: userId } })
-    console.log({ user })
     return user
   } catch {
     throw logout(request)
   }
+}
+
+export const createPost = async (
+  fields: Record<string, unknown>,
+  userId: string
+) => {
+  const { title, category, detail } = fields
+  if (
+    typeof title !== 'string' ||
+    typeof category !== 'string' ||
+    typeof detail !== 'string'
+  ) {
+    return { fields, formError: 'Invalid fields' }
+  }
+
+  await db.post.create({ data: { title, category, detail, userId } })
+
+  return redirect('/')
 }

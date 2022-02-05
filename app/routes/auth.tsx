@@ -3,7 +3,7 @@ import type { ActionFunction, MetaFunction } from 'remix'
 import { Form, useActionData, useTransition } from 'remix'
 
 import { login, register } from '~/lib/db.server'
-import { validateForm } from '~/utils'
+import { validateAuthForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
@@ -16,7 +16,7 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData())
 
   // validate form and return error if invalid
-  const errors = validateForm(formData)
+  const errors = validateAuthForm(formData)
   if (errors) return errors
 
   // otherwise, handle the form submission

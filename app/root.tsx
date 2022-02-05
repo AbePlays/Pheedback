@@ -124,6 +124,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <Link to="/">Home</Link>
           </li>
           <li>
+            <Link to="/post/new">New Post</Link>
+          </li>
+          <li>
             <Link to="/auth">Log in</Link>
           </li>
         </ul>
