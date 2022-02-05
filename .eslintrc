@@ -1,11 +1,5 @@
 {
   "settings": {
-    "import/resolver": {
-      "alias": [
-        ["@app", "./app"],
-        ["@styles", "./styles"]
-      ]
-    },
     "react": {
       "version": "detect"
     }

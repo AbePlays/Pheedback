@@ -1,4 +1,5 @@
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -9,8 +10,8 @@ import {
 } from 'remix'
 import type { LinksFunction } from 'remix'
 
-import globalStyles from '@styles/global.css'
-import appStyles from '@styles/tailwind.css'
+import globalStyles from '~/styles/global.css'
+import appStyles from '~/styles/tailwind.css'
 
 // https://remix.run/api/app#links
 export const links: LinksFunction = () => {
@@ -115,7 +116,22 @@ const Document = ({
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <div>{children}</div>
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/auth">Log in</Link>
+          </li>
+        </ul>
+      </nav>
+      <hr />
+      {children}
+    </div>
+  )
 }
 
 export default App
