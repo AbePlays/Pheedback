@@ -122,3 +122,16 @@ export const createPost = async (
 
   return redirect('/')
 }
+
+export const createComment = async (fields: Record<string, unknown>) => {
+  const { comment: content, postId, userId } = fields
+  if (
+    typeof content !== 'string' ||
+    typeof postId !== 'string' ||
+    typeof userId !== 'string'
+  ) {
+    return { fields, formError: 'Invalid fields' }
+  }
+
+  return db.comment.create({ data: { content, postId, userId } })
+}

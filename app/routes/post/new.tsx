@@ -8,10 +8,9 @@ import {
   useTransition,
 } from 'remix'
 
+import { categoryOptions } from '~/data'
 import { createPost, getUserId } from '~/lib/db.server'
 import { validatePostForm } from '~/utils'
-
-const categoryOptions = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug']
 
 export const meta: MetaFunction = () => {
   return {
