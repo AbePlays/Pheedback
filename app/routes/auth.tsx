@@ -34,7 +34,7 @@ const AuthRoute = () => {
   const actionData = useActionData()
   const transition = useTransition()
 
-  const [loginType, setLoginType] = useState<'login' | 'register'>('register')
+  const [loginType, setLoginType] = useState<'login' | 'register'>('login')
 
   const toggleLoginType = () =>
     setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))

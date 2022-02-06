@@ -13,7 +13,7 @@ import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
 type TLoaderData = {
-  post: Post & { comment: (Comment & { User: User })[] }
+  post: Post & { User: User; comment: (Comment & { User: User })[] }
   user: User
 }
 
@@ -31,7 +31,10 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const post = await db.post.findUnique({
     where: { id: postId },
-    include: { comment: { where: { postId }, include: { User: true } } },
+    include: {
+      comment: { where: { postId }, include: { User: true } },
+      User: true,
+    },
   })
 
   if (!post) {
@@ -61,6 +64,7 @@ const PostRoute = () => {
 
   const { post, user } = loaderData
   const comments = post.comment
+  const author = post.User
 
   return (
     <div>
@@ -71,7 +75,7 @@ const PostRoute = () => {
         <div>
           <button>{post.upvotes}</button>
           <div>
-            <h2>{user.fullname}</h2>
+            <h2>{author.fullname}</h2>
             <p>{post.createdAt}</p>
           </div>
         </div>
@@ -101,10 +105,11 @@ const PostRoute = () => {
       <div>
         <Form method="post">
           <input type="hidden" name="postId" value={post.id} />
-          <input type="hidden" name="userId" value={user.id} />
+          <input type="hidden" name="userId" value={user?.id} />
           <label htmlFor="comment-input">Add Comment</label>
           <input
             className="block border"
+            disabled={!user?.id}
             id="comment-input"
             name="comment"
             placeholder="Type your comment here"
@@ -126,7 +131,14 @@ const PostRoute = () => {
               {actionData.formError}
             </p>
           ) : null}
-          <button type="submit">Post Comment</button>
+          <button disabled={!user?.id} type="submit">
+            Post Comment
+          </button>
+          {!user?.id ? (
+            <p>
+              Please <Link to="/auth">log in</Link> to comment
+            </p>
+          ) : null}
         </Form>
       </div>
     </div>
