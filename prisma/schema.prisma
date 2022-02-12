@@ -1,18 +1,19 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["mongoDb"]
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 model User {
-  id           String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id           String    @id @default(uuid())
   fullname     String
   username     String    @unique
   email        String    @unique
@@ -22,23 +23,23 @@ model User {
 }
 
 model Post {
-  id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id        String    @id @default(uuid())
   title     String
   category  String
   detail    String
   upvotes   Int       @default(0)
   createdAt DateTime  @default(now())
-  User      User      @relation(fields: [userId], references: [id])
-  userId    String    @db.ObjectId
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
   comment   Comment[]
 }
 
 model Comment {
-  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   content   String
   createdAt DateTime @default(now())
-  Post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
-  User      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
