@@ -30,7 +30,7 @@ model Post {
   upvotes   Int       @default(0)
   createdAt DateTime  @default(now())
   user      User      @relation(fields: [userId], references: [id])
-  userId    String    @unique
+  userId    String
   comment   Comment[]
 }
 
@@ -39,7 +39,7 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @unique
+  postId    String
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  userId    String
 }
