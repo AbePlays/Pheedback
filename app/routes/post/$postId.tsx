@@ -13,7 +13,7 @@ import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
 type TLoaderData = {
-  post: Post & { User: User; comment: (Comment & { User: User })[] }
+  post: Post & { user: User; comment: (Comment & { user: User })[] }
   user: User
 }
 
@@ -32,8 +32,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const post = await db.post.findUnique({
     where: { id: postId },
     include: {
-      comment: { where: { postId }, include: { User: true } },
-      User: true,
+      comment: { where: { postId }, include: { user: true } },
+      user: true,
     },
   })
 
@@ -64,7 +64,7 @@ const PostRoute = () => {
 
   const { post, user } = loaderData
   const comments = post.comment
-  const author = post.User
+  const author = post.user
 
   return (
     <div>
@@ -94,8 +94,8 @@ const PostRoute = () => {
         <h2>{comments.length} Comments</h2>
         {comments.map((comment, index) => (
           <div key={comment.id}>
-            <h2>{`${index + 1}. ${comment.User.fullname}`}</h2>
-            <p>@{comment.User.username}</p>
+            <h2>{`${index + 1}. ${comment.user.fullname}`}</h2>
+            <p>@{comment.user.username}</p>
             <p>{comment.content}</p>
           </div>
         ))}
