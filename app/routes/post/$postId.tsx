@@ -47,12 +47,25 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData())
 
-  const errors = validateCommentForm(formData)
-  if (errors) return errors
+  if (formData && formData._action) {
+    if (formData._action === 'create') {
+      const errors = validateCommentForm(formData)
+      if (errors) return errors
 
-  const comment = await createComment(formData)
-  if (!comment) {
-    throw new Response('Comment could not be created. Sorry', { status: 500 })
+      const comment = await createComment(formData)
+      if (!comment) {
+        throw new Response('Comment could not be created. Sorry', {
+          status: 500,
+        })
+      }
+    } else if (formData._action === 'delete') {
+      const { commentId } = formData
+      if (!commentId || typeof commentId !== 'string') {
+        throw new Response('Invalid request', { status: 400 })
+      } else {
+        await db.comment.delete({ where: { id: commentId } })
+      }
+    }
   }
 
   return {}
@@ -94,9 +107,24 @@ const PostRoute = () => {
         <h2>{comments.length} Comments</h2>
         {comments.map((comment, index) => (
           <div key={comment.id}>
-            <h2>{`${index + 1}. ${comment.user.fullname}`}</h2>
-            <p>@{comment.user.username}</p>
-            <p>{comment.content}</p>
+            <div>
+              <h2>{`${index + 1}. ${comment.user.fullname}`}</h2>
+              <p>@{comment.user.username}</p>
+              <p>{comment.content}</p>
+            </div>
+            {user?.id === comment.userId ? (
+              <Form method="post">
+                <input type="hidden" name="commentId" value={comment.id} />
+                <button
+                  type="submit"
+                  name="_action"
+                  value="delete"
+                  aria-label="Delete"
+                >
+                  x
+                </button>
+              </Form>
+            ) : null}
           </div>
         ))}
       </div>
@@ -131,7 +159,12 @@ const PostRoute = () => {
               {actionData.formError}
             </p>
           ) : null}
-          <button disabled={!user?.id} type="submit">
+          <button
+            disabled={!user?.id}
+            type="submit"
+            name="_action"
+            value="create"
+          >
             Post Comment
           </button>
           {!user?.id ? (
