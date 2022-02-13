@@ -1,13 +1,19 @@
 import type { FunctionComponent } from 'react'
 
 interface Props {
-  //TODO: Add proper prop types
-  foo?: unknown
+  classes?: string
 }
 
-const Card: FunctionComponent<Props> = ({ children }) => {
-  //TODO: Implement Card component styling
-  return <div>{children}</div>
+// dark:border-gray-700 dark:bg-gray-800
+
+const Card: FunctionComponent<Props> = ({ children, classes = '' }) => {
+  return (
+    <div
+      className={`w-full rounded-lg border border-gray-100 bg-white p-6 shadow-sm ${classes}`.trim()}
+    >
+      {children}
+    </div>
+  )
 }
 
 export default Card
