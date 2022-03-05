@@ -1,16 +1,12 @@
 import type { FunctionComponent } from 'react'
 
-interface Props {
-  classes?: React.InputHTMLAttributes<HTMLInputElement>['className']
-}
-
 // dark:text-gray-600
 
-const IconLoading: FunctionComponent<Props> = ({ classes = '' }) => {
+const IconLoading: FunctionComponent<React.SVGAttributes<SVGElement>> = ({ className = '' }) => {
   return (
     <svg
       role="status"
-      className={`inline h-4 w-4 animate-spin text-fuchsia-600 ${classes}`.trim()}
+      className={`inline h-4 w-4 animate-spin text-fuchsia-600 ${className}`.trim()}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

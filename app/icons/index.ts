@@ -1,2 +1,5 @@
 export { default as IconArrowBack } from './IconArrowBack'
+export { default as IconBulb } from './IconBulb'
+export { default as IconDots } from './IconDots'
+export { default as IconDown } from './IconDown'
 export { default as IconLoading } from './IconLoading'
