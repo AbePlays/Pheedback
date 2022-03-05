@@ -1,13 +1,4 @@
-import {
-  Link,
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useCatch,
-} from 'remix'
+import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from 'remix'
 import type { LinksFunction } from 'remix'
 
 import globalStyles from '~/styles/global.css'
@@ -43,10 +34,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
           <h1>There was an error</h1>
           <p>{error.message}</p>
           <hr />
-          <p>
-            Hey, developer, you should replace this with what you want your
-            users to see.
-          </p>
+          <p>Hey, developer, you should replace this with what you want your users to see.</p>
         </div>
       </Layout>
     </Document>
@@ -60,17 +48,10 @@ export const CatchBoundary = () => {
   let message
   switch (caught.status) {
     case 401:
-      message = (
-        <p>
-          Oops! Looks like you tried to visit a page that you do not have access
-          to.
-        </p>
-      )
+      message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>
       break
     case 404:
-      message = (
-        <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      )
+      message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>
       break
 
     default:
@@ -89,13 +70,7 @@ export const CatchBoundary = () => {
   )
 }
 
-const Document = ({
-  children,
-  title,
-}: {
-  children: React.ReactNode
-  title?: string
-}) => {
+const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
   return (
     <html lang="en">
       <head>
@@ -117,7 +92,7 @@ const Document = ({
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <nav>
         <ul>
           <li>

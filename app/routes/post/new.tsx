@@ -1,12 +1,5 @@
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import {
-  Form,
-  Link,
-  redirect,
-  useActionData,
-  useCatch,
-  useTransition,
-} from 'remix'
+import { Form, Link, redirect, useActionData, useCatch, useTransition } from 'remix'
 
 import { categoryOptions } from '~/data'
 import { createPost, getUserId } from '~/lib/db.server'
@@ -61,9 +54,7 @@ const NewPostRoute = () => {
             name="title"
             type="text"
             aria-invalid={Boolean(actionData?.fieldErrors?.title)}
-            aria-describedby={
-              actionData?.fieldErrors?.title ? 'title-error' : undefined
-            }
+            aria-describedby={actionData?.fieldErrors?.title ? 'title-error' : undefined}
           />
           {actionData?.fieldErros?.title ? (
             <p id="title-error" role="alert">
@@ -82,9 +73,7 @@ const NewPostRoute = () => {
             id="category-input"
             name="category"
             aria-invalid={Boolean(actionData?.fieldErrors?.category)}
-            aria-describedby={
-              actionData?.fieldErrors?.category ? 'category-error' : undefined
-            }
+            aria-describedby={actionData?.fieldErrors?.category ? 'category-error' : undefined}
           >
             {categoryOptions.map((category) => (
               <option key={category} value={category}>
@@ -101,10 +90,7 @@ const NewPostRoute = () => {
           <label htmlFor="detail-input">
             Feedback Detail
             <br />
-            <span>
-              Include any specific comments on what should be improved, added,
-              etc.
-            </span>
+            <span>Include any specific comments on what should be improved, added, etc.</span>
           </label>
           <textarea
             className="block border"
@@ -112,9 +98,7 @@ const NewPostRoute = () => {
             id="detail-input"
             name="detail"
             aria-invalid={Boolean(actionData?.fieldErrors?.detail)}
-            aria-describedby={
-              actionData?.fieldErrors?.detail ? 'detail-error' : undefined
-            }
+            aria-describedby={actionData?.fieldErrors?.detail ? 'detail-error' : undefined}
           />
           {actionData?.fieldErros?.detail ? (
             <p id="detail-error" role="alert">
@@ -122,12 +106,8 @@ const NewPostRoute = () => {
             </p>
           ) : null}
 
-          {actionData?.formError ? (
-            <p role="alert">{actionData.formError}</p>
-          ) : null}
-          <button type="submit">
-            {isFormSubmitting ? 'Submitting...' : 'Add Feedback'}
-          </button>
+          {actionData?.formError ? <p role="alert">{actionData.formError}</p> : null}
+          <button type="submit">{isFormSubmitting ? 'Submitting...' : 'Add Feedback'}</button>
           <Link to="/">Cancel</Link>
         </Form>
       </div>

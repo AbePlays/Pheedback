@@ -8,18 +8,17 @@ if (!sessionSecret) {
   throw new Error('SESSION_SECRET not set')
 }
 
-const { getSession, commitSession, destroySession } =
-  createCookieSessionStorage({
-    cookie: {
-      name: 'Pheedback-Session',
-      secure: true,
-      secrets: [sessionSecret],
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      httpOnly: true,
-    },
-  })
+const { getSession, commitSession, destroySession } = createCookieSessionStorage({
+  cookie: {
+    name: 'Pheedback-Session',
+    secure: true,
+    secrets: [sessionSecret],
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    httpOnly: true,
+  },
+})
 
 export const register = async (fields: Record<string, unknown>) => {
   const { username, password, fullname, email } = fields
@@ -105,16 +104,9 @@ export const getUser = async (request: Request) => {
   }
 }
 
-export const createPost = async (
-  fields: Record<string, unknown>,
-  userId: string
-) => {
+export const createPost = async (fields: Record<string, unknown>, userId: string) => {
   const { title, category, detail } = fields
-  if (
-    typeof title !== 'string' ||
-    typeof category !== 'string' ||
-    typeof detail !== 'string'
-  ) {
+  if (typeof title !== 'string' || typeof category !== 'string' || typeof detail !== 'string') {
     return { fields, formError: 'Invalid fields' }
   }
 
@@ -125,11 +117,7 @@ export const createPost = async (
 
 export const createComment = async (fields: Record<string, unknown>) => {
   const { comment: content, postId, userId } = fields
-  if (
-    typeof content !== 'string' ||
-    typeof postId !== 'string' ||
-    typeof userId !== 'string'
-  ) {
+  if (typeof content !== 'string' || typeof postId !== 'string' || typeof userId !== 'string') {
     return { fields, formError: 'Invalid fields' }
   }
 

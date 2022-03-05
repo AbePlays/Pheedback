@@ -1,13 +1,6 @@
 import type { Comment, Post, User } from '@prisma/client'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import {
-  Form,
-  Link,
-  useActionData,
-  useCatch,
-  useLoaderData,
-  useParams,
-} from 'remix'
+import { Form, Link, useActionData, useCatch, useLoaderData, useParams } from 'remix'
 
 import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
@@ -115,12 +108,7 @@ const PostRoute = () => {
             {user?.id === comment.userId ? (
               <Form method="post">
                 <input type="hidden" name="commentId" value={comment.id} />
-                <button
-                  type="submit"
-                  name="_action"
-                  value="delete"
-                  aria-label="Delete"
-                >
+                <button type="submit" name="_action" value="delete" aria-label="Delete">
                   x
                 </button>
               </Form>
@@ -144,9 +132,7 @@ const PostRoute = () => {
             type="text"
             defaultValue={actionData?.fields?.comment}
             aria-invalid={Boolean(actionData?.fieldErrors?.comment)}
-            aria-describedby={
-              actionData?.fieldErrors?.comment ? 'comment-error' : undefined
-            }
+            aria-describedby={actionData?.fieldErrors?.comment ? 'comment-error' : undefined}
           />
           {actionData?.fieldErrors?.comment ? (
             <p id="comment-error" role="alert">
@@ -159,12 +145,7 @@ const PostRoute = () => {
               {actionData.formError}
             </p>
           ) : null}
-          <button
-            disabled={!user?.id}
-            type="submit"
-            name="_action"
-            value="create"
-          >
+          <button disabled={!user?.id} type="submit" name="_action" value="create">
             Post Comment
           </button>
           {!user?.id ? (
@@ -195,9 +176,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   console.error(error)
   const { postId } = useParams()
 
-  return (
-    <div>{`There was an error loading post by the id ${postId}. Sorry.`}</div>
-  )
+  return <div>{`There was an error loading post by the id ${postId}. Sorry.`}</div>
 }
 
 export default PostRoute

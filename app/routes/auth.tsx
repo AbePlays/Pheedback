@@ -38,22 +38,18 @@ const AuthRoute = () => {
 
   const [loginType, setLoginType] = useState<'login' | 'register'>('login')
 
-  const toggleLoginType = () =>
-    setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))
+  const toggleLoginType = () => setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))
 
   const isFormSubmitting = transition.submission
 
   return (
     <div className="min-w-screen relative flex min-h-screen flex-col bg-gradient-to-r from-[rgba(148,187,233,1)] to-[rgba(238,174,202,1)] p-4">
-      <Link
-        className="group ml-0 mt-0 flex items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4"
-        to="/"
-      >
-        <IconArrowBack classes="group-hover:-translate-x-1 transition-all duration-300" />
+      <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4" to="/">
+        <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
         Go Back
       </Link>
       <div className="flex h-full w-full flex-1 items-center justify-center">
-        <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl md:p-12">
+        <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl animate-in fade-in zoom-in duration-300 md:p-12">
           <Form method="post" replace>
             <input type="hidden" name="loginType" value={loginType} />
             {loginType === 'register' ? (
@@ -62,24 +58,16 @@ const AuthRoute = () => {
                   Full Name
                 </label>
                 <Input
-                  classes="my-4"
+                  className="my-4"
                   type="text"
                   id="fullname-input"
                   name="fullname"
                   defaultValue={actionData?.fields?.fullname}
                   aria-invalid={Boolean(actionData?.fieldErrors?.fullname)}
-                  aria-describedby={
-                    actionData?.fieldErrors?.fullname
-                      ? 'fullname-error'
-                      : undefined
-                  }
+                  aria-describedby={actionData?.fieldErrors?.fullname ? 'fullname-error' : undefined}
                 />
                 {actionData?.fieldErros?.fullname ? (
-                  <p
-                    className="mb-4 text-sm text-red-600"
-                    id="fullname-error"
-                    role="alert"
-                  >
+                  <p className="mb-4 text-sm text-red-600" id="fullname-error" role="alert">
                     {actionData.fieldErros.fullname}
                   </p>
                 ) : null}
@@ -89,22 +77,16 @@ const AuthRoute = () => {
               User Name
             </label>
             <Input
-              classes="my-4"
+              className="my-4"
               type="text"
               id="username-input"
               name="username"
               defaultValue={actionData?.fields?.username}
               aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-              aria-describedby={
-                actionData?.fieldErrors?.username ? 'username-error' : undefined
-              }
+              aria-describedby={actionData?.fieldErrors?.username ? 'username-error' : undefined}
             />
             {actionData?.fieldErros?.username ? (
-              <p
-                className="mb-4 text-sm text-red-600"
-                id="username-error"
-                role="alert"
-              >
+              <p className="mb-4 text-sm text-red-600" id="username-error" role="alert">
                 {actionData.fieldErros.username}
               </p>
             ) : null}
@@ -114,22 +96,16 @@ const AuthRoute = () => {
                   Email
                 </label>
                 <Input
-                  classes="my-4"
+                  className="my-4"
                   type="email"
                   id="email-input"
                   name="email"
                   defaultValue={actionData?.fields?.email}
                   aria-invalid={Boolean(actionData?.fieldErrors?.email)}
-                  aria-describedby={
-                    actionData?.fieldErrors?.email ? 'email-error' : undefined
-                  }
+                  aria-describedby={actionData?.fieldErrors?.email ? 'email-error' : undefined}
                 />
                 {actionData?.fieldErros?.email ? (
-                  <p
-                    className="mb-4 text-sm text-red-600"
-                    id="email-error"
-                    role="alert"
-                  >
+                  <p className="mb-4 text-sm text-red-600" id="email-error" role="alert">
                     {actionData.fieldErros.email}
                   </p>
                 ) : null}
@@ -139,22 +115,16 @@ const AuthRoute = () => {
               Password
             </label>
             <Input
-              classes="my-4"
+              className="my-4"
               type="password"
               id="password-input"
               name="password"
               defaultValue={actionData?.fields?.password}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}
-              aria-describedby={
-                actionData?.fieldErrors?.password ? 'password-error' : undefined
-              }
+              aria-describedby={actionData?.fieldErrors?.password ? 'password-error' : undefined}
             />
             {actionData?.fieldErros?.password ? (
-              <p
-                className="mb-4 text-sm text-red-600"
-                id="password-error"
-                role="alert"
-              >
+              <p className="mb-4 text-sm text-red-600" id="password-error" role="alert">
                 {actionData.fieldErros.password}
               </p>
             ) : null}
@@ -163,10 +133,10 @@ const AuthRoute = () => {
                 {actionData.formError}
               </p>
             ) : null}
-            <Button classes="mt-4" type="submit">
+            <Button className="mt-4" type="submit">
               {isFormSubmitting ? (
                 <>
-                  <IconLoading classes="mr-2" />
+                  <IconLoading className="mr-2" />
                   Submitting...
                 </>
               ) : (
