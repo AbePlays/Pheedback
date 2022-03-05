@@ -4,5 +4,6 @@
   "semi": false,
   "singleQuote": true,
   "arrowParens": "always",
-  "tailwindConfig": "./tailwind.config.js"
+  "tailwindConfig": "./tailwind.config.js",
+  "printWidth": 120
 }
