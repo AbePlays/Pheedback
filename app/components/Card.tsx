@@ -1,16 +1,10 @@
 import type { FunctionComponent } from 'react'
 
-interface Props {
-  classes?: string
-}
-
 // dark:border-gray-700 dark:bg-gray-800
 
-const Card: FunctionComponent<Props> = ({ children, classes = '' }) => {
+const Card: FunctionComponent<React.HTMLAttributes<HTMLDivElement>> = ({ children, className = '' }) => {
   return (
-    <div
-      className={`w-full rounded-lg border border-gray-100 bg-white p-6 shadow-sm ${classes}`.trim()}
-    >
+    <div className={`w-full rounded-lg border border-gray-100 bg-white p-6 shadow-sm ${className}`.trim()}>
       {children}
     </div>
   )
