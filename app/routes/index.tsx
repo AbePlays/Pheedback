@@ -97,22 +97,15 @@ const IndexRoute = () => {
                     <Popover.Trigger aria-label="Select Option">
                       <IconDots />
                     </Popover.Trigger>
-                    <Popover.Content className="w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4">
+                    <Popover.Content className="dropdown">
                       <Popover.Close className="hidden" ref={closeRef} />
                       <Form action="/logout" method="post">
-                        <Button
-                          className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
-                          variant="unstyled"
-                        >
+                        <Button className="dropdown-item" variant="unstyled">
                           Logout
                         </Button>
                       </Form>
                       {/* TODO: Implement this logic */}
-                      <Button
-                        className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
-                        type="button"
-                        variant="unstyled"
-                      >
+                      <Button className="dropdown-item" type="button" variant="unstyled">
                         Your Upvotes
                       </Button>
                     </Popover.Content>
@@ -120,10 +113,7 @@ const IndexRoute = () => {
                 </>
               </>
             ) : (
-              <Link
-                className="block w-full rounded-lg bg-fuchsia-600 px-10 py-3 text-center font-medium text-white transition-all duration-200 hover:-translate-y-1 hover:opacity-70"
-                to="/auth"
-              >
+              <Link className="link-btn w-full px-10 py-3 text-center font-medium text-white" to="/auth">
                 Log In
               </Link>
             )}
@@ -176,13 +166,13 @@ const IndexRoute = () => {
                   <span>Sort by: {loaderData.sortBy || 'Most Upvotes'}</span>
                   <IconDown />
                 </Popover.Trigger>
-                <Popover.Content className="w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4">
+                <Popover.Content className="dropdown">
                   <Popover.Close className="hidden" ref={closeRef} />
                   <Form>
                     <input type="hidden" name="category" value={loaderData?.category || ''} />
                     {Object.values(sortByEnum).map((sortBy) => (
                       <Button
-                        className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
+                        className="dropdown-item"
                         disabled={Boolean(isFormSubmitting)}
                         key={sortBy}
                         name="sortBy"
@@ -196,10 +186,7 @@ const IndexRoute = () => {
                 </Popover.Content>
               </Popover.Root>
             </div>
-            <Link
-              className="rounded-lg bg-fuchsia-600 py-2.5 px-4 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 focus:opacity-70 focus:ring"
-              to="/post/new"
-            >
+            <Link className="link-btn py-3 px-4" to="/post/new">
               + Add Feedback
             </Link>
           </Card>

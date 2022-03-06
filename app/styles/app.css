@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .dropdown {
+    @apply w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4;
+  }
+
+  .dropdown-item {
+    @apply h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200;
+  }
+
+  .link-btn {
+    @apply rounded-lg bg-fuchsia-600 transition-all duration-300 hover:-translate-y-1 hover:opacity-70;
+  }
+}

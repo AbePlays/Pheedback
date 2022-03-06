@@ -4,11 +4,11 @@
   "description": "",
   "license": "",
   "scripts": {
-    "build:css": "tailwindcss --output ./app/styles/tailwind.css --config ./tailwind.config.js --minify",
+    "build:css": "tailwindcss -m -i app/styles/app.css -o app/styles/tailwind.css",
     "build": "npm run build:css && remix build",
     "check-format": "npm run prettier -- --list-different",
     "check-types": "tsc",
-    "dev:css": "tailwindcss --output ./app/styles/tailwind.css --config ./tailwind.config.js --watch",
+    "dev:css": "tailwindcss -w -i app/styles/app.css -o app/styles/tailwind.css",
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "format": "npm run prettier -- --write",
     "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",

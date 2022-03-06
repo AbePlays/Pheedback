@@ -39,7 +39,7 @@ const Feedback: FunctionComponent<Props> = ({ post }) => {
         </Card>
       </Link>
       <Button
-        className="absolute top-6 left-6 z-10 rounded-lg bg-blue-500 py-3 px-4 font-semibold text-blue-50 transition-all duration-300 hover:opacity-50"
+        className="absolute top-6 left-6 z-10 rounded-lg bg-blue-500 py-3 px-4 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
         variant="unstyled"
       >
         <IconChevron className="h-3 w-4" />

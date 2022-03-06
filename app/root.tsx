@@ -1,5 +1,5 @@
-import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from 'remix'
 import type { LinksFunction } from 'remix'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from 'remix'
 
 import globalStyles from '~/styles/global.css'
 import appStyles from '~/styles/tailwind.css'
