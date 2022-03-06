@@ -91,22 +91,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/post/new">New Post</Link>
-          </li>
-        </ul>
-      </nav>
-      <hr />
-      {children}
-    </div>
-  )
+  return <div className="min-h-screen bg-gray-50">{children}</div>
 }
 
 export default App

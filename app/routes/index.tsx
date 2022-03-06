@@ -4,7 +4,7 @@ import { Form, Link, useLoaderData, useTransition } from 'remix'
 import { useEffect, useRef } from 'react'
 import * as Popover from '@radix-ui/react-popover'
 
-import { Button, Card } from '~/components'
+import { Button, Card, Feedback } from '~/components'
 import { categoryOptions, sortByEnum } from '~/data'
 import { IconBulb, IconDots, IconDown } from '~/icons'
 import { getUser } from '~/lib/db.server'
@@ -13,7 +13,7 @@ import { db } from '~/utils'
 type TLoaderData = {
   category: string
   sortBy: string
-  posts: Post[]
+  posts: (Post & { user: User; comment: (Comment & { user: User })[] })[]
   user: User
 }
 
@@ -43,16 +43,18 @@ export const loader: LoaderFunction = async ({ request }) => {
     posts = await db.post.findMany({
       where: { category },
       orderBy: { upvotes: order },
+      include: { user: true, comment: true },
     })
   } else if (category) {
     posts = await db.post.findMany({
       where: { category },
       orderBy: { createdAt: 'desc' },
+      include: { user: true, comment: true },
     })
   } else if (sortBy) {
-    posts = await db.post.findMany({ orderBy: { upvotes: order } })
+    posts = await db.post.findMany({ orderBy: { upvotes: order }, include: { user: true, comment: true } })
   } else {
-    posts = await db.post.findMany({ orderBy: { createdAt: 'desc' } })
+    posts = await db.post.findMany({ orderBy: { createdAt: 'desc' }, include: { user: true, comment: true } })
   }
 
   return { category, sortBy, posts, user }
@@ -98,13 +100,16 @@ const IndexRoute = () => {
                     <Popover.Content className="w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4">
                       <Popover.Close className="hidden" ref={closeRef} />
                       <Form action="/logout" method="post">
-                        <Button className="h-12 w-full hover:bg-gray-200 focus-visible:bg-gray-200" variant="unstyled">
+                        <Button
+                          className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
+                          variant="unstyled"
+                        >
                           Logout
                         </Button>
                       </Form>
                       {/* TODO: Implement this logic */}
                       <Button
-                        className="h-12 w-full hover:bg-gray-200 focus-visible:bg-gray-200"
+                        className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
                         type="button"
                         variant="unstyled"
                       >
@@ -177,7 +182,7 @@ const IndexRoute = () => {
                     <input type="hidden" name="category" value={loaderData?.category || ''} />
                     {Object.values(sortByEnum).map((sortBy) => (
                       <Button
-                        className="h-12 w-full hover:bg-gray-200 focus-visible:bg-gray-200"
+                        className="h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200"
                         disabled={Boolean(isFormSubmitting)}
                         key={sortBy}
                         name="sortBy"
@@ -191,22 +196,21 @@ const IndexRoute = () => {
                 </Popover.Content>
               </Popover.Root>
             </div>
-            <Button className="w-max py-2.5" type="button">
+            <Link
+              className="rounded-lg bg-fuchsia-600 py-2.5 px-4 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 focus:opacity-70 focus:ring"
+              to="/post/new"
+            >
               + Add Feedback
-            </Button>
+            </Link>
           </Card>
 
           {/* Posts */}
           {showPosts ? (
-            <ul>
-              {loaderData.posts.map((post, index) => {
+            <ul className="space-y-4">
+              {loaderData.posts.map((post) => {
                 return (
-                  <li key={post.id}>
-                    <Link to={`/post/${post.id}`}>
-                      <h2>{`${index + 1}. ${post.title}`}</h2>
-                      <p>{post.detail}</p>
-                      <p>{post.category}</p>
-                    </Link>
+                  <li className="relative" key={post.id}>
+                    <Feedback post={post} />
                   </li>
                 )
               })}
