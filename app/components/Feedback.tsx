@@ -15,7 +15,7 @@ const Feedback: FunctionComponent<Props> = ({ post }) => {
     <>
       <Link className="group focus:outline-none" to={`/post/${post.id}`}>
         <Card className="flex gap-4 rounded-xl text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500">
-          <div className="ml-20 flex-1 space-y-4">
+          <div className="mb-14 flex-1 space-y-4 sm:mb-0 sm:ml-20">
             <div className="flex items-center gap-4">
               {/* TODO: add logic to generate pseudo-random number for image seed */}
               <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
@@ -39,7 +39,7 @@ const Feedback: FunctionComponent<Props> = ({ post }) => {
         </Card>
       </Link>
       <Button
-        className="absolute top-6 left-6 z-10 rounded-lg bg-blue-500 py-3 px-4 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
+        className="absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 sm:top-6 sm:block sm:py-3 sm:px-4"
         variant="unstyled"
       >
         <IconChevron className="h-3 w-4" />
