@@ -126,7 +126,7 @@ const IndexRoute = () => {
 
           {/* Posts */}
           {showPosts ? (
-            <ul className="space-y-4 px-4 md:px-0">
+            <ul className="space-y-4 px-4 pb-4 md:px-0 md:pb-0">
               {loaderData.posts.map((post) => {
                 return (
                   <li className="relative" key={post.id}>

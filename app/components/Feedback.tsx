@@ -32,7 +32,7 @@ const Feedback: FunctionComponent<Props> = ({ post }) => {
               {post.category}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="absolute bottom-8 right-6 flex items-center gap-2 sm:static">
             <IconComment />
             <span>{post.comment?.length || 0}</span>
           </div>
