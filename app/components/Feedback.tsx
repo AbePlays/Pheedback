@@ -14,7 +14,7 @@ const Feedback: FunctionComponent<Props> = ({ post }) => {
   return (
     <>
       <Link className="group focus:outline-none" to={`/post/${post.id}`}>
-        <Card className="flex gap-4 rounded-xl text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500">
+        <Card className="flex gap-4 text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500">
           <div className="mb-14 flex-1 space-y-4 sm:mb-0 sm:ml-20">
             <div className="flex items-center gap-4">
               {/* TODO: add logic to generate pseudo-random number for image seed */}

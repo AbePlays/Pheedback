@@ -3,8 +3,7 @@ import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 import * as Popover from '@radix-ui/react-popover'
 
-import { Button, Card } from '~/components'
-import { categoryOptions } from '~/data'
+import { Button, Card, CategoryFilter, RoadMap } from '~/components'
 import { IconDots } from '~/icons'
 
 type TLoaderData = {
@@ -23,26 +22,26 @@ interface Props {
 
 const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUserPresent, loaderData }) => {
   return (
-    <div className="hidden md:flex md:gap-4 lg:block lg:space-y-4">
-      {/* User Info */}
-      <Card className="flex max-w-xs items-start justify-between rounded-xl text-left">
-        {isUserPresent ? (
-          <>
-            <div className="flex gap-4">
-              {/* TODO: implement logic to generate user avatar */}
-              <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
-              <div>
-                <h2 className="font-bold">{loaderData.user?.fullname}</h2>
-                <span className="text-sm">@{loaderData.user?.username}</span>
-              </div>
-            </div>
+    <div className="hidden md:flex md:w-full md:gap-4 lg:max-w-xs lg:flex-col">
+      <div className="flex-1 space-y-4 lg:flex-none">
+        {/* User Info */}
+        <Card className="flex items-start justify-between gap-4 text-left">
+          {isUserPresent ? (
             <>
+              <div className="flex gap-4">
+                {/* TODO: implement logic to generate user avatar */}
+                <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
+                <div>
+                  <h2 className="font-bold">{loaderData.user?.fullname?.split(' ')?.[0]}</h2>
+                  <span className="text-sm">@{loaderData.user?.username}</span>
+                </div>
+              </div>
               <Popover.Root>
                 <Popover.Trigger aria-label="Select Option">
                   <IconDots />
                 </Popover.Trigger>
-                <Popover.Content className="dropdown">
-                  <Popover.Close className="hidden" ref={closeRef} />
+                <Popover.Content align="end" className="dropdown" sideOffset={10}>
+                  <Popover.Close hidden ref={closeRef} />
                   <Form action="/logout" method="post">
                     <Button className="dropdown-item" variant="unstyled">
                       Logout
@@ -55,47 +54,31 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                 </Popover.Content>
               </Popover.Root>
             </>
-          </>
-        ) : (
-          <Link className="link-btn w-full px-10 py-3 text-center font-medium text-white" to="/auth">
-            Log In
-          </Link>
-        )}
-      </Card>
+          ) : (
+            <Link className="link-btn w-full py-3 text-center font-medium text-white" to="/auth">
+              Log In
+            </Link>
+          )}
+        </Card>
 
-      {/* Pheedback Card */}
-      <Card className="flex max-w-xs items-center justify-center overflow-hidden rounded-xl bg-[url('/background-header.png')] bg-cover bg-no-repeat p-0 text-left lg:h-40">
-        <h2 className="text-lg font-bold text-white">Pheedback Board</h2>
-      </Card>
+        {/* Pheedback Card */}
+        <Card className="flex h-24 items-center justify-center bg-[url('/background-header.png')] bg-cover bg-no-repeat p-0 lg:h-40">
+          <h2 className="text-base font-bold text-white lg:text-lg">Pheedback Board</h2>
+        </Card>
+      </div>
 
       {/* Category Form */}
-      <Card className="flex max-w-xs items-start justify-between rounded-xl text-left">
-        <Form className="flex flex-wrap gap-4">
-          <input type="hidden" name="sortBy" value={loaderData?.sortBy || ''} />
-          <Button
-            className={`w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
-              !loaderData.category ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-500'
-            }`}
-            disabled={isFormSubmitting}
-            name="category"
-            value=""
-          >
-            All
-          </Button>
-          {categoryOptions.map((category) => (
-            <Button
-              className={`w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
-                loaderData?.category === category ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-500'
-              }`}
-              disabled={isFormSubmitting}
-              key={category}
-              name="category"
-              value={category}
-            >
-              {category}
-            </Button>
-          ))}
-        </Form>
+      <Card className="flex flex-1 items-start justify-between text-left lg:flex-none">
+        <CategoryFilter
+          category={loaderData?.category || ''}
+          isFormSubmitting={isFormSubmitting}
+          sortBy={loaderData?.sortBy || ''}
+        />
+      </Card>
+
+      {/* Roadmao Card */}
+      <Card className="flex-1 lg:flex-none">
+        <RoadMap />
       </Card>
     </div>
   )

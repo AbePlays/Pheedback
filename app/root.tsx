@@ -80,7 +80,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-gray-50">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -91,7 +91,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="min-h-screen bg-gray-50">{children}</div>
+  return <div className="mx-auto min-h-screen max-w-screen-xl">{children}</div>
 }
 
 export default App
