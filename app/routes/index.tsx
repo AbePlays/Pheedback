@@ -80,7 +80,7 @@ const IndexRoute = () => {
   }, [isFormSubmitting])
 
   return (
-    <main className="md:flex md:flex-col md:gap-4 md:px-4 md:pt-8 lg:flex-row">
+    <main className="mx-auto max-w-screen-xl md:flex md:flex-col md:gap-4 md:px-4 md:pt-8 lg:flex-row">
       <LeftMenu
         closeRef={closeRef}
         isFormSubmitting={Boolean(isFormSubmitting)}

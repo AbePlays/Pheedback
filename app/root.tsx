@@ -91,7 +91,7 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="mx-auto min-h-screen max-w-screen-xl">{children}</div>
+  return <div className="min-h-screen">{children}</div>
 }
 
 export default App
