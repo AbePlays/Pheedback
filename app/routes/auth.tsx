@@ -1,9 +1,11 @@
-import { useState } from 'react'
 import type { ActionFunction, MetaFunction } from 'remix'
-import { Form, useActionData, useTransition } from 'remix'
+import { Form, Link, useActionData, useTransition } from 'remix'
+import { useState } from 'react'
 
+import { Button, Input } from '~/components'
+import { IconArrowBack, IconLoading } from '~/icons'
 import { login, register } from '~/lib/db.server'
-import { validateForm } from '~/utils'
+import { validateAuthForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
@@ -16,7 +18,7 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData())
 
   // validate form and return error if invalid
-  const errors = validateForm(formData)
+  const errors = validateAuthForm(formData)
   if (errors) return errors
 
   // otherwise, handle the form submission
@@ -34,111 +36,135 @@ const AuthRoute = () => {
   const actionData = useActionData()
   const transition = useTransition()
 
-  const [loginType, setLoginType] = useState<'login' | 'register'>('register')
+  const [loginType, setLoginType] = useState<'login' | 'register'>('login')
 
-  const toggleLoginType = () =>
-    setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))
+  const toggleLoginType = () => setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))
 
   const isFormSubmitting = transition.submission
 
   return (
-    <div>
-      <Form method="post">
-        <input type="hidden" name="loginType" value={loginType} />
-        {loginType === 'register' ? (
-          <>
-            <label htmlFor="fullname-input">Full Name</label>
-            <input
-              className="block border"
-              type="text"
-              id="fullname-input"
-              name="fullname"
-              defaultValue={actionData?.fields?.fullname}
-              aria-invalid={Boolean(actionData?.fieldErrors?.fullname)}
-              aria-describedby={
-                actionData?.fieldErrors?.fullname ? 'fullname-error' : undefined
-              }
-            />
-            {actionData?.fieldErros?.fullname ? (
-              <p id="fullname-error" role="alert">
-                {actionData.fieldErros.fullname}
+    <div className="min-w-screen relative bg-gradient-to-b from-[rgba(148,187,233,1)] to-[rgba(238,174,202,1)] md:bg-gradient-to-r">
+      <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col p-4">
+        <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4" to="/">
+          <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
+          Go Back
+        </Link>
+        <div className="flex h-full w-full flex-1 items-center justify-center">
+          <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl animate-in fade-in zoom-in duration-300 md:p-12">
+            <Form method="post" replace>
+              <input type="hidden" name="loginType" value={loginType} />
+              {loginType === 'register' ? (
+                <>
+                  <label className="font-bold" htmlFor="fullname-input">
+                    Full Name
+                  </label>
+                  <Input
+                    className="my-4"
+                    type="text"
+                    id="fullname-input"
+                    name="fullname"
+                    defaultValue={actionData?.fields?.fullname}
+                    aria-invalid={Boolean(actionData?.fieldErrors?.fullname)}
+                    aria-describedby={actionData?.fieldErrors?.fullname ? 'fullname-error' : undefined}
+                  />
+                  {actionData?.fieldErros?.fullname ? (
+                    <p className="mb-4 text-sm text-red-600" id="fullname-error" role="alert">
+                      {actionData.fieldErros.fullname}
+                    </p>
+                  ) : null}
+                </>
+              ) : null}
+              <label className="font-bold" htmlFor="username-input">
+                User Name
+              </label>
+              <Input
+                className="my-4"
+                type="text"
+                id="username-input"
+                name="username"
+                defaultValue={actionData?.fields?.username}
+                aria-invalid={Boolean(actionData?.fieldErrors?.username)}
+                aria-describedby={actionData?.fieldErrors?.username ? 'username-error' : undefined}
+              />
+              {actionData?.fieldErros?.username ? (
+                <p className="mb-4 text-sm text-red-600" id="username-error" role="alert">
+                  {actionData.fieldErros.username}
+                </p>
+              ) : null}
+              {loginType === 'register' ? (
+                <>
+                  <label className="font-bold" htmlFor="email-input">
+                    Email
+                  </label>
+                  <Input
+                    className="my-4"
+                    type="email"
+                    id="email-input"
+                    name="email"
+                    defaultValue={actionData?.fields?.email}
+                    aria-invalid={Boolean(actionData?.fieldErrors?.email)}
+                    aria-describedby={actionData?.fieldErrors?.email ? 'email-error' : undefined}
+                  />
+                  {actionData?.fieldErros?.email ? (
+                    <p className="mb-4 text-sm text-red-600" id="email-error" role="alert">
+                      {actionData.fieldErros.email}
+                    </p>
+                  ) : null}
+                </>
+              ) : null}
+              <label className="font-bold" htmlFor="password-input">
+                Password
+              </label>
+              <Input
+                className="my-4"
+                type="password"
+                id="password-input"
+                name="password"
+                defaultValue={actionData?.fields?.password}
+                aria-invalid={Boolean(actionData?.fieldErrors?.password)}
+                aria-describedby={actionData?.fieldErrors?.password ? 'password-error' : undefined}
+              />
+              {actionData?.fieldErros?.password ? (
+                <p className="mb-4 text-sm text-red-600" id="password-error" role="alert">
+                  {actionData.fieldErros.password}
+                </p>
+              ) : null}
+              {actionData?.formError ? (
+                <p className="text-sm text-red-600" role="alert">
+                  {actionData.formError}
+                </p>
+              ) : null}
+              <Button className="mt-4" type="submit">
+                {isFormSubmitting ? (
+                  <>
+                    <IconLoading className="mr-2" />
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit'
+                )}
+              </Button>
+            </Form>
+            {loginType === 'login' ? (
+              <p className="md:text-md mt-4 text-center text-sm">
+                Don&apos;t have an account?&nbsp;
+                <Button onClick={toggleLoginType} type="button" variant="link">
+                  Sign up&nbsp;
+                </Button>
+                instead?
               </p>
-            ) : null}
-          </>
-        ) : null}
-        <label htmlFor="username-input">User Name</label>
-        <input
-          className="block border"
-          type="text"
-          id="username-input"
-          name="username"
-          defaultValue={actionData?.fields?.username}
-          aria-invalid={Boolean(actionData?.fieldErrors?.username)}
-          aria-describedby={
-            actionData?.fieldErrors?.username ? 'username-error' : undefined
-          }
-        />
-        {actionData?.fieldErros?.username ? (
-          <p id="username-error" role="alert">
-            {actionData.fieldErros.username}
-          </p>
-        ) : null}
-        {loginType === 'register' ? (
-          <>
-            <label htmlFor="email-input">Email</label>
-            <input
-              className="block border"
-              type="email"
-              id="email-input"
-              name="email"
-              defaultValue={actionData?.fields?.email}
-              aria-invalid={Boolean(actionData?.fieldErrors?.email)}
-              aria-describedby={
-                actionData?.fieldErrors?.email ? 'email-error' : undefined
-              }
-            />
-            {actionData?.fieldErros?.email ? (
-              <p id="email-error" role="alert">
-                {actionData.fieldErros.email}
+            ) : (
+              <p className="md:text-md mt-4 text-center text-sm">
+                Already have an account?&nbsp;
+                <Button type="button" onClick={toggleLoginType} variant="link">
+                  Log in&nbsp;
+                </Button>
+                instead?
               </p>
-            ) : null}
-          </>
-        ) : null}
-        <label htmlFor="password-input">Password</label>
-        <input
-          className="block border"
-          type="password"
-          id="password-input"
-          name="password"
-          defaultValue={actionData?.fields?.password}
-          aria-invalid={Boolean(actionData?.fieldErrors?.password)}
-          aria-describedby={
-            actionData?.fieldErrors?.password ? 'password-error' : undefined
-          }
-        />
-        {actionData?.fieldErros?.password ? (
-          <p id="password-error" role="alert">
-            {actionData.fieldErros.password}
-          </p>
-        ) : null}
-        {actionData?.formError ? (
-          <p role="alert">{actionData.formError}</p>
-        ) : null}
-        <button type="submit">
-          {isFormSubmitting ? 'Submitting...' : 'Submit'}
-        </button>
-      </Form>
-      {loginType === 'login' ? (
-        <p>
-          Don&apos;t have an account?&nbsp;
-          <button onClick={toggleLoginType}>Sign up&nbsp;</button>instead?
-        </p>
-      ) : (
-        <p>
-          Already have an account?&nbsp;
-          <button onClick={toggleLoginType}>Log in&nbsp;</button>instead?
-        </p>
-      )}
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

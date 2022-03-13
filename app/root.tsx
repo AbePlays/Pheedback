@@ -1,14 +1,5 @@
-import {
-  Link,
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useCatch,
-} from 'remix'
 import type { LinksFunction } from 'remix'
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from 'remix'
 
 import globalStyles from '~/styles/global.css'
 import appStyles from '~/styles/tailwind.css'
@@ -43,10 +34,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
           <h1>There was an error</h1>
           <p>{error.message}</p>
           <hr />
-          <p>
-            Hey, developer, you should replace this with what you want your
-            users to see.
-          </p>
+          <p>Hey, developer, you should replace this with what you want your users to see.</p>
         </div>
       </Layout>
     </Document>
@@ -60,17 +48,10 @@ export const CatchBoundary = () => {
   let message
   switch (caught.status) {
     case 401:
-      message = (
-        <p>
-          Oops! Looks like you tried to visit a page that you do not have access
-          to.
-        </p>
-      )
+      message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>
       break
     case 404:
-      message = (
-        <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      )
+      message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>
       break
 
     default:
@@ -89,13 +70,7 @@ export const CatchBoundary = () => {
   )
 }
 
-const Document = ({
-  children,
-  title,
-}: {
-  children: React.ReactNode
-  title?: string
-}) => {
+const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
   return (
     <html lang="en">
       <head>
@@ -105,7 +80,7 @@ const Document = ({
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-gray-50">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -116,22 +91,7 @@ const Document = ({
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/auth">Log in</Link>
-          </li>
-        </ul>
-      </nav>
-      <hr />
-      {children}
-    </div>
-  )
+  return <div className="min-h-screen">{children}</div>
 }
 
 export default App
