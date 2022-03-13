@@ -49,7 +49,7 @@ const AuthRoute = () => {
         Go Back
       </Link>
       <div className="flex h-full w-full flex-1 items-center justify-center">
-        <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl animate-in fade-in zoom-in duration-300 md:p-12">
+        <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl duration-300 animate-in fade-in zoom-in md:p-12">
           <Form method="post" replace>
             <input type="hidden" name="loginType" value={loginType} />
             {loginType === 'register' ? (

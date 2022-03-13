@@ -11,9 +11,9 @@ const Roadmap: FunctionComponent = () => {
         </Link>
       </div>
       <ul className="space-y-3 font-medium text-gray-500">
-        <TaskStatus color="red-500" title="Planned" quantity="0" />
-        <TaskStatus color="yellow-500" title="In-Progress" quantity="0" />
-        <TaskStatus color="blue-500" title="Live" quantity="0" />
+        <TaskStatus color="bg-red-500" title="Planned" quantity="0" />
+        <TaskStatus color="bg-yellow-500" title="In-Progress" quantity="0" />
+        <TaskStatus color="bg-blue-500" title="Live" quantity="0" />
       </ul>
     </div>
   )
@@ -23,7 +23,7 @@ const TaskStatus = ({ color, title, quantity }: { color: string; title: string; 
   return (
     <li className="flex items-center justify-between gap-4">
       <div className="flex items-center gap-8">
-        <div className={`h-2 w-2 rounded-full bg-${color}`} />
+        <div className={`h-2 w-2 rounded-full ${color}`} />
         <h3>{title}</h3>
       </div>
       <span>{quantity}</span>
