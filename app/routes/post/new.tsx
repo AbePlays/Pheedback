@@ -10,7 +10,7 @@ import { validatePostForm } from '~/utils'
 export const meta: MetaFunction = () => {
   return {
     title: 'Create | Pheedback',
-    description: 'Create a Post',
+    description: 'Create a Pheedback',
   }
 }
 
@@ -145,7 +145,7 @@ export const CatchBoundary = () => {
 
   if (caught.status === 401) {
     return (
-      <div className="mx-auto max-w-md p-4">
+      <div className="mx-auto max-w-md p-4" role="alert">
         <main className="space-y-2 rounded-lg bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
           <p>You must be logged in to create a feedback.</p>
           <Link className="inline-block underline" to="/auth">
