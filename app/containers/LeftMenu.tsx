@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 import * as Popover from '@radix-ui/react-popover'

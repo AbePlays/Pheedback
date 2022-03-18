@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { useLoaderData, useTransition } from 'remix'
 import { useEffect, useRef } from 'react'

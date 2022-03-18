@@ -1,7 +1,10 @@
 import type { Comment, Post, User } from '@prisma/client'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, useActionData, useCatch, useLoaderData, useParams } from 'remix'
+import { Form, Link, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
+import { useEffect, useRef } from 'react'
 
+import { Button, Card, Feedback } from '~/components'
+import { IconArrowBack, IconCross } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
@@ -67,94 +70,108 @@ export const action: ActionFunction = async ({ request }) => {
 const PostRoute = () => {
   const actionData = useActionData()
   const loaderData = useLoaderData<TLoaderData>()
+  const transition = useTransition()
+
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const { post, user } = loaderData
   const comments = post.comment
-  const author = post.user
+  const isAdding = transition.submission && transition.submission.formData.get('_action') === 'create'
+
+  useEffect(() => {
+    if (!isAdding && inputRef.current) {
+      inputRef.current.value = ''
+    }
+  }, [isAdding])
 
   return (
-    <div>
-      <Link to="/">Go Back</Link>
+    <div className="mx-auto max-w-screen-xl p-4">
+      <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4" to="/">
+        <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
+        Go Home
+      </Link>
 
-      {/* Post Info  */}
-      <div>
-        <div>
-          <button>{post.upvotes}</button>
-          <div>
-            <h2>{author.fullname}</h2>
-            <p>{post.createdAt}</p>
-          </div>
+      <main className="mx-auto my-8 max-w-screen-md space-y-4 sm:space-y-8">
+        {/* Post Info  */}
+        <div className="relative ">
+          <Feedback post={post} />
         </div>
-        <div>
-          <div>
-            <h2>{post.title}</h2>
-            <p>{post.detail}</p>
-            <span>{post.category}</span>
-          </div>
-          <div>{comments.length}</div>
-        </div>
-      </div>
-
-      {/* Comments */}
-      <div>
-        <h2>{comments.length} Comments</h2>
-        {comments.map((comment, index) => (
-          <div key={comment.id}>
-            <div>
-              <h2>{`${index + 1}. ${comment.user.fullname}`}</h2>
-              <p>@{comment.user.username}</p>
-              <p>{comment.content}</p>
+        {/* Comments */}
+        <Card>
+          <h2 className="font-bold">
+            {comments.length} Comment{comments.length > 1 && 's'}
+          </h2>
+          {comments.map((comment) => (
+            <div className="my-8 px-4" key={comment.id}>
+              <div className="flex justify-between gap-4">
+                <div className="flex flex-1 gap-4">
+                  {/* Implement logic for image seed */}
+                  <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
+                  <div>
+                    <h2 className="font-bold">{comment.user.fullname}</h2>
+                    <p className="text-gray-500">@{comment.user.username}</p>
+                    <p className="mt-2 text-gray-600">{comment.content}</p>
+                  </div>
+                </div>
+                {user?.id === comment.userId ? (
+                  <Form method="post">
+                    <input type="hidden" name="commentId" value={comment.id} />
+                    <Button name="_action" value="delete" variant="unstyled" aria-label="Delete">
+                      <IconCross />
+                    </Button>
+                  </Form>
+                ) : null}
+              </div>
             </div>
-            {user?.id === comment.userId ? (
-              <Form method="post">
-                <input type="hidden" name="commentId" value={comment.id} />
-                <button type="submit" name="_action" value="delete" aria-label="Delete">
-                  x
-                </button>
-              </Form>
+          ))}
+        </Card>
+
+        {/* Comment Form */}
+        <Card>
+          <Form method="post">
+            <input type="hidden" name="postId" value={post.id} />
+            <input type="hidden" name="userId" value={user?.id} />
+            <label className="font-bold" htmlFor="comment-input">
+              Add Comment
+            </label>
+            <textarea
+              className="mt-4 w-full rounded-lg bg-gray-100 p-4"
+              disabled={!user?.id}
+              id="comment-input"
+              name="comment"
+              placeholder="Type your comment here"
+              ref={inputRef}
+              rows={4}
+              defaultValue={actionData?.fields?.comment}
+              aria-invalid={Boolean(actionData?.fieldErrors?.comment)}
+              aria-describedby={actionData?.fieldErrors?.comment ? 'comment-error' : undefined}
+            />
+            {actionData?.fieldErrors?.comment ? (
+              <p className="mt-4 text-sm text-red-600" id="comment-error" role="alert">
+                {actionData.fieldErrors.comment}
+              </p>
             ) : null}
-          </div>
-        ))}
-      </div>
 
-      {/* Comment Form */}
-      <div>
-        <Form method="post">
-          <input type="hidden" name="postId" value={post.id} />
-          <input type="hidden" name="userId" value={user?.id} />
-          <label htmlFor="comment-input">Add Comment</label>
-          <input
-            className="block border"
-            disabled={!user?.id}
-            id="comment-input"
-            name="comment"
-            placeholder="Type your comment here"
-            type="text"
-            defaultValue={actionData?.fields?.comment}
-            aria-invalid={Boolean(actionData?.fieldErrors?.comment)}
-            aria-describedby={actionData?.fieldErrors?.comment ? 'comment-error' : undefined}
-          />
-          {actionData?.fieldErrors?.comment ? (
-            <p id="comment-error" role="alert">
-              {actionData.fieldErrors.comment}
-            </p>
-          ) : null}
-
-          {actionData?.formError ? (
-            <p id="comment-error" role="alert">
-              {actionData.formError}
-            </p>
-          ) : null}
-          <button disabled={!user?.id} type="submit" name="_action" value="create">
-            Post Comment
-          </button>
-          {!user?.id ? (
-            <p>
-              Please <Link to="/auth">log in</Link> to comment
-            </p>
-          ) : null}
-        </Form>
-      </div>
+            {actionData?.formError ? (
+              <p className="mt-4 text-sm text-red-600" id="comment-error" role="alert">
+                {actionData.formError}
+              </p>
+            ) : null}
+            <Button className="ml-auto mt-4 block w-max" disabled={!user?.id} name="_action" value="create">
+              Post Comment
+            </Button>
+            {!user?.id ? (
+              <p className="mt-4 text-center text-red-600">
+                Please{' '}
+                <Link className="underline" to="/auth">
+                  log in
+                </Link>{' '}
+                to comment
+              </p>
+            ) : null}
+          </Form>
+        </Card>
+      </main>
     </div>
   )
 }

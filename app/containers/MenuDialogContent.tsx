@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import { FunctionComponent, useEffect } from 'react'
 import { Form, Link } from 'remix'
 import { useRef } from 'react'

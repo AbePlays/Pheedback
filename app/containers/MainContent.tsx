@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 import * as Popover from '@radix-ui/react-popover'
@@ -63,7 +63,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
         <ul className="space-y-4 px-4 py-4 md:px-0">
           {loaderData.posts.map((post) => (
             <li className="relative" key={post.id}>
-              <Feedback post={post} />
+              <Feedback asLink post={post} />
             </li>
           ))}
         </ul>
