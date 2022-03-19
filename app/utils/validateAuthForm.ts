@@ -7,13 +7,13 @@ const validateAuthForm = (data: Record<string, unknown>) => {
     const { username, password } = data
     const fields = { username, password }
 
-    const fieldErros = {
+    const fieldErrors = {
       username: validateUsername(username),
       password: validatePassword(password),
     }
 
-    if (Object.values(fieldErros).some(Boolean)) {
-      return { fieldErros, fields }
+    if (Object.values(fieldErrors).some(Boolean)) {
+      return { fieldErrors, fields }
     }
   } else if (data?.loginType === 'register') {
     // Validate register form
@@ -23,15 +23,15 @@ const validateAuthForm = (data: Record<string, unknown>) => {
     const { username, password, fullname, email } = data
     const fields = { username, password, fullname, email }
 
-    const fieldErros = {
+    const fieldErrors = {
       username: validateUsername(username),
       password: validatePassword(password),
       fullname: validateFullname(fullname),
       email: validateEmail(email),
     }
 
-    if (Object.values(fieldErros).some(Boolean)) {
-      return { fieldErros, fields }
+    if (Object.values(fieldErrors).some(Boolean)) {
+      return { fieldErrors, fields }
     }
   }
 }

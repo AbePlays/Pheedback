@@ -92,10 +92,21 @@ const PostRoute = () => {
       </Link>
 
       <main className="mx-auto my-8 max-w-screen-md space-y-4 sm:space-y-8">
+        {/* Edit Feedback */}
+        {user.id === post.userId ? (
+          <Link
+            className="link-btn ml-auto flex h-14 w-max items-center justify-center px-8 text-white"
+            to={`/post/edit/${post.id}`}
+          >
+            Edit Feedback
+          </Link>
+        ) : null}
+
         {/* Post Info  */}
         <div className="relative ">
           <Feedback post={post} />
         </div>
+
         {/* Comments */}
         <Card>
           <h2 className="font-bold">

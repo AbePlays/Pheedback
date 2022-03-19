@@ -67,9 +67,9 @@ const AuthRoute = () => {
                     aria-invalid={Boolean(actionData?.fieldErrors?.fullname)}
                     aria-describedby={actionData?.fieldErrors?.fullname ? 'fullname-error' : undefined}
                   />
-                  {actionData?.fieldErros?.fullname ? (
+                  {actionData?.fieldErrors?.fullname ? (
                     <p className="mb-4 text-sm text-red-600" id="fullname-error" role="alert">
-                      {actionData.fieldErros.fullname}
+                      {actionData.fieldErrors.fullname}
                     </p>
                   ) : null}
                 </>
@@ -86,9 +86,9 @@ const AuthRoute = () => {
                 aria-invalid={Boolean(actionData?.fieldErrors?.username)}
                 aria-describedby={actionData?.fieldErrors?.username ? 'username-error' : undefined}
               />
-              {actionData?.fieldErros?.username ? (
+              {actionData?.fieldErrors?.username ? (
                 <p className="mb-4 text-sm text-red-600" id="username-error" role="alert">
-                  {actionData.fieldErros.username}
+                  {actionData.fieldErrors.username}
                 </p>
               ) : null}
               {loginType === 'register' ? (
@@ -105,9 +105,9 @@ const AuthRoute = () => {
                     aria-invalid={Boolean(actionData?.fieldErrors?.email)}
                     aria-describedby={actionData?.fieldErrors?.email ? 'email-error' : undefined}
                   />
-                  {actionData?.fieldErros?.email ? (
+                  {actionData?.fieldErrors?.email ? (
                     <p className="mb-4 text-sm text-red-600" id="email-error" role="alert">
-                      {actionData.fieldErros.email}
+                      {actionData.fieldErrors.email}
                     </p>
                   ) : null}
                 </>
@@ -124,9 +124,9 @@ const AuthRoute = () => {
                 aria-invalid={Boolean(actionData?.fieldErrors?.password)}
                 aria-describedby={actionData?.fieldErrors?.password ? 'password-error' : undefined}
               />
-              {actionData?.fieldErros?.password ? (
+              {actionData?.fieldErrors?.password ? (
                 <p className="mb-4 text-sm text-red-600" id="password-error" role="alert">
-                  {actionData.fieldErros.password}
+                  {actionData.fieldErrors.password}
                 </p>
               ) : null}
               {actionData?.formError ? (

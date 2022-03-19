@@ -1,42 +1,84 @@
+import type { Post, User } from '@prisma/client'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useCatch, useTransition } from 'remix'
+import { Form, Link, redirect, useActionData, useLoaderData, useTransition } from 'remix'
 
 import { Button, Card } from '~/components'
 import { categoryOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
-import { createPost, getUserId } from '~/lib/db.server'
-import { validatePostForm } from '~/utils'
+import { getUser } from '~/lib/db.server'
+import { db, validatePostForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Create | Pheedback',
-    description: 'Create a Pheedback',
+    title: 'Post | Pheedback',
+    description: 'Edit this post',
   }
 }
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const userId = await getUserId(request)
-  if (!userId) throw new Response('Unauthorized', { status: 401 })
-  return {}
+type TLoaderData = {
+  post: Post
+  user: User
+}
+
+export const loader: LoaderFunction = async ({ params, request }) => {
+  const { id: postId } = params
+  const user = await getUser(request)
+
+  const post = await db.post.findUnique({ where: { id: postId } })
+  if (!post) {
+    throw new Response('Post not found', { status: 404 })
+  }
+
+  return { post, user }
 }
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = Object.fromEntries(await request.formData())
 
-  const errors = validatePostForm(formData)
-  if (errors) return errors
+  if (formData && formData._action) {
+    if (formData._action === 'edit') {
+      const errors = validatePostForm(formData)
+      if (errors) return errors
 
-  const userId = await getUserId(request)
-  if (!userId) return redirect('/auth')
+      const post = await db.post.update({
+        where: { id: String(formData.id) },
+        data: {
+          title: String(formData.title),
+          detail: String(formData.detail),
+          category: String(formData.category),
+        },
+      })
+      if (!post) {
+        throw new Response('Post could not be updated. Sorry', {
+          status: 500,
+        })
+      }
+    } else if (formData._action === 'delete') {
+      const { id: postId } = formData
+      if (!postId || typeof postId !== 'string') {
+        throw new Response('Invalid request', { status: 400 })
+      }
 
-  return createPost(formData, userId)
+      const post = await db.post.delete({ where: { id: postId } })
+      if (!post) {
+        throw new Response('Post could not be deleted. Sorry', {
+          status: 500,
+        })
+      }
+    }
+  }
+
+  return redirect('/')
 }
 
-const NewPostRoute = () => {
+const EditPostRoute = () => {
   const actionData = useActionData()
+  const loaderData = useLoaderData<TLoaderData>()
   const transition = useTransition()
 
-  const isFormSubmitting = transition.submission
+  const { post } = loaderData
+  const isSaving = transition.submission?.formData.get('_action') === 'edit'
+  const isDeleting = transition.submission?.formData.get('_action') === 'delete'
 
   return (
     <main className="mx-auto max-w-screen-xl p-4">
@@ -45,8 +87,9 @@ const NewPostRoute = () => {
         Go Home
       </Link>
       <Card className="mx-auto mt-8 max-w-screen-sm sm:p-12">
-        <h1 className="text-xl font-bold sm:text-2xl">Create New Feedback</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">Edit Feedback</h1>
         <Form className="mt-8" method="post">
+          <input name="id" type="hidden" value={post.id} />
           <label className="font-bold" htmlFor="title-input">
             Feedback Title
             <br />
@@ -54,7 +97,7 @@ const NewPostRoute = () => {
           </label>
           <input
             className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
-            defaultValue={actionData?.fields?.title}
+            defaultValue={post?.title}
             id="title-input"
             name="title"
             type="text"
@@ -62,7 +105,7 @@ const NewPostRoute = () => {
             aria-describedby={actionData?.fieldErrors?.title ? 'title-error' : undefined}
           />
           {actionData?.fieldErrors?.title ? (
-            <p className="-mt-4 mb-4 text-sm text-red-600" id="title-error" role="alert">
+            <p className="mt-4 text-sm text-red-600" id="title-error" role="alert">
               {actionData.fieldErrors.title}
             </p>
           ) : null}
@@ -74,7 +117,7 @@ const NewPostRoute = () => {
           </label>
           <select
             className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
-            defaultValue={actionData?.fields?.category}
+            defaultValue={post?.category}
             id="category-input"
             name="category"
             aria-invalid={Boolean(actionData?.fieldErrors?.category)}
@@ -87,8 +130,7 @@ const NewPostRoute = () => {
             ))}
           </select>
           {actionData?.fieldErrors?.category ? (
-            <p className="mb-4 -mt-4 text-sm text-red-600" id="category-error" role="alert">
-              lol
+            <p className="mt-4 text-sm text-red-600" id="category-error" role="alert">
               {actionData.fieldErrors.category}
             </p>
           ) : null}
@@ -101,8 +143,8 @@ const NewPostRoute = () => {
             </span>
           </label>
           <textarea
-            className="mt-4 mb-8 block w-full rounded-lg bg-gray-100 p-4"
-            defaultValue={actionData?.fields?.detail}
+            className="mt-4 block w-full rounded-lg bg-gray-100 p-4"
+            defaultValue={post?.detail}
             id="detail-input"
             name="detail"
             rows={4}
@@ -110,7 +152,7 @@ const NewPostRoute = () => {
             aria-describedby={actionData?.fieldErrors?.detail ? 'detail-error' : undefined}
           />
           {actionData?.fieldErrors?.detail ? (
-            <p className="-mt-4 mb-4 text-sm text-red-600" id="detail-error" role="alert">
+            <p className="mt-4 text-sm text-red-600" id="detail-error" role="alert">
               {actionData.fieldErrors.detail}
             </p>
           ) : null}
@@ -120,18 +162,36 @@ const NewPostRoute = () => {
               {actionData.formError}
             </p>
           ) : null}
+
           <div className="mt-8 flex flex-col justify-end gap-4 sm:flex-row">
-            <Button className="sm:w-max">
-              {isFormSubmitting ? (
+            <Button
+              className="mr-auto flex w-full items-center justify-center bg-red-600 sm:w-max"
+              name="_action"
+              value="delete"
+            >
+              {isDeleting ? (
+                <>
+                  <IconLoading className="mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                'Delete'
+              )}
+            </Button>
+            <Button className="flex items-center justify-center sm:w-max" name="_action" type="submit" value="edit">
+              {isSaving ? (
                 <>
                   <IconLoading className="mr-2" />
                   Submitting...
                 </>
               ) : (
-                'Add Feedback'
+                'Save Changes'
               )}
             </Button>
-            <Link className="link-btn flex h-14 items-center justify-center bg-indigo-500 px-8 text-white" to="/">
+            <Link
+              className="link-btn flex h-14 items-center justify-center bg-indigo-500 px-8 font-medium text-white"
+              to="/"
+            >
               Cancel
             </Link>
           </div>
@@ -141,23 +201,4 @@ const NewPostRoute = () => {
   )
 }
 
-export const CatchBoundary = () => {
-  const caught = useCatch()
-
-  if (caught.status === 401) {
-    return (
-      <div className="mx-auto max-w-md p-4" role="alert">
-        <main className="space-y-2 rounded-lg bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
-          <p>You must be logged in to create a feedback.</p>
-          <Link className="inline-block underline" to="/auth">
-            Log in
-          </Link>
-        </main>
-      </div>
-    )
-  }
-
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
-}
-
-export default NewPostRoute
+export default EditPostRoute

@@ -1,7 +1,7 @@
 import type { Comment, Post, User } from '@prisma/client'
-import { FunctionComponent, useEffect } from 'react'
+import type { FunctionComponent } from 'react'
 import { Form, Link } from 'remix'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
