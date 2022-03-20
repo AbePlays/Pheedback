@@ -59,13 +59,17 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
                   </Button>
                 </Form>
                 {/* TODO: Implement this logic */}
-                <Button className="w-full font-semibold" type="button" variant="unstyled">
+                <Button className="w-full font-semibold" variant="unstyled">
                   Your Upvotes
                 </Button>
               </div>
             </>
           ) : (
-            <Link className="link-btn block w-full py-3 text-center font-medium text-white" to="/auth">
+            <Link
+              className="link-btn block w-full py-3 text-center font-medium text-white"
+              prefetch="intent"
+              to="/auth"
+            >
               Log In
             </Link>
           )}

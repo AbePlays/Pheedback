@@ -1,10 +1,10 @@
-import type { ActionFunction, MetaFunction } from 'remix'
-import { Form, Link, useActionData, useTransition } from 'remix'
+import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
+import { Form, Link, redirect, useActionData, useTransition } from 'remix'
 import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '~/components'
 import { IconArrowBack, IconLoading } from '~/icons'
-import { login, register } from '~/lib/db.server'
+import { getUser, login, register } from '~/lib/db.server'
 import { CustomInput } from '~/templates'
 import { validateAuthForm } from '~/utils'
 
@@ -13,6 +13,13 @@ export const meta: MetaFunction = () => {
     title: 'Auth | Pheedback',
     description: 'Sign In or Create an account to get started!',
   }
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  // redirect user to home if already logged in
+  const user = await getUser(request)
+  if (user) return redirect('/')
+  return {}
 }
 
 export const action: ActionFunction = async ({ request }) => {
@@ -52,7 +59,11 @@ const AuthRoute = () => {
   return (
     <div className="min-w-screen relative bg-gradient-to-b from-[rgba(148,187,233,1)] to-[rgba(238,174,202,1)] md:bg-gradient-to-r">
       <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col p-4">
-        <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4" to="/">
+        <Link
+          className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4"
+          prefetch="intent"
+          to="/"
+        >
           <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
           Go Back
         </Link>

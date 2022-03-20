@@ -45,7 +45,7 @@ const Feedback: FunctionComponent<Props> = ({ asLink = false, post }) => {
   if (asLink) {
     return (
       <>
-        <Link className="group focus:outline-none" to={`/post/${post.id}`}>
+        <Link className="group focus:outline-none" prefetch="intent" to={`/post/${post.id}`}>
           <Content post={post} />
         </Link>
         <Button

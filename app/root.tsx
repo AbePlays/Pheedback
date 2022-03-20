@@ -7,6 +7,12 @@ import appStyles from '~/styles/tailwind.css'
 // https://remix.run/api/app#links
 export const links: LinksFunction = () => {
   return [
+    {
+      rel: 'preload',
+      href: '/background-header.png',
+      as: 'image',
+      type: 'image/png',
+    },
     { rel: 'stylesheet', href: globalStyles },
     { rel: 'stylesheet', href: appStyles },
   ]

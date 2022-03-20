@@ -13,10 +13,10 @@ type TLoaderData = {
   user: User
 }
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ data }) => {
   return {
-    title: 'Post | Pheedback',
-    description: 'Checkout this post',
+    title: `${data.post.title || 'Post'} | Pheedback`,
+    description: `${data.post.detail || 'Checkout this post'}`,
   }
 }
 
@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const post = await db.post.findUnique({
     where: { id: postId },
     include: {
-      comment: { where: { postId }, include: { user: true } },
+      comment: { where: { postId }, include: { user: true }, orderBy: { createdAt: 'desc' } },
       user: true,
     },
   })
@@ -55,8 +55,8 @@ export const action: ActionFunction = async ({ request }) => {
         })
       }
     } else if (formData._action === 'delete') {
-      const { commentId } = formData
-      if (!commentId || typeof commentId !== 'string') {
+      const { commentId, userId } = formData
+      if (!commentId || typeof commentId !== 'string' || !userId || typeof userId !== 'string') {
         throw new Response('Invalid request', { status: 400 })
       } else {
         await db.comment.delete({ where: { id: commentId } })
@@ -86,7 +86,11 @@ const PostRoute = () => {
 
   return (
     <div className="mx-auto max-w-screen-xl p-4">
-      <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4" to="/">
+      <Link
+        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4"
+        prefetch="intent"
+        to="/"
+      >
         <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
         Go Home
       </Link>
@@ -96,6 +100,7 @@ const PostRoute = () => {
         {user?.id === post.userId ? (
           <Link
             className="link-btn ml-auto flex w-max items-center justify-center px-8 text-white"
+            prefetch="intent"
             to={`/post/edit/${post.id}`}
           >
             Edit Feedback
@@ -125,9 +130,10 @@ const PostRoute = () => {
                   </div>
                 </div>
                 {user?.id === comment.userId ? (
-                  <Form method="post">
+                  <Form method="post" replace>
                     <input type="hidden" name="commentId" value={comment.id} />
-                    <Button name="_action" value="delete" variant="unstyled" aria-label="Delete">
+                    <input type="hidden" name="userId" value={user?.id} />
+                    <Button name="_action" value="delete" variant="unstyled" aria-label="Delete Comment">
                       <IconCross />
                     </Button>
                   </Form>
@@ -146,7 +152,7 @@ const PostRoute = () => {
               Add Comment
             </label>
             <textarea
-              className="mt-4 w-full rounded-lg bg-gray-100 p-4"
+              className="mt-4 w-full rounded-lg border border-gray-300 bg-gray-100 p-4"
               disabled={!user?.id}
               id="comment-input"
               name="comment"
@@ -164,7 +170,7 @@ const PostRoute = () => {
             ) : null}
 
             {actionData?.formError ? (
-              <p className="mt-4 text-sm text-red-600" id="comment-error" role="alert">
+              <p className="mt-4 text-sm text-red-600" role="alert">
                 {actionData.formError}
               </p>
             ) : null}
@@ -174,7 +180,7 @@ const PostRoute = () => {
             {!user?.id ? (
               <p className="mt-4 text-center text-red-600">
                 Please{' '}
-                <Link className="underline" to="/auth">
+                <Link className="underline" prefetch="intent" to="/auth">
                   log in
                 </Link>{' '}
                 to comment

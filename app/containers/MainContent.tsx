@@ -29,6 +29,9 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
           <IconBulb aria-label="" />
           <span className="font-bold">{loaderData?.posts?.length || 0} Suggestions</span>
         </div>
+        <Form action="/" hidden id="sortby-form">
+          <input type="hidden" name="category" value={loaderData?.category || ''} />
+        </Form>
         <div className="flex flex-1 items-center sm:justify-center">
           <Popover.Root>
             <Popover.Trigger aria-label="Sort by" className="flex gap-2" disabled={Boolean(isFormSubmitting)}>
@@ -37,25 +40,23 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
             </Popover.Trigger>
             <Popover.Content className="dropdown" sideOffset={10}>
               <Popover.Close className="hidden" ref={closeRef} />
-              <Form>
-                <input type="hidden" name="category" value={loaderData?.category || ''} />
-                {Object.values(sortByEnum).map((sortBy) => (
-                  <Button
-                    className="dropdown-item"
-                    disabled={Boolean(isFormSubmitting)}
-                    key={sortBy}
-                    name="sortBy"
-                    value={sortBy}
-                    variant="unstyled"
-                  >
-                    {sortBy}
-                  </Button>
-                ))}
-              </Form>
+              {Object.values(sortByEnum).map((sortBy) => (
+                <Button
+                  className="dropdown-item"
+                  disabled={isFormSubmitting}
+                  form="sortby-form"
+                  key={sortBy}
+                  name="sortBy"
+                  value={sortBy}
+                  variant="unstyled"
+                >
+                  {sortBy}
+                </Button>
+              ))}
             </Popover.Content>
           </Popover.Root>
         </div>
-        <Link className="link-btn py-3 px-4" to="/post/new">
+        <Link className="link-btn py-3 px-4" prefetch="intent" to="/post/new">
           + Add Feedback
         </Link>
       </Card>

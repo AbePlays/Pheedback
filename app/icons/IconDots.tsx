@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react'
 
-const IconDots: FunctionComponent<React.SVGAttributes<SVGElement>> = ({ className = '' }) => {
+const IconDots: FunctionComponent<React.SVGAttributes<SVGElement>> = ({ className = '', ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +8,7 @@ const IconDots: FunctionComponent<React.SVGAttributes<SVGElement>> = ({ classNam
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
+      {...props}
     >
       <path
         strokeLinecap="round"

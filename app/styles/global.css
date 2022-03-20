@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@400;500;600;700&display=swap');
 
 html {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 @media (min-width: 475px) {
   html {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 

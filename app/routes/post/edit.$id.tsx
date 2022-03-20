@@ -1,6 +1,6 @@
 import type { Post, User } from '@prisma/client'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useLoaderData, useTransition } from 'remix'
+import { Form, Link, redirect, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
 
 import { Button, Card } from '~/components'
 import { categoryOptions } from '~/data'
@@ -10,7 +10,7 @@ import { db, validatePostForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
-    title: 'Post | Pheedback',
+    title: 'Edit Post | Pheedback',
     description: 'Edit this post',
   }
 }
@@ -23,6 +23,8 @@ type TLoaderData = {
 export const loader: LoaderFunction = async ({ params, request }) => {
   const { id: postId } = params
   const user = await getUser(request)
+
+  if (!user) throw new Response('Unauthorized', { status: 401 })
 
   const post = await db.post.findUnique({ where: { id: postId } })
   if (!post) {
@@ -82,7 +84,11 @@ const EditPostRoute = () => {
 
   return (
     <main className="mx-auto max-w-screen-xl p-4">
-      <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4" to="/">
+      <Link
+        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4"
+        prefetch="intent"
+        to="/"
+      >
         <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
         Go Home
       </Link>
@@ -96,7 +102,7 @@ const EditPostRoute = () => {
             <span className="font-normal text-gray-500">Add a short, descriptive headline</span>
           </label>
           <input
-            className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
             defaultValue={post?.title}
             id="title-input"
             name="title"
@@ -116,7 +122,7 @@ const EditPostRoute = () => {
             <span className="font-normal text-gray-500">Choose a category for your feedback</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
             defaultValue={post?.category}
             id="category-input"
             name="category"
@@ -143,7 +149,7 @@ const EditPostRoute = () => {
             </span>
           </label>
           <textarea
-            className="mt-4 block w-full rounded-lg bg-gray-100 p-4"
+            className="mt-4 block w-full rounded-lg border border-gray-300 bg-gray-100 p-4"
             defaultValue={post?.detail}
             id="detail-input"
             name="detail"
@@ -190,6 +196,7 @@ const EditPostRoute = () => {
             </Button>
             <Link
               className="link-btn flex items-center justify-center bg-indigo-500 px-8 font-medium text-white"
+              prefetch="intent"
               to="/"
             >
               Cancel
@@ -199,6 +206,37 @@ const EditPostRoute = () => {
       </Card>
     </main>
   )
+}
+
+export const CatchBoundary = () => {
+  const caught = useCatch()
+  const { postId } = useParams()
+
+  switch (caught.status) {
+    case 401:
+      return (
+        <div className="mx-auto max-w-md p-4" role="alert">
+          <main className="space-y-2 rounded-lg border border-red-700 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
+            <p>You must be logged in to edit a post.</p>
+            <Link className="inline-block underline" prefetch="intent" to="/auth">
+              Log in
+            </Link>
+          </main>
+        </div>
+      )
+    case 404:
+      return <div>Could not find post by the id {postId}</div>
+    default: {
+      throw new Error(`Unhandled error: ${caught.status}`)
+    }
+  }
+}
+
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error)
+  const { postId } = useParams()
+
+  return <div>{`There was an error loading post by the id ${postId}. Sorry.`}</div>
 }
 
 export default EditPostRoute
