@@ -15,7 +15,7 @@ const CategoryFilter: FunctionComponent<Props> = ({ category, isFormSubmitting, 
     <Form className="flex flex-wrap gap-4">
       <input type="hidden" name="sortBy" value={sortBy || ''} />
       <Button
-        className={`w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
+        className={`h-max w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
           !category ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-500'
         }`}
         disabled={isFormSubmitting}
@@ -26,7 +26,7 @@ const CategoryFilter: FunctionComponent<Props> = ({ category, isFormSubmitting, 
       </Button>
       {categoryOptions.map((cat) => (
         <Button
-          className={`w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
+          className={`h-max w-max rounded-lg py-2 px-3 text-sm font-semibold hover:bg-blue-100 focus:ring-blue-500 ${
             category === cat ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-500'
           }`}
           disabled={isFormSubmitting}

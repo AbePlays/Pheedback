@@ -2,7 +2,7 @@ const validateAuthForm = (data: Record<string, unknown>) => {
   if (data?.loginType === 'login') {
     // Validate login form
     if (!data?.username || !data?.password) {
-      return { formError: 'Please fill in all fields' }
+      return { formError: 'Please fill in all the fields' }
     }
     const { username, password } = data
     const fields = { username, password }
@@ -18,7 +18,7 @@ const validateAuthForm = (data: Record<string, unknown>) => {
   } else if (data?.loginType === 'register') {
     // Validate register form
     if (!data?.username || !data?.password || !data?.fullname || !data?.email) {
-      return { formError: 'Please fill in all fields' }
+      return { formError: 'Please fill in all the fields' }
     }
     const { username, password, fullname, email } = data
     const fields = { username, password, fullname, email }

@@ -189,7 +189,7 @@ const EditPostRoute = () => {
               )}
             </Button>
             <Link
-              className="link-btn flex h-14 items-center justify-center bg-indigo-500 px-8 font-medium text-white"
+              className="link-btn flex items-center justify-center bg-indigo-500 px-8 font-medium text-white"
               to="/"
             >
               Cancel

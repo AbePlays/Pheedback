@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@400;500;600;700&display=swap');
 
+html {
+  font-size: 12px;
+}
+
+@media (min-width: 475px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 body {
   font-family: 'Recursive', sans-serif;
 }

@@ -131,7 +131,7 @@ const NewPostRoute = () => {
                 'Add Feedback'
               )}
             </Button>
-            <Link className="link-btn flex h-14 items-center justify-center bg-indigo-500 px-8 text-white" to="/">
+            <Link className="link-btn flex items-center justify-center bg-indigo-500 px-8 text-white" to="/">
               Cancel
             </Link>
           </div>
