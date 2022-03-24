@@ -136,7 +136,7 @@ const NewPostRoute = () => {
               )}
             </Button>
             <Link
-              className="link-btn flex items-center justify-center bg-indigo-500 px-8 text-white"
+              className="link-btn flex items-center justify-center bg-indigo-500 px-8 text-white focus:ring-indigo-500"
               prefetch="intent"
               to="/"
             >

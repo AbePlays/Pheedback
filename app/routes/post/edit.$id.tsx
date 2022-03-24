@@ -171,7 +171,7 @@ const EditPostRoute = () => {
 
           <div className="mt-8 flex flex-col justify-end gap-4 sm:flex-row">
             <Button
-              className="mr-auto flex w-full items-center justify-center bg-red-600 sm:w-max"
+              className="mr-auto flex w-full items-center justify-center bg-red-600 focus:ring-red-600 sm:w-max"
               name="_action"
               value="delete"
             >
@@ -195,7 +195,7 @@ const EditPostRoute = () => {
               )}
             </Button>
             <Link
-              className="link-btn flex items-center justify-center bg-indigo-500 px-8 font-medium text-white"
+              className="link-btn flex items-center justify-center bg-indigo-500 px-8 font-medium text-white focus:ring-indigo-500"
               prefetch="intent"
               to="/"
             >

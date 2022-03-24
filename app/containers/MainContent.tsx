@@ -56,7 +56,11 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
             </Popover.Content>
           </Popover.Root>
         </div>
-        <Link className="link-btn py-3 px-4" prefetch="intent" to="/post/new">
+        <Link
+          className="link-btn py-3 px-4 focus:ring-white focus:ring-offset-gray-700"
+          prefetch="intent"
+          to="/post/new"
+        >
           + Add Feedback
         </Link>
       </Card>
