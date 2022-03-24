@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { useLoaderData, useTransition } from 'remix'
 import { useEffect, useRef } from 'react'
@@ -69,7 +69,7 @@ const IndexRoute = () => {
 
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  const isFormSubmitting = transition.submission
+  const isFormSubmitting = Boolean(transition.submission)
   const isUserPresent = loaderData.user !== null
   const showPosts = loaderData?.posts?.length > 0
 
@@ -83,7 +83,7 @@ const IndexRoute = () => {
     <main className="mx-auto max-w-screen-xl md:flex md:flex-col md:gap-4 md:px-4 md:pt-8 lg:flex-row">
       <LeftMenu
         closeRef={closeRef}
-        isFormSubmitting={Boolean(isFormSubmitting)}
+        isFormSubmitting={isFormSubmitting}
         isUserPresent={isUserPresent}
         loaderData={loaderData}
       />
@@ -99,7 +99,7 @@ const IndexRoute = () => {
                 <DialogPrimitive.Title className="sr-only">Navigation Menu</DialogPrimitive.Title>
                 <MenuDialogContent
                   loaderData={loaderData}
-                  isFormSubmitting={Boolean(isFormSubmitting)}
+                  isFormSubmitting={isFormSubmitting}
                   isUserPresent={isUserPresent}
                 />
               </DialogPrimitive.Content>
@@ -108,7 +108,7 @@ const IndexRoute = () => {
         </Card>
         <MainContent
           closeRef={closeRef}
-          isFormSubmitting={Boolean(isFormSubmitting)}
+          isFormSubmitting={isFormSubmitting}
           loaderData={loaderData}
           showPosts={showPosts}
         />

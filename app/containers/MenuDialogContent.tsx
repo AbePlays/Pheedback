@@ -1,7 +1,7 @@
-import type { Post, User } from '@prisma/client'
-import { FunctionComponent, useEffect } from 'react'
+import type { Comment, Post, User } from '@prisma/client'
+import type { FunctionComponent } from 'react'
 import { Form, Link } from 'remix'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
@@ -59,13 +59,17 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
                   </Button>
                 </Form>
                 {/* TODO: Implement this logic */}
-                <Button className="w-full font-semibold" type="button" variant="unstyled">
+                <Button className="w-full font-semibold" variant="unstyled">
                   Your Upvotes
                 </Button>
               </div>
             </>
           ) : (
-            <Link className="link-btn block w-full py-3 text-center font-medium text-white" to="/auth">
+            <Link
+              className="link-btn block w-full py-3 text-center font-medium text-white"
+              prefetch="intent"
+              to="/auth"
+            >
               Log In
             </Link>
           )}

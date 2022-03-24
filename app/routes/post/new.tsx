@@ -36,11 +36,15 @@ const NewPostRoute = () => {
   const actionData = useActionData()
   const transition = useTransition()
 
-  const isFormSubmitting = transition.submission
+  const isFormSubmitting = Boolean(transition.submission)
 
   return (
     <main className="mx-auto max-w-screen-xl p-4">
-      <Link className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4" to="/">
+      <Link
+        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4"
+        prefetch="intent"
+        to="/"
+      >
         <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
         Go Home
       </Link>
@@ -53,7 +57,7 @@ const NewPostRoute = () => {
             <span className="font-normal text-gray-500">Add a short, descriptive headline</span>
           </label>
           <input
-            className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
             defaultValue={actionData?.fields?.title}
             id="title-input"
             name="title"
@@ -61,9 +65,9 @@ const NewPostRoute = () => {
             aria-invalid={Boolean(actionData?.fieldErrors?.title)}
             aria-describedby={actionData?.fieldErrors?.title ? 'title-error' : undefined}
           />
-          {actionData?.fieldErros?.title ? (
-            <p className="mt-4 text-sm text-red-600" id="title-error" role="alert">
-              {actionData.fieldErros.title}
+          {actionData?.fieldErrors?.title ? (
+            <p className="-mt-4 mb-4 text-sm text-red-600" id="title-error" role="alert">
+              {actionData.fieldErrors.title}
             </p>
           ) : null}
 
@@ -73,7 +77,7 @@ const NewPostRoute = () => {
             <span className="font-normal text-gray-500">Choose a category for your feedback</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg bg-gray-100 px-4"
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
             defaultValue={actionData?.fields?.category}
             id="category-input"
             name="category"
@@ -86,9 +90,10 @@ const NewPostRoute = () => {
               </option>
             ))}
           </select>
-          {actionData?.fieldErros?.category ? (
-            <p className="mt-4 text-sm text-red-600" id="category-error" role="alert">
-              {actionData.fieldErros.category}
+          {actionData?.fieldErrors?.category ? (
+            <p className="mb-4 -mt-4 text-sm text-red-600" id="category-error" role="alert">
+              lol
+              {actionData.fieldErrors.category}
             </p>
           ) : null}
 
@@ -100,7 +105,7 @@ const NewPostRoute = () => {
             </span>
           </label>
           <textarea
-            className="mt-4 block w-full rounded-lg bg-gray-100 p-4"
+            className="mt-4 mb-8 block w-full rounded-lg border border-gray-300 bg-gray-100 p-4"
             defaultValue={actionData?.fields?.detail}
             id="detail-input"
             name="detail"
@@ -108,9 +113,9 @@ const NewPostRoute = () => {
             aria-invalid={Boolean(actionData?.fieldErrors?.detail)}
             aria-describedby={actionData?.fieldErrors?.detail ? 'detail-error' : undefined}
           />
-          {actionData?.fieldErros?.detail ? (
-            <p className="mt-4 text-sm text-red-600" id="detail-error" role="alert">
-              {actionData.fieldErros.detail}
+          {actionData?.fieldErrors?.detail ? (
+            <p className="-mt-4 mb-4 text-sm text-red-600" id="detail-error" role="alert">
+              {actionData.fieldErrors.detail}
             </p>
           ) : null}
 
@@ -130,7 +135,11 @@ const NewPostRoute = () => {
                 'Add Feedback'
               )}
             </Button>
-            <Link className="link-btn flex h-14 items-center justify-center bg-indigo-500 px-8 text-white" to="/">
+            <Link
+              className="link-btn flex items-center justify-center bg-indigo-500 px-8 text-white focus:ring-indigo-500"
+              prefetch="intent"
+              to="/"
+            >
               Cancel
             </Link>
           </div>
@@ -146,9 +155,9 @@ export const CatchBoundary = () => {
   if (caught.status === 401) {
     return (
       <div className="mx-auto max-w-md p-4" role="alert">
-        <main className="space-y-2 rounded-lg bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
-          <p>You must be logged in to create a feedback.</p>
-          <Link className="inline-block underline" to="/auth">
+        <main className="space-y-2 rounded-lg border border-red-200 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
+          <p>You must be logged in to create a post.</p>
+          <Link className="inline-block underline" prefetch="intent" to="/auth">
             Log in
           </Link>
         </main>

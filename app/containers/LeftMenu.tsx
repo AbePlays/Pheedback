@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 import * as Popover from '@radix-ui/react-popover'
@@ -36,26 +36,25 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                   <span className="text-sm">@{loaderData.user?.username}</span>
                 </div>
               </div>
+              <Form action="/logout" hidden id="logout-form" method="post" />
               <Popover.Root>
                 <Popover.Trigger aria-label="Select Option">
                   <IconDots />
                 </Popover.Trigger>
                 <Popover.Content align="end" className="dropdown" sideOffset={10}>
                   <Popover.Close hidden ref={closeRef} />
-                  <Form action="/logout" method="post">
-                    <Button className="dropdown-item" variant="unstyled">
-                      Logout
-                    </Button>
-                  </Form>
+                  <Button className="dropdown-item" form="logout-form" variant="unstyled">
+                    Logout
+                  </Button>
                   {/* TODO: Implement this logic */}
-                  <Button className="dropdown-item" type="button" variant="unstyled">
+                  <Button className="dropdown-item" variant="unstyled">
                     Your Upvotes
                   </Button>
                 </Popover.Content>
               </Popover.Root>
             </>
           ) : (
-            <Link className="link-btn w-full py-3 text-center font-medium text-white" to="/auth">
+            <Link className="link-btn w-full py-3 text-center font-medium text-white" prefetch="intent" to="/auth">
               Log In
             </Link>
           )}

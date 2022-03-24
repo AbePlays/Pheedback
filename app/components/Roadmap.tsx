@@ -6,7 +6,7 @@ const Roadmap: FunctionComponent = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="font-bold">Roadmap</h2>
-        <Link className="font-light text-blue-500 underline" to="/">
+        <Link className="font-light text-blue-500 underline" prefetch="intent" to="/">
           View
         </Link>
       </div>

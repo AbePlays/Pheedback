@@ -1,4 +1,4 @@
-import type { Post, User } from '@prisma/client'
+import type { Comment, Post, User } from '@prisma/client'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 import * as Popover from '@radix-ui/react-popover'
@@ -29,6 +29,9 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
           <IconBulb aria-label="" />
           <span className="font-bold">{loaderData?.posts?.length || 0} Suggestions</span>
         </div>
+        <Form action="/" hidden id="sortby-form">
+          <input type="hidden" name="category" value={loaderData?.category || ''} />
+        </Form>
         <div className="flex flex-1 items-center sm:justify-center">
           <Popover.Root>
             <Popover.Trigger aria-label="Sort by" className="flex gap-2" disabled={Boolean(isFormSubmitting)}>
@@ -37,25 +40,27 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
             </Popover.Trigger>
             <Popover.Content className="dropdown" sideOffset={10}>
               <Popover.Close className="hidden" ref={closeRef} />
-              <Form>
-                <input type="hidden" name="category" value={loaderData?.category || ''} />
-                {Object.values(sortByEnum).map((sortBy) => (
-                  <Button
-                    className="dropdown-item"
-                    disabled={Boolean(isFormSubmitting)}
-                    key={sortBy}
-                    name="sortBy"
-                    value={sortBy}
-                    variant="unstyled"
-                  >
-                    {sortBy}
-                  </Button>
-                ))}
-              </Form>
+              {Object.values(sortByEnum).map((sortBy) => (
+                <Button
+                  className="dropdown-item"
+                  disabled={isFormSubmitting}
+                  form="sortby-form"
+                  key={sortBy}
+                  name="sortBy"
+                  value={sortBy}
+                  variant="unstyled"
+                >
+                  {sortBy}
+                </Button>
+              ))}
             </Popover.Content>
           </Popover.Root>
         </div>
-        <Link className="link-btn py-3 px-4" to="/post/new">
+        <Link
+          className="link-btn py-3 px-4 focus:ring-white focus:ring-offset-gray-700"
+          prefetch="intent"
+          to="/post/new"
+        >
           + Add Feedback
         </Link>
       </Card>
@@ -63,7 +68,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
         <ul className="space-y-4 px-4 py-4 md:px-0">
           {loaderData.posts.map((post) => (
             <li className="relative" key={post.id}>
-              <Feedback post={post} />
+              <Feedback asLink post={post} />
             </li>
           ))}
         </ul>
