@@ -98,6 +98,7 @@ const AuthRoute = () => {
                 error={actionData?.fieldErrors?.password}
                 id="password"
                 label="Password"
+                type="password"
               />
               {actionData?.formError ? (
                 <p className="text-sm text-red-600" role="alert">

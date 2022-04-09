@@ -3,10 +3,10 @@ import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
 import { Form, Link, redirect, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
 
 import { Button, Card } from '~/components'
-import { categoryOptions } from '~/data'
+import { categoryOptions, statusOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
 import { getUser } from '~/lib/db.server'
-import { db, validatePostForm } from '~/utils'
+import { db, validateEditPostForm } from '~/utils'
 
 export const meta: MetaFunction = () => {
   return {
@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (formData && formData._action) {
     if (formData._action === 'edit') {
-      const errors = validatePostForm(formData)
+      const errors = validateEditPostForm(formData)
       if (errors) return errors
 
       const post = await db.post.update({
@@ -48,6 +48,7 @@ export const action: ActionFunction = async ({ request }) => {
           title: String(formData.title),
           detail: String(formData.detail),
           category: String(formData.category),
+          status: String(formData.status),
         },
       })
       if (!post) {
@@ -138,6 +139,31 @@ const EditPostRoute = () => {
           {actionData?.fieldErrors?.category ? (
             <p className="mt-4 text-sm text-red-600" id="category-error" role="alert">
               {actionData.fieldErrors.category}
+            </p>
+          ) : null}
+
+          <label className="font-bold" htmlFor="status-input">
+            Update Status
+            <br />
+            <span className="font-normal text-gray-500">Change feedback state</span>
+          </label>
+          <select
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
+            defaultValue={post?.status}
+            id="status-input"
+            name="status"
+            aria-invalid={Boolean(actionData?.fieldErrors?.status)}
+            aria-describedby={actionData?.fieldErrors?.status ? 'status-error' : undefined}
+          >
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+          {actionData?.fieldErrors?.status ? (
+            <p className="mt-4 text-sm text-red-600" id="status-error" role="alert">
+              {actionData.fieldErrors.status}
             </p>
           ) : null}
 

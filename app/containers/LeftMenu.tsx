@@ -77,7 +77,7 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
 
       {/* Roadmao Card */}
       <Card className="flex-1 lg:flex-none">
-        <RoadMap />
+        <RoadMap content={loaderData.posts} />
       </Card>
     </div>
   )

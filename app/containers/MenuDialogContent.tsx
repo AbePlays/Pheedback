@@ -83,7 +83,7 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
         </Card>
       </div>
       <Card className="flex-1">
-        <RoadMap />
+        <RoadMap content={loaderData.posts} />
       </Card>
     </div>
   )
