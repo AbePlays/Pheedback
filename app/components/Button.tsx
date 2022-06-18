@@ -7,7 +7,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 // dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
 
 const Button: FunctionComponent<Props> = ({ className = '', disabled = false, variant = 'solid', ...props }) => {
-  let classes = `transition-all duration-300 ${disabled ? '' : 'hover:opacity-70'}`
+  let classes = `transition-all duration-300 outline-none ${disabled ? 'bg-opacity-70' : 'hover:opacity-70'}`
   if (variant === 'solid') {
     classes = `${classes} w-full rounded-lg bg-fuchsia-600 px-10 h-12 font-medium text-white ${
       disabled ? '' : 'hover:-translate-y-1'
@@ -20,7 +20,7 @@ const Button: FunctionComponent<Props> = ({ className = '', disabled = false, va
 
   classes = `${classes} ${className}`.trim()
 
-  return <button className={classes} {...props} />
+  return <button className={classes} disabled={disabled} {...props} />
 }
 
 export default Button

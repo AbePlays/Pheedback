@@ -18,7 +18,7 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
 
   return (
     <>
-      <Link className="group focus:outline-none" prefetch="intent" to={`post/${post.id}`}>
+      <Link className="group focus:outline-none" prefetch="intent" to={`/post/${post.id}`}>
         <Card
           className={`space-y-4 border-t-[6px] ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500 ${
             isLive ? 'border-t-red-500' : isInProgress ? 'border-t-yellow-500' : 'border-t-blue-500'

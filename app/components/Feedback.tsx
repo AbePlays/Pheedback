@@ -41,6 +41,18 @@ const Content: FunctionComponent<Props> = ({ post }) => {
   )
 }
 
+const Cta: FunctionComponent<{ upvotes: number }> = ({ upvotes }) => {
+  return (
+    <Button
+      className="absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4"
+      variant="unstyled"
+    >
+      <IconChevron className="h-3 w-4" />
+      {upvotes}
+    </Button>
+  )
+}
+
 const Feedback: FunctionComponent<Props> = ({ asLink = false, post }) => {
   if (asLink) {
     return (
@@ -48,13 +60,7 @@ const Feedback: FunctionComponent<Props> = ({ asLink = false, post }) => {
         <Link className="group focus:outline-none" prefetch="intent" to={`/post/${post.id}`}>
           <Content post={post} />
         </Link>
-        <Button
-          className="absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 sm:top-6 sm:block sm:py-3 sm:px-4"
-          variant="unstyled"
-        >
-          <IconChevron className="h-3 w-4" />
-          {post.upvotes}
-        </Button>
+        <Cta upvotes={post.upvotes} />
       </>
     )
   }
@@ -62,13 +68,7 @@ const Feedback: FunctionComponent<Props> = ({ asLink = false, post }) => {
   return (
     <>
       <Content post={post} />
-      <Button
-        className="absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70 sm:top-6 sm:block sm:py-3 sm:px-4"
-        variant="unstyled"
-      >
-        <IconChevron className="h-3 w-4" />
-        {post.upvotes}
-      </Button>
+      <Cta upvotes={post.upvotes} />
     </>
   )
 }
