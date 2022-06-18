@@ -1,7 +1,8 @@
 import type { Comment, Post, User } from '@prisma/client'
+import Avatar from 'boring-avatars'
+import { useEffect, useRef } from 'react'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
 import { Form, Link, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
-import { useEffect, useRef } from 'react'
 
 import { Button, Card, Feedback } from '~/components'
 import { IconArrowBack, IconCross } from '~/icons'
@@ -121,8 +122,7 @@ const PostRoute = () => {
             <div className="my-8 px-4" key={comment.id}>
               <div className="flex justify-between gap-4">
                 <div className="flex flex-1 gap-4">
-                  {/* Implement logic for image seed */}
-                  <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
+                  <Avatar name={post?.user?.fullname} variant="beam" />
                   <div>
                     <h2 className="font-bold">{comment.user.fullname}</h2>
                     <p className="text-gray-500">@{comment.user.username}</p>

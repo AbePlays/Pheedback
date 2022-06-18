@@ -1,7 +1,8 @@
 import type { Comment, Post, User } from '@prisma/client'
+import * as Popover from '@radix-ui/react-popover'
+import Avatar from 'boring-avatars'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
-import * as Popover from '@radix-ui/react-popover'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
 import { IconDots } from '~/icons'
@@ -29,8 +30,7 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
           {isUserPresent ? (
             <>
               <div className="flex gap-4">
-                {/* TODO: implement logic to generate user avatar */}
-                <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
+                <Avatar name={loaderData?.user?.fullname} variant="beam" />
                 <div>
                   <h2 className="font-bold">{loaderData.user?.fullname?.split(' ')?.[0]}</h2>
                   <span className="text-sm">@{loaderData.user?.username}</span>

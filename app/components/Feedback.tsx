@@ -1,4 +1,5 @@
 import type { Comment, Post, User } from '@prisma/client'
+import Avatar from 'boring-avatars'
 import type { FunctionComponent } from 'react'
 import { Link } from 'remix'
 
@@ -17,8 +18,7 @@ const Content: FunctionComponent<Props> = ({ post }) => {
       <Card className="flex gap-4 text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500">
         <div className="mb-14 flex-1 space-y-4 sm:mb-0 sm:ml-20">
           <div className="flex items-center gap-4">
-            {/* TODO: add logic to generate pseudo-random number for image seed */}
-            <img alt="user avatar" className="h-10 w-10" src="https://avatars.dicebear.com/api/human/339.svg" />
+            <Avatar name={post?.user?.fullname} variant="beam" />
             <div className="text-sm">
               <h2 className="font-bold">{post.user?.fullname}</h2>
               <span className="text-gray-500">{formatDate(post.createdAt)}</span>

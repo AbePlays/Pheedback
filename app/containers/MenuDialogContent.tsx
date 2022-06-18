@@ -1,8 +1,9 @@
 import type { Comment, Post, User } from '@prisma/client'
-import type { FunctionComponent } from 'react'
-import { Form, Link } from 'remix'
-import { useEffect, useRef } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
+import Avatar from 'boring-avatars'
+import type { FunctionComponent } from 'react'
+import { useEffect, useRef } from 'react'
+import { Form, Link } from 'remix'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
 import { IconCross } from '~/icons'
@@ -43,12 +44,7 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
           {isUserPresent ? (
             <>
               <div className="space-y-4 text-center">
-                {/* TODO: implement logic to generate user avatar */}
-                <img
-                  alt="user avatar"
-                  className="mx-auto h-10 w-10"
-                  src="https://avatars.dicebear.com/api/human/339.svg"
-                />
+                <Avatar name={loaderData?.user?.fullname} variant="beam" />
                 <h2 className="font-bold">{loaderData.user?.fullname}</h2>
                 <span>@{loaderData.user?.username}</span>
               </div>
