@@ -1,9 +1,9 @@
-import type { Comment, Post } from '@prisma/client'
+import type { Comment, Post, Upvote } from '@prisma/client'
 import type { FunctionComponent } from 'react'
 import { Link } from 'remix'
 
 interface Props {
-  content: (Post & { comment: Comment[] })[]
+  content: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
 }
 
 const Roadmap: FunctionComponent<Props> = ({ content }) => {

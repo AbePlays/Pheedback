@@ -1,6 +1,6 @@
-import type { Comment, Post } from '@prisma/client'
+import type { Comment, Post, Upvote } from '@prisma/client'
 import type { ComponentProps, FunctionComponent } from 'react'
-import { Link } from 'remix'
+import { Form, Link } from 'remix'
 
 import { IconChevron, IconComment } from '~/icons'
 import Button from './Button'
@@ -8,7 +8,7 @@ import Card from './Card'
 
 interface Props {
   color: string
-  post: Post & { comment: Comment[] }
+  post: Post & { comments: Comment[]; upvotes: Upvote[] }
 }
 
 const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, post }) => {
@@ -39,19 +39,23 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
             <div className="flex items-center justify-end">
               <div className="flex items-center gap-2">
                 <IconComment />
-                <span>{post?.comment?.length || 0}</span>
+                <span>{post.comments.length}</span>
               </div>
             </div>
           </div>
         </Card>
       </Link>
-      <Button
-        className="absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
-        variant="unstyled"
-      >
-        <IconChevron className="h-3 w-4" />
-        <span>{post.upvotes}</span>
-      </Button>
+      <Form action="/upvote" method="post">
+        <input type="hidden" name="postId" value={post.id} />
+        <input type="hidden" name="userId" value={post.userId} />
+        <Button
+          className="absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
+          variant="unstyled"
+        >
+          <IconChevron className="h-3 w-4" />
+          <span>{post.upvotes.length}</span>
+        </Button>
+      </Form>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import type { Post, Comment } from '@prisma/client'
+import type { Post, Comment, Upvote } from '@prisma/client'
 import { LoaderFunction, MetaFunction, useLoaderData } from 'remix'
 import { Link } from 'remix'
 import * as Tabs from '@radix-ui/react-tabs'
@@ -9,9 +9,9 @@ import { IconArrowBack } from '~/icons'
 import { db } from '~/utils'
 
 interface ILoaderData {
-  inProgress: (Post & { comment: Comment[] })[]
-  live: (Post & { comment: Comment[] })[]
-  planned: (Post & { comment: Comment[] })[]
+  inProgress: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
+  live: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
+  planned: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
 }
 
 export const meta: MetaFunction = () => {
@@ -22,11 +22,14 @@ export const meta: MetaFunction = () => {
 }
 
 export const loader: LoaderFunction = async () => {
-  const posts = await db.post.findMany({ where: { status: { not: 'Suggestion' } }, include: { comment: true } })
+  const posts = await db.post.findMany({
+    where: { status: { not: 'Suggestion' } },
+    include: { comments: true, upvotes: true },
+  })
 
-  const inProgress: (Post & { comment: Comment[] })[] = []
-  const live: (Post & { comment: Comment[] })[] = []
-  const planned: (Post & { comment: Comment[] })[] = []
+  const inProgress: (Post & { comments: Comment[] })[] = []
+  const live: (Post & { comments: Comment[] })[] = []
+  const planned: (Post & { comments: Comment[] })[] = []
 
   posts.forEach((post) => {
     if (post.status === 'Live') {

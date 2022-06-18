@@ -1,4 +1,4 @@
-import type { Comment, Post, User } from '@prisma/client'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import Avatar from 'boring-avatars'
 import type { FunctionComponent } from 'react'
@@ -10,7 +10,7 @@ import { IconCross } from '~/icons'
 
 type TLoaderData = {
   category: string
-  posts: (Post & { user: User; comment: (Comment & { user: User })[] })[]
+  posts: (Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] })[]
   sortBy: string
   user: User
 }

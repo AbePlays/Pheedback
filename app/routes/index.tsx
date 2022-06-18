@@ -1,8 +1,8 @@
-import type { Comment, Post, User } from '@prisma/client'
-import type { LoaderFunction, MetaFunction } from 'remix'
-import { useLoaderData, useTransition } from 'remix'
-import { useEffect, useRef } from 'react'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { useEffect, useRef } from 'react'
+import type { HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
+import { useLoaderData, useTransition } from 'remix'
 
 import { Card } from '~/components'
 import { LeftMenu, MainContent, MenuDialogContent } from '~/containers'
@@ -14,15 +14,16 @@ import { db } from '~/utils'
 type TLoaderData = {
   category: string
   sortBy: string
-  posts: (Post & { user: User; comment: (Comment & { user: User })[] })[]
+  posts: (Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] })[]
   user: User
 }
 
+export const headers: HeadersFunction = () => {
+  return { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59' }
+}
+
 export const meta: MetaFunction = () => {
-  return {
-    title: 'Home | Pheedback',
-    description: 'Welcome to Pheedback!',
-  }
+  return { title: 'Home | Pheedback', description: 'Welcome to Pheedback!' }
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -40,22 +41,29 @@ export const loader: LoaderFunction = async ({ request }) => {
     order = 'asc'
   }
 
+  // TODO: Move this to a function, DRY this up
   if (category && sortBy) {
     posts = await db.post.findMany({
       where: { category },
-      orderBy: { upvotes: order },
-      include: { user: true, comment: true },
+      orderBy: { upvotes: { _count: order } },
+      include: { user: true, comments: true, upvotes: true },
     })
   } else if (category) {
     posts = await db.post.findMany({
       where: { category },
       orderBy: { createdAt: 'desc' },
-      include: { user: true, comment: true },
+      include: { user: true, comments: true, upvotes: true },
     })
   } else if (sortBy) {
-    posts = await db.post.findMany({ orderBy: { upvotes: order }, include: { user: true, comment: true } })
+    posts = await db.post.findMany({
+      orderBy: { upvotes: { _count: order } },
+      include: { user: true, comments: true, upvotes: true },
+    })
   } else {
-    posts = await db.post.findMany({ orderBy: { createdAt: 'desc' }, include: { user: true, comment: true } })
+    posts = await db.post.findMany({
+      orderBy: { upvotes: { _count: order } },
+      include: { user: true, comments: true, upvotes: true },
+    })
   }
 
   return { category, sortBy, posts, user }

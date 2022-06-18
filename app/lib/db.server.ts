@@ -123,3 +123,23 @@ export const createComment = async (fields: Record<string, unknown>) => {
 
   return db.comment.create({ data: { content, postId, userId } })
 }
+
+export const toggleUpvote = async (fields: Record<string, unknown>) => {
+  const { postId, userId } = fields
+  if (typeof postId !== 'string' || typeof userId !== 'string') {
+    return { fields, formError: `Invalid fields` }
+  }
+  const user = await db.user.findUnique({ where: { id: userId } })
+  if (!user) return null
+
+  const post = await db.post.findUnique({ where: { id: postId } })
+  if (!post) return null
+
+  let upvote = await db.upvote.findFirst({ where: { postId, userId } })
+  if (!upvote) {
+    upvote = await db.upvote.create({ data: { postId, userId } })
+  } else {
+    upvote = await db.upvote.delete({ where: { id: upvote.id } })
+  }
+  return upvote
+}

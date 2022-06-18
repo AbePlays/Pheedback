@@ -1,7 +1,7 @@
-import type { Comment, Post, User } from '@prisma/client'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import Avatar from 'boring-avatars'
 import { useEffect, useRef } from 'react'
-import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
+import type { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
 import { Form, Link, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
 
 import { Button, Card, Feedback } from '~/components'
@@ -10,8 +10,12 @@ import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
 type TLoaderData = {
-  post: Post & { user: User; comment: (Comment & { user: User })[] }
+  post: Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] }
   user: User
+}
+
+export const headers: HeadersFunction = () => {
+  return { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59' }
 }
 
 export const meta: MetaFunction = ({ data }) => {
@@ -29,8 +33,9 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const post = await db.post.findUnique({
     where: { id: postId },
     include: {
-      comment: { where: { postId }, include: { user: true }, orderBy: { createdAt: 'desc' } },
+      comments: { where: { postId }, include: { user: true }, orderBy: { createdAt: 'desc' } },
       user: true,
+      upvotes: true,
     },
   })
 
@@ -76,7 +81,7 @@ const PostRoute = () => {
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const { post, user } = loaderData
-  const comments = post.comment
+  const comments = post.comments
   const isAdding = transition.submission && transition.submission.formData.get('_action') === 'create'
 
   useEffect(() => {

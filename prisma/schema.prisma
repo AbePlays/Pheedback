@@ -18,8 +18,9 @@ model User {
   username     String    @unique
   email        String    @unique
   passwordHash String
-  post         Post[]
-  comment      Comment[]
+  posts        Post[]
+  comments     Comment[]
+  upvotes      Upvote[]
 }
 
 model Post {
@@ -27,12 +28,12 @@ model Post {
   title     String
   category  String
   detail    String
-  upvotes   Int       @default(0)
   createdAt DateTime  @default(now())
   status    String    @default("Suggestion")
   user      User      @relation(fields: [userId], references: [id])
   userId    String
-  comment   Comment[]
+  comments  Comment[]
+  upvotes   Upvote[]
 }
 
 model Comment {
@@ -43,4 +44,12 @@ model Comment {
   postId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
+}
+
+model Upvote {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+  Post   Post   @relation(fields: [postId], references: [id])
+  postId String
 }
