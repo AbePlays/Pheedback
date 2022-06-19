@@ -92,12 +92,14 @@ export const createUserSession = async (userId: string, redirectTo: string) => {
   })
 }
 
-export const getUser = async (request: Request) => {
+export const getUser = async (request: Request, config: Record<string, boolean> = {}) => {
   const userId = await getUserId(request)
   if (!userId) return null
 
+  const selecConfig = { ...config, id: true, fullname: true, username: true }
+
   try {
-    const user = await db.user.findUnique({ where: { id: userId } })
+    const user = await db.user.findUnique({ where: { id: userId }, select: selecConfig })
     return user
   } catch {
     throw logout(request)

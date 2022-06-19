@@ -46,23 +46,23 @@ export const loader: LoaderFunction = async ({ request }) => {
     posts = await db.post.findMany({
       where: { category },
       orderBy: { upvotes: { _count: order } },
-      include: { user: true, comments: true, upvotes: true },
+      include: { user: { select: { username: true } }, comments: true, upvotes: true },
     })
   } else if (category) {
     posts = await db.post.findMany({
       where: { category },
       orderBy: { createdAt: 'desc' },
-      include: { user: true, comments: true, upvotes: true },
+      include: { user: { select: { username: true } }, comments: true, upvotes: true },
     })
   } else if (sortBy) {
     posts = await db.post.findMany({
       orderBy: { upvotes: { _count: order } },
-      include: { user: true, comments: true, upvotes: true },
+      include: { user: { select: { username: true } }, comments: true, upvotes: true },
     })
   } else {
     posts = await db.post.findMany({
       orderBy: { upvotes: { _count: order } },
-      include: { user: true, comments: true, upvotes: true },
+      include: { user: { select: { username: true } }, comments: true, upvotes: true },
     })
   }
 

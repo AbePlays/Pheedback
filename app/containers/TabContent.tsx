@@ -1,4 +1,4 @@
-import type { Comment, Post, Upvote } from '@prisma/client'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import type { FunctionComponent } from 'react'
 
 import { StatusCard } from '~/components'
@@ -7,9 +7,10 @@ interface Props {
   content: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
   desc: string
   title?: string
+  user: User
 }
 
-const TabContent: FunctionComponent<Props> = ({ content, desc, title }) => {
+const TabContent: FunctionComponent<Props> = ({ content, desc, title, user }) => {
   return (
     <>
       <div className="my-6">
@@ -20,7 +21,7 @@ const TabContent: FunctionComponent<Props> = ({ content, desc, title }) => {
         <ul className="space-y-4">
           {content.map((item) => (
             <li className="relative list-none" key={item?.id}>
-              <StatusCard color="blue-500" post={item} />
+              <StatusCard color="blue-500" post={item} user={user} />
             </li>
           ))}
         </ul>

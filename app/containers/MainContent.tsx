@@ -68,7 +68,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
         <ul className="space-y-4 px-4 py-4 md:px-0">
           {loaderData.posts.map((post) => (
             <li className="relative" key={post.id}>
-              <Feedback asLink post={post} />
+              <Feedback asLink post={post} user={loaderData.user} />
             </li>
           ))}
         </ul>

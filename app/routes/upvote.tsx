@@ -13,4 +13,4 @@ export const action: ActionFunction = async ({ request }) => {
   return toggleUpvote(formData)
 }
 
-export const loader: LoaderFunction = () => redirect('/')
+export const loader: LoaderFunction = () => redirect('/roadmap')

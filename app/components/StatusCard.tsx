@@ -1,6 +1,6 @@
-import type { Comment, Post, Upvote } from '@prisma/client'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import type { ComponentProps, FunctionComponent } from 'react'
-import { Form, Link } from 'remix'
+import { Link, useFetcher } from 'remix'
 
 import { IconChevron, IconComment } from '~/icons'
 import Button from './Button'
@@ -9,9 +9,19 @@ import Card from './Card'
 interface Props {
   color: string
   post: Post & { comments: Comment[]; upvotes: Upvote[] }
+  user: User
 }
 
-const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, post }) => {
+const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, post, user }) => {
+  const fetcher = useFetcher()
+  const isUpvotesToggled = fetcher.submission?.formData.get('userId') === user.id
+
+  const currCount = post.upvotes.length
+  const hasUserLikedPost = post.upvotes.some((upvote) => upvote.userId === user.id)
+  const optimisticCount = hasUserLikedPost ? currCount - 1 : currCount + 1
+
+  // GOTTA LOVE REMIX.RUN FOR PROVIDING THESE APIS TO BUILD OPTIMISTIC UI
+
   const isLive = post.status === 'Live'
   const isInProgress = post.status === 'In Progress'
   const bgColor = `bg-${color}`
@@ -45,17 +55,18 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
           </div>
         </Card>
       </Link>
-      <Form action="/upvote" method="post">
+      <fetcher.Form action="/upvote" method="post">
         <input type="hidden" name="postId" value={post.id} />
-        <input type="hidden" name="userId" value={post.userId} />
+        <input type="hidden" name="userId" value={user.id} />
         <Button
           className="absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
+          disabled={!user.id}
           variant="unstyled"
         >
           <IconChevron className="h-3 w-4" />
-          <span>{post.upvotes.length}</span>
+          {isUpvotesToggled ? optimisticCount : currCount}
         </Button>
-      </Form>
+      </fetcher.Form>
     </>
   )
 }

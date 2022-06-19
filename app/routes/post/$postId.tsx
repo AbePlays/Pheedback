@@ -1,11 +1,11 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
-import Avatar from 'boring-avatars'
 import { useEffect, useRef } from 'react'
 import type { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
 import { Form, Link, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
 
 import { Button, Card, Feedback } from '~/components'
-import { IconArrowBack, IconCross } from '~/icons'
+import { Comments } from '~/containers'
+import { IconArrowBack } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
@@ -33,8 +33,12 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   const post = await db.post.findUnique({
     where: { id: postId },
     include: {
-      comments: { where: { postId }, include: { user: true }, orderBy: { createdAt: 'desc' } },
-      user: true,
+      comments: {
+        where: { postId },
+        include: { user: { select: { fullname: true, username: true } } },
+        orderBy: { createdAt: 'desc' },
+      },
+      user: { select: { username: true } },
       upvotes: true,
     },
   })
@@ -82,7 +86,7 @@ const PostRoute = () => {
 
   const { post, user } = loaderData
   const comments = post.comments
-  const isAdding = transition.submission && transition.submission.formData.get('_action') === 'create'
+  const isAdding = transition.submission?.formData.get('_action') === 'create'
 
   useEffect(() => {
     if (!isAdding && inputRef.current) {
@@ -115,37 +119,12 @@ const PostRoute = () => {
 
         {/* Post Info  */}
         <div className="relative ">
-          <Feedback post={post} />
+          <Feedback post={post} user={loaderData.user} />
         </div>
 
         {/* Comments */}
         <Card>
-          <h2 className="font-bold">
-            {comments.length} Comment{comments.length > 1 && 's'}
-          </h2>
-          {comments.map((comment) => (
-            <div className="my-8 px-4" key={comment.id}>
-              <div className="flex justify-between gap-4">
-                <div className="flex flex-1 gap-4">
-                  <Avatar name={post?.user?.fullname} variant="beam" />
-                  <div>
-                    <h2 className="font-bold">{comment.user.fullname}</h2>
-                    <p className="text-gray-500">@{comment.user.username}</p>
-                    <p className="mt-2 text-gray-600">{comment.content}</p>
-                  </div>
-                </div>
-                {user?.id === comment.userId ? (
-                  <Form method="post" replace>
-                    <input type="hidden" name="commentId" value={comment.id} />
-                    <input type="hidden" name="userId" value={user?.id} />
-                    <Button name="_action" value="delete" variant="unstyled" aria-label="Delete Comment">
-                      <IconCross />
-                    </Button>
-                  </Form>
-                ) : null}
-              </div>
-            </div>
-          ))}
+          <Comments comments={comments} postUsername={post.user.username} user={user} />
         </Card>
 
         {/* Comment Form */}
