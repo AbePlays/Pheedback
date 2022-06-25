@@ -8,11 +8,10 @@ import { IconCross } from '~/icons'
 
 interface Props {
   comments: (Comment & { user: User })[]
-  postUsername: string
   user: User
 }
 
-const Comments: FunctionComponent<Props> = ({ comments, user, postUsername }) => {
+const Comments: FunctionComponent<Props> = ({ comments, user }) => {
   return (
     <>
       <h2 className="font-bold">
@@ -22,7 +21,7 @@ const Comments: FunctionComponent<Props> = ({ comments, user, postUsername }) =>
         <div className="my-8 px-4" key={comment.id}>
           <div className="flex justify-between gap-4">
             <div className="flex flex-1 gap-4">
-              <Avatar name={postUsername} variant="beam" />
+              <Avatar name={comment.user.username} variant="beam" />
               <div>
                 <h2 className="font-bold">{comment.user.fullname}</h2>
                 <p className="text-gray-500">@{comment.user.username}</p>

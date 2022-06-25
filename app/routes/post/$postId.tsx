@@ -124,7 +124,7 @@ const PostRoute = () => {
 
         {/* Comments */}
         <Card>
-          <Comments comments={comments} postUsername={post.user.username} user={user} />
+          <Comments comments={comments} user={user} />
         </Card>
 
         {/* Comment Form */}
