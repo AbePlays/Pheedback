@@ -12,12 +12,15 @@ interface Props {
   user: User
 }
 
+const btnClasses =
+  'absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70'
+
 const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, post, user }) => {
   const fetcher = useFetcher()
-  const isUpvotesToggled = fetcher.submission?.formData.get('userId') === user.id
+  const isUpvotesToggled = user && fetcher.submission?.formData.get('userId') === user.id
 
   const currCount = post.upvotes.length
-  const hasUserLikedPost = post.upvotes.some((upvote) => upvote.userId === user.id)
+  const hasUserLikedPost = user && post.upvotes.some((upvote) => upvote.userId === user.id)
   const optimisticCount = hasUserLikedPost ? currCount - 1 : currCount + 1
 
   // GOTTA LOVE REMIX.RUN FOR PROVIDING THESE APIS TO BUILD OPTIMISTIC UI
@@ -57,12 +60,8 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
       </Link>
       <fetcher.Form action="/upvote" method="post">
         <input type="hidden" name="postId" value={post.id} />
-        <input type="hidden" name="userId" value={user.id} />
-        <Button
-          className="absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 hover:-translate-y-1 hover:opacity-70"
-          disabled={!user.id}
-          variant="unstyled"
-        >
+        <input type="hidden" name="userId" value={user?.id} />
+        <Button className={btnClasses} disabled={!user?.id || isUpvotesToggled} variant="unstyled">
           <IconChevron className="h-3 w-4" />
           {isUpvotesToggled ? optimisticCount : currCount}
         </Button>
@@ -70,4 +69,5 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
     </>
   )
 }
+
 export default StatusCard

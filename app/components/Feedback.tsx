@@ -14,7 +14,7 @@ interface Props {
 }
 
 const btnClasses =
-  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4'
+  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70'
 
 const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
   return (
@@ -50,7 +50,7 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
 const Cta: FunctionComponent<{ post: Props['post']; userId: string }> = ({ post, userId }) => {
   const fetcher = useFetcher()
 
-  const isUpvotesToggled = userId && fetcher.submission?.formData.get('userId') === userId
+  const isUpvotesToggled = Boolean(userId) && fetcher.submission?.formData.get('userId') === userId
 
   const currCount = post.upvotes.length
   const hasUserLikedPost = post.upvotes.some((upvote) => upvote.userId === userId)
@@ -62,11 +62,7 @@ const Cta: FunctionComponent<{ post: Props['post']; userId: string }> = ({ post,
     <fetcher.Form method="post" action="/upvote">
       <input type="hidden" name="postId" value={post.id} />
       <input type="hidden" name="userId" value={userId} />
-      <Button
-        className={`${btnClasses} ${userId ? 'hover:-translate-y-1 hover:opacity-70' : 'opacity-70'}`.trim()}
-        disabled={!userId}
-        variant="unstyled"
-      >
+      <Button className={btnClasses} disabled={!userId || isUpvotesToggled} variant="unstyled">
         <IconChevron className="h-3 w-4" />
         {isUpvotesToggled ? optimisticCount : currCount}
       </Button>
