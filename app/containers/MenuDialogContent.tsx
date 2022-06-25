@@ -45,7 +45,7 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
             <>
               <div className="space-y-4 text-center">
                 <div className="mx-auto w-max overflow-hidden rounded-full">
-                  <Avatar name={loaderData?.user?.fullname} variant="beam" />
+                  <Avatar name={loaderData?.user?.username} variant="beam" />
                 </div>
                 <h2 className="font-bold">{loaderData.user?.fullname}</h2>
                 <span>@{loaderData.user?.username}</span>

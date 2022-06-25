@@ -30,7 +30,7 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
           {isUserPresent ? (
             <>
               <div className="flex gap-4">
-                <Avatar name={loaderData?.user?.fullname} variant="beam" />
+                <Avatar name={loaderData?.user?.username} variant="beam" />
                 <div>
                   <h2 className="font-bold">{loaderData.user?.fullname?.split(' ')?.[0]}</h2>
                   <span className="text-sm">@{loaderData.user?.username}</span>

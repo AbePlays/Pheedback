@@ -50,7 +50,7 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
 const Cta: FunctionComponent<{ post: Props['post']; userId: string }> = ({ post, userId }) => {
   const fetcher = useFetcher()
 
-  const isUpvotesToggled = fetcher.submission?.formData.get('userId') === userId
+  const isUpvotesToggled = userId && fetcher.submission?.formData.get('userId') === userId
 
   const currCount = post.upvotes.length
   const hasUserLikedPost = post.upvotes.some((upvote) => upvote.userId === userId)
