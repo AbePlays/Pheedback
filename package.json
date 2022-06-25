@@ -17,6 +17,7 @@
     "validate": "npm run check-types && npm run check-format && npm run lint && npm run build"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^1.0.0-beta.1",
     "@prisma/client": "^3.15.2",
     "@radix-ui/react-dialog": "^0.1.7",
     "@radix-ui/react-popover": "^0.1.6",

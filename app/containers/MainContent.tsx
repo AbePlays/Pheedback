@@ -1,9 +1,10 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import type { Comment, Post, Upvote, User } from '@prisma/client'
+import * as Popover from '@radix-ui/react-popover'
 import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
-import * as Popover from '@radix-ui/react-popover'
 
-import { Card, Button, Feedback } from '~/components'
+import { Button, Card, Feedback } from '~/components'
 import { sortByEnum } from '~/data'
 import { IconBulb, IconDown } from '~/icons'
 
@@ -22,6 +23,8 @@ interface Props {
 }
 
 const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loaderData, showPosts }) => {
+  const [parent] = useAutoAnimate<HTMLUListElement>()
+
   return (
     <>
       <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm text-white sm:p-6 sm:text-base md:rounded-lg">
@@ -65,7 +68,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
         </Link>
       </Card>
       {showPosts ? (
-        <ul className="space-y-4 px-4 py-4 md:px-0">
+        <ul className="space-y-4 px-4 py-4 md:px-0" ref={parent}>
           {loaderData.posts.map((post) => (
             <li className="relative" key={post.id}>
               <Feedback asLink post={post} user={loaderData.user} />
