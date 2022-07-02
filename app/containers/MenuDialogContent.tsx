@@ -6,13 +6,14 @@ import { useEffect, useRef } from 'react'
 import { Form, Link } from 'remix'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
-import { IconCross } from '~/icons'
+import { IconCheck, IconCross } from '~/icons'
 
 type TLoaderData = {
   category: string
   posts: (Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] })[]
   sortBy: string
   user: User
+  userUpvotes: string
 }
 
 interface Props {
@@ -56,10 +57,17 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
                     Log Out
                   </Button>
                 </Form>
-                {/* TODO: Implement this logic */}
-                <Button className="w-full font-semibold" variant="unstyled">
-                  Your Upvotes
-                </Button>
+                <Form action="/" className="w-full">
+                  <Button
+                    className="flex w-full items-center justify-center gap-2 font-semibold"
+                    name="userUpvotes"
+                    value={loaderData.userUpvotes === 'true' ? 'false' : 'true'}
+                    variant="unstyled"
+                  >
+                    {loaderData.userUpvotes === 'true' ? <IconCheck className="h-4 w-4" /> : null}
+                    Your Upvotes
+                  </Button>
+                </Form>
               </div>
             </>
           ) : (

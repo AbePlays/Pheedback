@@ -16,6 +16,7 @@ type TLoaderData = {
   sortBy: string
   posts: (Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] })[]
   user: User
+  userUpvotes: string
 }
 
 export const headers: HeadersFunction = () => {
@@ -33,6 +34,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
   const category = url.searchParams.get('category')
   const sortBy = url.searchParams.get('sortBy')
+  const userUpvotes = url.searchParams.get('userUpvotes')
+
+  if (userUpvotes === 'true' && !user) {
+    throw new Response('User not authenticated', { status: 401 })
+  }
 
   let posts = []
   let order: 'asc' | 'desc' = 'desc'
@@ -41,32 +47,34 @@ export const loader: LoaderFunction = async ({ request }) => {
     order = 'asc'
   }
 
-  // TODO: Move this to a function, DRY this up
+  let where
+  let orderBy
+
   if (category && sortBy) {
-    posts = await db.post.findMany({
-      where: { category },
-      orderBy: { upvotes: { _count: order } },
-      include: { user: { select: { username: true } }, comments: true, upvotes: true },
-    })
-  } else if (category) {
-    posts = await db.post.findMany({
-      where: { category },
-      orderBy: { createdAt: 'desc' },
-      include: { user: { select: { username: true } }, comments: true, upvotes: true },
-    })
+    where = { category }
+    orderBy = { upvotes: { _count: order } }
   } else if (sortBy) {
-    posts = await db.post.findMany({
-      orderBy: { upvotes: { _count: order } },
-      include: { user: { select: { username: true } }, comments: true, upvotes: true },
-    })
+    orderBy = { upvotes: { _count: order } }
+  } else if (category) {
+    where = { category }
+    orderBy = { createdAt: order }
   } else {
-    posts = await db.post.findMany({
-      orderBy: { upvotes: { _count: order } },
-      include: { user: { select: { username: true } }, comments: true, upvotes: true },
+    orderBy = { upvotes: { _count: order } }
+  }
+
+  posts = await db.post.findMany({
+    where,
+    orderBy,
+    include: { user: { select: { username: true } }, comments: true, upvotes: true },
+  })
+
+  if (userUpvotes === 'true' && user) {
+    posts = posts.filter((post) => {
+      return post.upvotes.some((upvote) => upvote.userId === user.id)
     })
   }
 
-  return { category, sortBy, posts, user }
+  return { category, sortBy, posts, user, userUpvotes }
 
   // return { category: '', sortBy: '', posts: [], user }
 }

@@ -5,13 +5,14 @@ import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
-import { IconDots } from '~/icons'
+import { IconCheck, IconDots } from '~/icons'
 
 type TLoaderData = {
   category: string
   posts: (Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] })[]
   sortBy: string
   user: User
+  userUpvotes: string
 }
 
 interface Props {
@@ -37,6 +38,7 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                 </div>
               </div>
               <Form action="/logout" hidden id="logout-form" method="post" />
+              <Form action="/" hidden id="userUpvotes" />
               <Popover.Root>
                 <Popover.Trigger aria-label="Select Option">
                   <IconDots />
@@ -46,8 +48,14 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                   <Button className="dropdown-item" form="logout-form" variant="unstyled">
                     Logout
                   </Button>
-                  {/* TODO: Implement this logic */}
-                  <Button className="dropdown-item" variant="unstyled">
+                  <Button
+                    className="dropdown-item flex items-center justify-center gap-4"
+                    form="userUpvotes"
+                    name="userUpvotes"
+                    value={loaderData.userUpvotes === 'true' ? 'false' : 'true'}
+                    variant="unstyled"
+                  >
+                    {loaderData.userUpvotes === 'true' ? <IconCheck /> : null}
                     Your Upvotes
                   </Button>
                 </Popover.Content>
