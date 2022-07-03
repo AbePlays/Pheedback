@@ -3,6 +3,7 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch }
 
 import globalStyles from '~/styles/global.css'
 import appStyles from '~/styles/tailwind.css'
+import { ErrorToast } from './components'
 
 // https://remix.run/api/app#links
 export const links: LinksFunction = () => {
@@ -20,7 +21,7 @@ export const links: LinksFunction = () => {
 
 // https://remix.run/api/conventions#default-export
 // https://remix.run/api/conventions#route-filenames
-const App = () => {
+export default function App() {
   return (
     <Document>
       <Layout>
@@ -31,24 +32,18 @@ const App = () => {
 }
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.error(error)
+export function ErrorBoundary() {
   return (
     <Document title="Error!">
-      <Layout>
-        <div>
-          <h1>There was an error</h1>
-          <p>{error.message}</p>
-          <hr />
-          <p>Hey, developer, you should replace this with what you want your users to see.</p>
-        </div>
-      </Layout>
+      <ErrorToast>
+        <p>Something went wrong. Please try again after some time.</p>
+      </ErrorToast>
     </Document>
   )
 }
 
 // https://remix.run/docs/en/v1/api/conventions#catchboundary
-export const CatchBoundary = () => {
+export function CatchBoundary() {
   const caught = useCatch()
 
   let message
@@ -65,18 +60,15 @@ export const CatchBoundary = () => {
   }
 
   return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
-      <Layout>
-        <h1>
-          {caught.status}: {caught.statusText}
-        </h1>
-        {message}
-      </Layout>
+    <Document title="Error">
+      <ErrorToast>
+        <p>{message}</p>
+      </ErrorToast>
     </Document>
   )
 }
 
-const Document = ({ children, title }: { children: React.ReactNode; title?: string }) => {
+function Document({ children, title }: { children: React.ReactNode; title?: string }) {
   return (
     <html lang="en">
       <head>
@@ -96,8 +88,6 @@ const Document = ({ children, title }: { children: React.ReactNode; title?: stri
   )
 }
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+function Layout({ children }: { children: React.ReactNode }) {
   return <div className="min-h-screen">{children}</div>
 }
-
-export default App

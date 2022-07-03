@@ -1,6 +1,7 @@
 export { default as Button } from './Button'
 export { default as Card } from './Card'
 export { default as CategoryFilter } from './CategoryFilter'
+export { default as ErrorToast } from './ErrorToast'
 export { default as Feedback } from './Feedback'
 export { default as Input } from './Input'
 export { default as RoadMap } from './Roadmap'

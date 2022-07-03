@@ -40,7 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 }
 
-const AuthRoute = () => {
+export default function AuthRoute() {
   const actionData = useActionData()
   const transition = useTransition()
 
@@ -140,5 +140,3 @@ const AuthRoute = () => {
     </div>
   )
 }
-
-export default AuthRoute

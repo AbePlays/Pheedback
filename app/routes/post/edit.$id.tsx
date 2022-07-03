@@ -1,8 +1,8 @@
 import type { Post, User } from '@prisma/client'
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
+import { Form, Link, redirect, useActionData, useCatch, useLoaderData, useTransition } from 'remix'
 
-import { Button, Card } from '~/components'
+import { Button, Card, ErrorToast } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
 import { getUser } from '~/lib/db.server'
@@ -74,7 +74,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect('/')
 }
 
-const EditPostRoute = () => {
+export default function EditPostRoute() {
   const actionData = useActionData()
   const loaderData = useLoaderData<TLoaderData>()
   const transition = useTransition()
@@ -234,35 +234,41 @@ const EditPostRoute = () => {
   )
 }
 
-export const CatchBoundary = () => {
+export function CatchBoundary() {
   const caught = useCatch()
-  const { postId } = useParams()
 
   switch (caught.status) {
     case 401:
       return (
-        <div className="mx-auto max-w-md p-4" role="alert">
-          <main className="space-y-2 rounded-lg border border-red-700 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
-            <p>You must be logged in to edit a post.</p>
-            <Link className="inline-block underline" prefetch="intent" to="/auth">
-              Log in
-            </Link>
-          </main>
-        </div>
+        <ErrorToast>
+          <p>You must be logged in to edit a post.</p>
+          <Link className="inline-block underline" prefetch="intent" to="/auth">
+            Log in
+          </Link>
+        </ErrorToast>
       )
     case 404:
-      return <div>Could not find post by the id {postId}</div>
+      return (
+        <ErrorToast>
+          <p>Post not found.</p>
+          <Link className="inline-block underline" prefetch="intent" to="/">
+            Go Home
+          </Link>
+        </ErrorToast>
+      )
     default: {
       throw new Error(`Unhandled error: ${caught.status}`)
     }
   }
 }
 
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.error(error)
-  const { postId } = useParams()
-
-  return <div>{`There was an error loading post by the id ${postId}. Sorry.`}</div>
+export function ErrorBoundary() {
+  return (
+    <ErrorToast>
+      <p>Sorry. There was an error loading the post.</p>
+      <Link className="inline-block underline" prefetch="intent" to="/">
+        Go Home
+      </Link>
+    </ErrorToast>
+  )
 }
-
-export default EditPostRoute

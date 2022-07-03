@@ -1,9 +1,9 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import { useEffect, useRef } from 'react'
 import type { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, useActionData, useCatch, useLoaderData, useParams, useTransition } from 'remix'
+import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from 'remix'
 
-import { Button, Card, Feedback } from '~/components'
+import { Button, Card, ErrorToast, Feedback } from '~/components'
 import { Comments } from '~/containers'
 import { IconArrowBack } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
@@ -77,7 +77,7 @@ export const action: ActionFunction = async ({ request }) => {
   return {}
 }
 
-const PostRoute = () => {
+export default function PostRoute() {
   const actionData = useActionData()
   const loaderData = useLoaderData<TLoaderData>()
   const transition = useTransition()
@@ -177,24 +177,32 @@ const PostRoute = () => {
   )
 }
 
-export const CatchBoundary = () => {
+export function CatchBoundary() {
   const caught = useCatch()
-  const { postId } = useParams()
 
   switch (caught.status) {
     case 404:
-      return <div>Could not find post by the id {postId}</div>
+      return (
+        <ErrorToast>
+          <p>Post not found.</p>
+          <Link className="inline-block underline" prefetch="intent" to="/">
+            Go Home
+          </Link>
+        </ErrorToast>
+      )
     default: {
       throw new Error(`Unhandled error: ${caught.status}`)
     }
   }
 }
 
-export const ErrorBoundary = ({ error }: { error: Error }) => {
-  console.error(error)
-  const { postId } = useParams()
-
-  return <div>{`There was an error loading post by the id ${postId}. Sorry.`}</div>
+export function ErrorBoundary() {
+  return (
+    <ErrorToast>
+      <p>Sorry. There was an error loading the post.</p>
+      <Link className="inline-block underline" prefetch="intent" to="/">
+        Go Home
+      </Link>
+    </ErrorToast>
+  )
 }
-
-export default PostRoute

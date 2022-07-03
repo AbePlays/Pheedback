@@ -1,10 +1,9 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { useEffect, useRef } from 'react'
-import type { HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
-import { useLoaderData, useTransition } from 'remix'
+import { HeadersFunction, Link, LoaderFunction, MetaFunction, useCatch, useLoaderData, useTransition } from 'remix'
 
-import { Card } from '~/components'
+import { Card, ErrorToast } from '~/components'
 import { LeftMenu, MainContent, MenuDialogContent } from '~/containers'
 import { sortByEnum } from '~/data'
 import { IconMenu } from '~/icons'
@@ -79,7 +78,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   // return { category: '', sortBy: '', posts: [], user }
 }
 
-const IndexRoute = () => {
+export default function IndexRoute() {
   const loaderData = useLoaderData<TLoaderData>()
   const transition = useTransition()
 
@@ -133,4 +132,29 @@ const IndexRoute = () => {
   )
 }
 
-export default IndexRoute
+export function CatchBoundary() {
+  const caught = useCatch()
+
+  switch (caught.status) {
+    case 401:
+      return (
+        <ErrorToast>
+          <p>You must be logged in view your upvotes.</p>
+          <Link className="inline-block underline" prefetch="intent" to="/auth">
+            Log in
+          </Link>
+        </ErrorToast>
+      )
+    default: {
+      throw new Error(`Unhandled error: ${caught.status}`)
+    }
+  }
+}
+
+export function ErrorBoundary() {
+  return (
+    <ErrorToast>
+      <p>Something went wrong. Please try again after some time.</p>
+    </ErrorToast>
+  )
+}

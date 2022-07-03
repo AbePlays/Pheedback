@@ -49,7 +49,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   return { inProgress, live, planned, user }
 }
 
-const RoadmapRoute = () => {
+export default function RoadmapRoute() {
   const { inProgress, live, planned, user } = useLoaderData<ILoaderData>()
 
   return (
@@ -118,4 +118,3 @@ const RoadmapRoute = () => {
     </div>
   )
 }
-export default RoadmapRoute
