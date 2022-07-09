@@ -14,7 +14,7 @@ interface Props {
 }
 
 const btnClasses =
-  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70 dark:ring-offset-gray-800'
+  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 outline-none rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70 dark:ring-offset-gray-800'
 
 const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
   return (
@@ -34,7 +34,7 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
             <h2 className="font-bold">{post.title}</h2>
             <p className="text-gray-500 dark:text-gray-400">{post.detail}</p>
           </div>
-          <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-500">
+          <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-600 dark:bg-blue-200">
             {post.category}
           </span>
         </div>

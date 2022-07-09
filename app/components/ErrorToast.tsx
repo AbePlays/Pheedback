@@ -7,7 +7,7 @@ export default function ErrorToast(props: ErrorProps) {
 
   return (
     <div className="mx-auto max-w-md p-4" role="alert">
-      <main className="space-y-2 rounded-lg border border-red-700 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
+      <main className="space-y-2 rounded-lg border border-red-700 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full dark:bg-red-400 dark:text-red-100">
         {children}
       </main>
     </div>

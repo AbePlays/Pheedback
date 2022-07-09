@@ -13,7 +13,7 @@ interface Props {
 }
 
 const btnClasses =
-  'absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70'
+  'absolute bottom-4 left-6 z-10 flex items-center gap-2 rounded-lg outline-none bg-blue-500 px-3 py-1 font-semibold text-blue-50 transition-all duration-300 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:ring-offset-gray-800'
 
 const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, post, user }) => {
   const fetcher = useFetcher()
@@ -31,9 +31,9 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
 
   return (
     <>
-      <Link className="group focus:outline-none" prefetch="intent" to={`/post/${post.id}`}>
+      <Link className="group" prefetch="intent" to={`/post/${post.id}`}>
         <Card
-          className={`space-y-4 border-t-[6px] ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500 ${
+          className={`space-y-4 border-t-[6px] ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500 dark:ring-offset-gray-800 ${
             isLive ? 'border-t-red-500' : isInProgress ? 'border-t-yellow-500' : 'border-t-blue-500'
           }`}
         >
@@ -46,7 +46,7 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
               <h2 className="font-bold">{post.title}</h2>
               <p className="text-gray-600 dark:text-gray-400">{post.detail}</p>
             </div>
-            <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-500">
+            <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-600 dark:bg-blue-200">
               {post.category}
             </span>
             <div className="flex items-center justify-end">

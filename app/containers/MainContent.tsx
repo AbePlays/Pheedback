@@ -27,7 +27,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
 
   return (
     <>
-      <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm text-white sm:p-6 sm:text-base md:rounded-lg">
+      <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm text-white dark:border dark:border-gray-600 sm:p-6 sm:text-base md:rounded-lg">
         <div className="hidden sm:flex sm:items-center sm:gap-2">
           <IconBulb aria-label="" />
           <span className="font-bold">{loaderData?.posts?.length || 0} Suggestions</span>
@@ -76,7 +76,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
           ))}
         </ul>
       ) : (
-        <p className="pt-4 text-center">No feedbacks available</p>
+        <p className="pt-4 text-center dark:text-gray-200">No feedbacks available</p>
       )}
     </>
   )
