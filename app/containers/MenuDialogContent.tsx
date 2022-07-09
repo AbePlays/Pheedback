@@ -34,7 +34,7 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
 
   return (
     <div className="mt-2 space-y-4 text-sm">
-      <DialogPrimitive.Close aria-label="Close Menu" className="ml-auto block" ref={closeRef}>
+      <DialogPrimitive.Close aria-label="Close Menu" className="ml-auto block dark:text-gray-50" ref={closeRef}>
         <IconCross />
       </DialogPrimitive.Close>
       <Card className="flex h-32 items-center justify-center bg-[url('/background-header.png')] bg-cover bg-no-repeat p-0">

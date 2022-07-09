@@ -73,13 +73,13 @@ export default function RoadmapRoute() {
       {/* For mobile devices */}
       <Tabs.Root className="mx-4 mt-6 md:hidden" defaultValue="planned" orientation="horizontal">
         <Tabs.List aria-label="Feedback Status" className="flex justify-between gap-2">
-          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold" value="planned">
+          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold dark:text-gray-200" value="planned">
             Planned ({planned.length})
           </Tabs.Trigger>
-          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold" value="inProgress">
+          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold dark:text-gray-200" value="inProgress">
             In-Progress ({inProgress.length})
           </Tabs.Trigger>
-          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold" value="live">
+          <Tabs.Trigger className="tab-btn border-b-4 border-gray-400 font-bold dark:text-gray-200" value="live">
             Live ({live.length})
           </Tabs.Trigger>
         </Tabs.List>

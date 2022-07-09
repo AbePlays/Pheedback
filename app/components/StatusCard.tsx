@@ -39,12 +39,12 @@ const StatusCard: FunctionComponent<ComponentProps<'div'> & Props> = ({ color, p
         >
           <div className="flex items-center gap-4">
             <div className={`h-2 w-2 rounded-full ${bgColor}`} />
-            <span className="text-gray-500">{post.status}</span>
+            <span className="text-gray-500 dark:text-gray-300">{post.status}</span>
           </div>
           <div className="space-y-4">
             <div>
               <h2 className="font-bold">{post.title}</h2>
-              <p className="text-gray-600">{post.detail}</p>
+              <p className="text-gray-600 dark:text-gray-400">{post.detail}</p>
             </div>
             <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-500">
               {post.category}

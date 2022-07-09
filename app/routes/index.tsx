@@ -110,7 +110,7 @@ export default function IndexRoute() {
               <IconMenu />
             </DialogPrimitive.Trigger>
             <DialogPrimitive.Portal>
-              <DialogPrimitive.Content className="fixed top-0 right-0 bottom-0 z-20 w-full bg-gray-50 py-6 px-4 animate-in fade-in slide-in-from-top-[60%] md:hidden">
+              <DialogPrimitive.Content className="fixed top-0 right-0 bottom-0 z-20 w-full bg-gray-50 py-6 px-4 animate-in fade-in slide-in-from-top-[60%] dark:bg-neutral-900 md:hidden">
                 <DialogPrimitive.Title className="sr-only">Navigation Menu</DialogPrimitive.Title>
                 <MenuDialogContent
                   loaderData={loaderData}
