@@ -78,7 +78,7 @@ function Document({ children, title }: { children: React.ReactNode; title?: stri
         <Meta />
         <Links />
       </head>
-      <body className="bg-gray-50">
+      <body className="bg-gray-50 dark:bg-neutral-900">
         {children}
         <ScrollRestoration />
         <Scripts />

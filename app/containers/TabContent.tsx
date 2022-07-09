@@ -14,8 +14,8 @@ const TabContent: FunctionComponent<Props> = ({ content, desc, title, user }) =>
   return (
     <>
       <div className="my-6">
-        {title ? <h2 className="font-bold">{title}</h2> : null}
-        <span className="text-gray-600">{desc}</span>
+        {title ? <h2 className="font-bold dark:text-gray-200">{title}</h2> : null}
+        <span className="text-gray-600 dark:text-gray-400">{desc}</span>
       </div>
       {content.length ? (
         <ul className="space-y-4">

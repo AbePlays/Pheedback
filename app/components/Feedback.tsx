@@ -14,12 +14,12 @@ interface Props {
 }
 
 const btnClasses =
-  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70'
+  'absolute bottom-6 left-6 z-10 flex h-max items-center gap-2 rounded-lg bg-blue-500 px-3 py-2 font-semibold text-blue-50 transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:top-6 sm:block sm:py-3 sm:px-4 disabled:opacity-50 enabled:hover:-translate-y-1 enabled:hover:opacity-70 dark:ring-offset-gray-800'
 
 const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
   return (
     <>
-      <Card className="flex gap-4 text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500">
+      <Card className="flex gap-4 text-left ring-offset-2 transition-all group-hover:ring group-hover:ring-blue-500 group-focus:ring group-focus:ring-blue-500 dark:ring-offset-gray-800">
         <div className="mb-14 flex-1 space-y-4 sm:mb-0 sm:ml-20">
           <div className="flex items-center gap-4">
             <div className="overflow-hidden rounded-full">
@@ -27,12 +27,12 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
             </div>
             <div className="text-sm">
               <h2 className="font-bold">{post.user?.username}</h2>
-              <span className="text-gray-500">{formatDate(post.createdAt)}</span>
+              <span className="text-gray-500 dark:text-gray-400">{formatDate(post.createdAt)}</span>
             </div>
           </div>
           <div>
             <h2 className="font-bold">{post.title}</h2>
-            <p className="text-gray-500">{post.detail}</p>
+            <p className="text-gray-500 dark:text-gray-400">{post.detail}</p>
           </div>
           <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-500">
             {post.category}

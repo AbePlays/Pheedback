@@ -57,7 +57,7 @@ export default function AuthRoute() {
   }, [loginType])
 
   return (
-    <div className="min-w-screen relative bg-gradient-to-b from-[rgba(148,187,233,1)] to-[rgba(238,174,202,1)] md:bg-gradient-to-r">
+    <div className="min-w-screen relative bg-gradient-to-b from-[#94bbe9] to-[#eeaeca] dark:from-[#285486] dark:to-[#a75c7c] md:bg-gradient-to-r">
       <main className="mx-auto flex min-h-screen max-w-screen-xl flex-col p-4">
         <Link
           className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 text-white sm:ml-4 sm:mt-4"
@@ -68,7 +68,7 @@ export default function AuthRoute() {
           Go Back
         </Link>
         <div className="flex h-full w-full flex-1 items-center justify-center">
-          <div className="w-full max-w-lg rounded-xl bg-white p-8 shadow-2xl duration-300 animate-in fade-in zoom-in md:p-12">
+          <div className="w-full max-w-lg rounded-xl bg-gray-50 p-8 shadow-2xl duration-300 animate-in fade-in zoom-in dark:bg-gray-800 dark:text-gray-300 md:p-12">
             <Form className="space-y-4" method="post" ref={formRef} replace>
               {loginType === 'register' ? (
                 <CustomInput

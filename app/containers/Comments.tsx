@@ -24,8 +24,8 @@ const Comments: FunctionComponent<Props> = ({ comments, user }) => {
               <Avatar name={comment.user.username} variant="beam" />
               <div>
                 <h2 className="font-bold">{comment.user.fullname}</h2>
-                <p className="text-gray-500">@{comment.user.username}</p>
-                <p className="mt-2 text-gray-600">{comment.content}</p>
+                <p className="text-gray-500 dark:text-gray-500">@{comment.user.username}</p>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">{comment.content}</p>
               </div>
             </div>
             {user?.id === comment.userId ? (

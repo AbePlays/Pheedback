@@ -4,15 +4,15 @@
 
 @layer components {
   .dropdown {
-    @apply w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4;
+    @apply w-[15rem] rounded bg-white py-2 shadow animate-in fade-in slide-in-from-top-4 dark:bg-gray-700;
   }
 
   .dropdown-item {
-    @apply h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200;
+    @apply h-12 w-full border-l-4 border-white outline-none hover:border-fuchsia-500 hover:bg-gray-200 focus-visible:border-fuchsia-500 focus-visible:bg-gray-200 dark:hover:border-fuchsia-500 dark:hover:bg-gray-500 dark:focus-visible:border-fuchsia-500 dark:focus-visible:bg-gray-500 dark:text-gray-200 dark:border-gray-700;
   }
 
   .link-btn {
-    @apply flex h-12 items-center justify-center rounded-lg bg-fuchsia-600 font-medium transition-all duration-300 outline-none hover:-translate-y-1 hover:opacity-70 focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-1;
+    @apply flex h-12 items-center justify-center rounded-lg bg-fuchsia-600 font-medium transition-all duration-300 outline-none hover:-translate-y-1 hover:opacity-70 focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-1 dark:ring-offset-gray-800;
   }
 
   .tab-btn[data-state="active"] {

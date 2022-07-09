@@ -1,12 +1,8 @@
-import type { FunctionComponent } from 'react'
+export default function Input({ className = '', ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
+  const commonClasses = 'w-full rounded-lg border outline-none px-3 h-12 focus:ring-2'
+  const lightClasses = 'border-gray-300 bg-gray-100 text-gray-500 focus:ring-fuchsia-700'
+  const darkClasses =
+    'dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400'
 
-// dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500
-
-const Input: FunctionComponent<React.InputHTMLAttributes<HTMLInputElement>> = ({ className = '', ...props }) => {
-  const classes =
-    'w-full rounded-lg border border-gray-300 bg-gray-100 px-3 h-12 text-gray-500 focus:border-fuchsia-700 focus:ring-fuchsia-700'
-
-  return <input className={`${classes} ${className}`.trim()} {...props} />
+  return <input className={`${commonClasses} ${lightClasses} ${darkClasses} ${className}`.trim()} {...props} />
 }
-
-export default Input

@@ -34,7 +34,7 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                 <Avatar name={loaderData?.user?.username} variant="beam" />
                 <div>
                   <h2 className="font-bold">{loaderData.user?.fullname?.split(' ')?.[0]}</h2>
-                  <span className="text-sm">@{loaderData.user?.username}</span>
+                  <span className="text-sm text-gray-800 dark:text-gray-300">@{loaderData.user?.username}</span>
                 </div>
               </div>
               <Form action="/logout" hidden id="logout-form" method="post" />

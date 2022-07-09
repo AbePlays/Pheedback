@@ -97,7 +97,7 @@ export default function PostRoute() {
   return (
     <div className="mx-auto max-w-screen-xl p-4">
       <Link
-        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4"
+        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 dark:text-gray-200 sm:ml-4 sm:mt-4"
         prefetch="intent"
         to="/"
       >
@@ -136,7 +136,7 @@ export default function PostRoute() {
               Add Comment
             </label>
             <textarea
-              className="mt-4 w-full rounded-lg border border-gray-300 bg-gray-100 p-4"
+              className="mt-4 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
               disabled={!user?.id}
               id="comment-input"
               name="comment"

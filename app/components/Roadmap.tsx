@@ -37,7 +37,7 @@ const Roadmap: FunctionComponent<Props> = ({ content }) => {
 
 const TaskStatus = ({ color, title, quantity }: { color: string; title: string; quantity: number }) => {
   return (
-    <li className="flex items-center justify-between gap-4">
+    <li className="flex items-center justify-between gap-4 dark:text-gray-400">
       <div className="flex items-center gap-8">
         <div className={`h-2 w-2 rounded-full ${color}`} />
         <h3>{title}</h3>

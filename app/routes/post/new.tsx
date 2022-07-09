@@ -1,7 +1,7 @@
 import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
 import { Form, Link, redirect, useActionData, useCatch, useTransition } from 'remix'
 
-import { Button, Card } from '~/components'
+import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
 import { createPost, getUserId } from '~/lib/db.server'
@@ -32,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
   return createPost(formData, userId)
 }
 
-const NewPostRoute = () => {
+export default function NewPostRoute() {
   const actionData = useActionData()
   const transition = useTransition()
 
@@ -41,7 +41,7 @@ const NewPostRoute = () => {
   return (
     <main className="mx-auto max-w-screen-xl p-4">
       <Link
-        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 sm:ml-4 sm:mt-4"
+        className="group ml-0 mt-0 flex w-max items-center justify-start gap-2 dark:text-gray-200 sm:ml-4 sm:mt-4"
         prefetch="intent"
         to="/"
       >
@@ -56,8 +56,8 @@ const NewPostRoute = () => {
             <br />
             <span className="font-normal text-gray-500">Add a short, descriptive headline</span>
           </label>
-          <input
-            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
+          <Input
+            className="mt-4 mb-8"
             defaultValue={actionData?.fields?.title}
             id="title-input"
             name="title"
@@ -77,7 +77,7 @@ const NewPostRoute = () => {
             <span className="font-normal text-gray-500">Choose a category for your feedback</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4"
+            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={actionData?.fields?.category}
             id="category-input"
             name="category"
@@ -105,7 +105,7 @@ const NewPostRoute = () => {
             </span>
           </label>
           <textarea
-            className="mt-4 mb-8 block w-full rounded-lg border border-gray-300 bg-gray-100 p-4"
+            className="mt-4 mb-8 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={actionData?.fields?.detail}
             id="detail-input"
             name="detail"
@@ -167,5 +167,3 @@ export const CatchBoundary = () => {
 
   throw new Error(`Unexpected caught response with status: ${caught.status}`)
 }
-
-export default NewPostRoute
