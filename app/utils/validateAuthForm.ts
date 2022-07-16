@@ -1,62 +1,79 @@
-const validateAuthForm = (data: Record<string, unknown>) => {
-  if (data?.loginType === 'login') {
-    // Validate login form
-    if (!data?.username || !data?.password) {
-      return { formError: 'Please fill in all the fields' }
-    }
-    const { username, password } = data
-    const fields = { username, password }
+import { assertString } from './assertions'
 
-    const fieldErrors = {
-      username: validateUsername(username),
-      password: validatePassword(password),
-    }
+export default function validateAuthForm(data: Record<string, FormDataEntryValue>) {
+  try {
+    if (data?.loginType === 'login') {
+      // Validate login form
+      const { password, username } = data
+      if (!username || !password) {
+        return { formError: 'Please fill out all the fields' }
+      }
 
-    if (Object.values(fieldErrors).some(Boolean)) {
-      return { fieldErrors, fields }
-    }
-  } else if (data?.loginType === 'register') {
-    // Validate register form
-    if (!data?.username || !data?.password || !data?.fullname || !data?.email) {
-      return { formError: 'Please fill in all the fields' }
-    }
-    const { username, password, fullname, email } = data
-    const fields = { username, password, fullname, email }
+      assertString(password)
+      assertString(username)
 
-    const fieldErrors = {
-      username: validateUsername(username),
-      password: validatePassword(password),
-      fullname: validateFullname(fullname),
-      email: validateEmail(email),
-    }
+      const fields = { password, username }
 
-    if (Object.values(fieldErrors).some(Boolean)) {
-      return { fieldErrors, fields }
+      const fieldErrors = {
+        password: validatePassword(password),
+        username: validateUsername(username),
+      }
+
+      if (Object.values(fieldErrors).some(Boolean)) {
+        return { fieldErrors, fields }
+      }
+    } else if (data?.loginType === 'register') {
+      // Validate register form
+      const { email, fullname, password, username } = data
+      if (!username || !password || !fullname || !email) {
+        return { formError: 'Please fill out all the fields' }
+      }
+      const fields = { username, password, fullname, email }
+
+      assertString(email)
+      assertString(fullname)
+      assertString(password)
+      assertString(username)
+
+      const fieldErrors = {
+        email: validateEmail(email),
+        fullname: validateFullname(fullname),
+        password: validatePassword(password),
+        username: validateUsername(username),
+      }
+
+      if (Object.values(fieldErrors).some(Boolean)) {
+        return { fieldErrors, fields }
+      }
     }
+  } catch (e) {
+    if (e instanceof Error) {
+      return { formError: e.message }
+    }
+    return { formError: 'Something went wrong' }
   }
 }
 
-const validateEmail = (email: unknown) => {
+function validateEmail(email: string) {
   if (typeof email !== 'string' || !email.includes('@')) {
     return 'Please enter a valid email address'
   }
 }
 
-const validateFullname = (fullname: unknown) => {
+function validateFullname(fullname: string) {
   if (typeof fullname !== 'string' || fullname.length < 0) {
     return 'Please enter your full name'
   }
 }
 
-const validatePassword = (password: unknown) => {
+function validatePassword(password: string) {
   if (typeof password !== 'string' || password.length < 6) {
     return 'Passwords must be at least 6 characters long'
   }
 }
-const validateUsername = (username: unknown) => {
+
+function validateUsername(username: string) {
   if (typeof username !== 'string' || username.length < 3) {
     return 'Username must be at least 3 characters long'
   }
 }
-
-export default validateAuthForm
