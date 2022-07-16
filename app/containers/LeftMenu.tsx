@@ -5,6 +5,7 @@ import type { FunctionComponent, RefObject } from 'react'
 import { Form, Link } from 'remix'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
+import { useRouteData } from '~/hooks'
 import { IconCheck, IconDots } from '~/icons'
 
 type TLoaderData = {
@@ -18,11 +19,17 @@ type TLoaderData = {
 interface Props {
   closeRef: RefObject<HTMLButtonElement>
   isFormSubmitting: boolean
-  isUserPresent: boolean
-  loaderData: TLoaderData
 }
 
-const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUserPresent, loaderData }) => {
+const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting }) => {
+  const data = useRouteData<TLoaderData>('routes/index')
+
+  if (!data) {
+    throw new Error('No data found')
+  }
+
+  const isUserPresent = data.user
+
   return (
     <div className="hidden md:flex md:w-full md:gap-4 lg:max-w-xs lg:flex-col">
       <div className="flex-1 space-y-4 lg:flex-none">
@@ -31,10 +38,10 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
           {isUserPresent ? (
             <>
               <div className="flex gap-4">
-                <Avatar name={loaderData?.user?.username} variant="beam" />
+                <Avatar name={data?.user?.username} variant="beam" />
                 <div>
-                  <h2 className="font-bold">{loaderData.user?.fullname?.split(' ')?.[0]}</h2>
-                  <span className="text-sm text-gray-800 dark:text-gray-300">@{loaderData.user?.username}</span>
+                  <h2 className="font-bold">{data.user?.fullname?.split(' ')?.[0]}</h2>
+                  <span className="text-sm text-gray-800 dark:text-gray-300">@{data.user?.username}</span>
                 </div>
               </div>
               <Form action="/logout" hidden id="logout-form" method="post" />
@@ -52,10 +59,10 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
                     className="dropdown-item flex items-center justify-center gap-4"
                     form="userUpvotes"
                     name="userUpvotes"
-                    value={loaderData.userUpvotes === 'true' ? 'false' : 'true'}
+                    value={data.userUpvotes === 'true' ? 'false' : 'true'}
                     variant="unstyled"
                   >
-                    {loaderData.userUpvotes === 'true' ? <IconCheck /> : null}
+                    {data.userUpvotes === 'true' ? <IconCheck /> : null}
                     Your Upvotes
                   </Button>
                 </Popover.Content>
@@ -77,15 +84,15 @@ const LeftMenu: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, isUser
       {/* Category Form */}
       <Card className="flex flex-1 items-start justify-between text-left lg:flex-none">
         <CategoryFilter
-          category={loaderData?.category || ''}
+          category={data?.category || ''}
           isFormSubmitting={isFormSubmitting}
-          sortBy={loaderData?.sortBy || ''}
+          sortBy={data?.sortBy || ''}
         />
       </Card>
 
       {/* Roadmao Card */}
       <Card className="flex-1 lg:flex-none">
-        <RoadMap content={loaderData.posts} />
+        <RoadMap content={data.posts} />
       </Card>
     </div>
   )

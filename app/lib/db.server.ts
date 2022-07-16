@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { createCookieSessionStorage, redirect } from 'remix'
 
-import { db } from '~/utils'
+import { assertString, db } from '~/utils'
 
 const sessionSecret = process.env.SESSION_SECRET
 if (!sessionSecret) {
@@ -20,54 +20,75 @@ const { getSession, commitSession, destroySession } = createCookieSessionStorage
   },
 })
 
-export const register = async (fields: Record<string, unknown>) => {
-  const { username, password, fullname, email } = fields
-  if (
-    typeof username !== 'string' ||
-    typeof password !== 'string' ||
-    typeof fullname !== 'string' ||
-    typeof email !== 'string'
-  ) {
-    return { fields, formError: `Invalid fields` }
-  }
-  // Check if username is taken
-  const userExists = await db.user.findFirst({ where: { username } })
-  if (userExists) {
-    return {
-      fields,
-      formError: `User with username ${username} already exists`,
+export const register = async (fields: Record<string, FormDataEntryValue>) => {
+  const { email, fullname, password, username } = fields
+
+  try {
+    assertString(email)
+    assertString(fullname)
+    assertString(password)
+    assertString(username)
+
+    // Check if username is taken
+    const user = await db.user.findFirst({ where: { username } })
+    if (user) {
+      return {
+        fields,
+        formError: `User with username ${username} already exists`,
+      }
     }
-  }
-  // Create a hashed password
-  const passwordHash = await bcrypt.hash(password, 10)
-  const user = await db.user.create({
-    data: { username, passwordHash, fullname, email },
-  })
-  if (!user) {
-    return {
-      fields,
-      formError: `Something went wrong trying to create a new user.`,
+
+    // Create a hashed password
+    const passwordHash = await bcrypt.hash(password, 10)
+    const newUser = await db.user.create({
+      data: { email, fullname, passwordHash, username },
+    })
+    if (!newUser) {
+      return {
+        fields,
+        formError: `Something went wrong trying to create a new user.`,
+      }
     }
+
+    return createUserSession(newUser.id, '/')
+  } catch (e) {
+    let errMsg = 'Something went wrong'
+    if (e instanceof Error) {
+      errMsg = e.message
+    }
+
+    return { fields, formError: errMsg }
   }
-  return createUserSession(user.id, '/')
 }
 
-export const login = async (fields: Record<string, unknown>) => {
-  const { username, password } = fields
-  if (typeof username !== 'string' || typeof password !== 'string') {
-    return { fields, formError: `Invalid fields` }
+export async function login(fields: Record<string, FormDataEntryValue>) {
+  const { password, username } = fields
+
+  try {
+    assertString(username)
+    assertString(password)
+
+    // Check if user exists
+    const user = await db.user.findUnique({ where: { username } })
+    if (!user) {
+      return { fields, formError: `Username/Password combination is incorrect` }
+    }
+
+    // Check if password is correct
+    const isCorrectPassword = await bcrypt.compare(password, user.passwordHash)
+    if (!isCorrectPassword) {
+      return { fields, formError: `Username/Password combination is incorrect` }
+    }
+
+    return createUserSession(user.id, '/')
+  } catch (e) {
+    let errMsg = 'Something went wrong.'
+    if (e instanceof Error) {
+      errMsg = e.message
+    }
+
+    return { fields, formError: errMsg }
   }
-  // Check if user exists
-  const user = await db.user.findUnique({ where: { username } })
-  if (!user) {
-    return { fields, formError: `Username/Password combination is incorrect` }
-  }
-  // Check if password is correct
-  const isCorrectPassword = await bcrypt.compare(password, user.passwordHash)
-  if (!isCorrectPassword) {
-    return { fields, formError: `Username/Password combination is incorrect` }
-  }
-  return createUserSession(user.id, '/')
 }
 
 export const logout = async (request: Request) => {
