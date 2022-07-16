@@ -6,6 +6,7 @@ import { Form, Link } from 'remix'
 
 import { Button, Card, Feedback } from '~/components'
 import { sortByEnum } from '~/data'
+import { useRouteData } from '~/hooks'
 import { IconBulb, IconDown } from '~/icons'
 
 type TLoaderData = {
@@ -18,11 +19,17 @@ type TLoaderData = {
 interface Props {
   closeRef: RefObject<HTMLButtonElement>
   isFormSubmitting: boolean
-  loaderData: TLoaderData
-  showPosts: boolean
 }
 
-const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loaderData, showPosts }) => {
+const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting }) => {
+  const data = useRouteData<TLoaderData>('routes/index')
+
+  if (!data) {
+    throw new Error('No data found')
+  }
+
+  const showPosts = data.posts?.length > 0
+
   const [parent] = useAutoAnimate<HTMLUListElement>()
 
   return (
@@ -30,15 +37,15 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
       <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm text-white dark:border dark:border-gray-600 sm:p-6 sm:text-base md:rounded-lg">
         <div className="hidden sm:flex sm:items-center sm:gap-2">
           <IconBulb aria-label="" />
-          <span className="font-bold">{loaderData?.posts?.length || 0} Suggestions</span>
+          <span className="font-bold">{data?.posts?.length || 0} Suggestions</span>
         </div>
         <Form action="/" hidden id="sortby-form">
-          <input type="hidden" name="category" value={loaderData?.category || ''} />
+          <input type="hidden" name="category" value={data?.category || ''} />
         </Form>
         <div className="flex flex-1 items-center sm:justify-center">
           <Popover.Root>
             <Popover.Trigger aria-label="Sort by" className="flex gap-2" disabled={Boolean(isFormSubmitting)}>
-              <span>Sort by: {loaderData.sortBy || 'Most Upvotes'}</span>
+              <span>Sort by: {data.sortBy || 'Most Upvotes'}</span>
               <IconDown />
             </Popover.Trigger>
             <Popover.Content className="dropdown" sideOffset={10}>
@@ -69,9 +76,9 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting, loa
       </Card>
       {showPosts ? (
         <ul className="space-y-4 px-4 py-4 md:px-0" ref={parent}>
-          {loaderData.posts.map((post) => (
+          {data.posts.map((post) => (
             <li className="relative" key={post.id}>
-              <Feedback asLink post={post} user={loaderData.user} />
+              <Feedback asLink post={post} user={data.user} />
             </li>
           ))}
         </ul>

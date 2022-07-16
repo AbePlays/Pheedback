@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { Form, Link } from 'remix'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
+import { useRouteData } from '~/hooks'
 import { IconCheck, IconCross } from '~/icons'
 
 type TLoaderData = {
@@ -18,12 +19,17 @@ type TLoaderData = {
 
 interface Props {
   isFormSubmitting: boolean
-  isUserPresent: boolean
-  loaderData: TLoaderData
 }
 
-const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubmitting, loaderData }) => {
+const MenuDialogContent: FunctionComponent<Props> = ({ isFormSubmitting }) => {
+  const data = useRouteData<TLoaderData>('routes/index')
+
+  if (!data) {
+    throw new Error('No data found')
+  }
+
   const closeRef = useRef<HTMLButtonElement>(null)
+  const isUserPresent = data.user
 
   useEffect(() => {
     if (isFormSubmitting) {
@@ -46,10 +52,10 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
             <>
               <div className="space-y-4 text-center">
                 <div className="mx-auto w-max overflow-hidden rounded-full">
-                  <Avatar name={loaderData?.user?.username} variant="beam" />
+                  <Avatar name={data?.user?.username} variant="beam" />
                 </div>
-                <h2 className="font-bold">{loaderData.user?.fullname}</h2>
-                <span>@{loaderData.user?.username}</span>
+                <h2 className="font-bold">{data.user?.fullname}</h2>
+                <span>@{data.user?.username}</span>
               </div>
               <div className="mt-4 flex items-center justify-center text-center">
                 <Form action="/logout" className="w-full" method="post">
@@ -61,10 +67,10 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
                   <Button
                     className="flex w-full items-center justify-center gap-2 font-semibold"
                     name="userUpvotes"
-                    value={loaderData.userUpvotes === 'true' ? 'false' : 'true'}
+                    value={data.userUpvotes === 'true' ? 'false' : 'true'}
                     variant="unstyled"
                   >
-                    {loaderData.userUpvotes === 'true' ? <IconCheck className="h-4 w-4" /> : null}
+                    {data.userUpvotes === 'true' ? <IconCheck className="h-4 w-4" /> : null}
                     Your Upvotes
                   </Button>
                 </Form>
@@ -82,14 +88,14 @@ const MenuDialogContent: FunctionComponent<Props> = ({ isUserPresent, isFormSubm
         </Card>
         <Card>
           <CategoryFilter
-            category={loaderData?.category || ''}
+            category={data?.category || ''}
             isFormSubmitting={isFormSubmitting}
-            sortBy={loaderData?.sortBy || ''}
+            sortBy={data?.sortBy || ''}
           />
         </Card>
       </div>
       <Card className="flex-1">
-        <RoadMap content={loaderData.posts} />
+        <RoadMap content={data.posts} />
       </Card>
     </div>
   )

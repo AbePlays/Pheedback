@@ -1,4 +1,5 @@
 export { db } from './prisma'
+export * from './assertions'
 export { default as formatDate } from './formatDate'
 export { default as validateAuthForm } from './validateAuthForm'
 export { default as validateCommentForm } from './validateCommentForm'

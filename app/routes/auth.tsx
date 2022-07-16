@@ -1,6 +1,6 @@
-import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useTransition } from 'remix'
 import { useEffect, useRef, useState } from 'react'
+import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
+import { Form, json, Link, redirect, useActionData, useTransition } from 'remix'
 
 import { Button } from '~/components'
 import { IconArrowBack, IconLoading } from '~/icons'
@@ -27,7 +27,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   // validate form and return error if invalid
   const errors = validateAuthForm(formData)
-  if (errors) return errors
+  if (errors) return json(errors, { status: 400 })
 
   // otherwise, handle the form submission
   switch (formData?.loginType) {
@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
     case 'register':
       return register(formData)
     default:
-      return { fields: { ...formData }, formError: `Login type invalid` }
+      return json({ fields: formData, formError: `Invalid form submission` }, { status: 400 })
   }
 }
 
