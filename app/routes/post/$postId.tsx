@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
       comments: {
         where: { postId },
         include: { user: { select: { fullname: true, username: true } } },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'asc' },
       },
       user: { select: { username: true } },
       upvotes: true,
