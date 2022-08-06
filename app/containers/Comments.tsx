@@ -1,30 +1,40 @@
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Comment, User } from '@prisma/client'
 import Avatar from 'boring-avatars'
-import type { FunctionComponent } from 'react'
 import { Form } from 'remix'
 
 import { Button } from '~/components'
 import { IconCross } from '~/icons'
+import { timeDifference } from '~/utils'
 
 interface Props {
   comments: (Comment & { user: User })[]
   user: User
 }
 
-const Comments: FunctionComponent<Props> = ({ comments, user }) => {
+export default function Comments({ comments, user }: Props) {
+  const [parent] = useAutoAnimate<HTMLUListElement>()
+
   return (
     <>
       <h2 className="font-bold">
         {comments.length} Comment{comments.length > 1 && 's'}
       </h2>
-      {comments.map((comment) => (
-        <div className="my-8 px-4" key={comment.id}>
-          <div className="flex justify-between gap-4">
-            <div className="flex flex-1 gap-4">
-              <Avatar name={comment.user.username} variant="beam" />
+      <ul className="my-8 space-y-8 px-2 md:px-4" ref={parent}>
+        {comments.map((comment) => (
+          <li className="flex justify-between gap-4" key={comment.id}>
+            <div className="flex gap-4">
+              <div aria-hidden>
+                <Avatar name={comment.user.username} size="30" variant="beam" />
+              </div>
               <div>
-                <h2 className="font-bold">{comment.user.fullname}</h2>
-                <p className="text-gray-500 dark:text-gray-500">@{comment.user.username}</p>
+                <h2 className="font-bold">
+                  {comment.user.fullname}
+                  <span className="font-normal text-gray-500 dark:text-gray-500" title={comment.createdAt.toString()}>
+                    · {timeDifference(new Date(comment.createdAt))}
+                  </span>
+                </h2>
+                <span className="text-gray-500 dark:text-gray-500">@{comment.user.username}</span>
                 <p className="mt-2 text-gray-600 dark:text-gray-400">{comment.content}</p>
               </div>
             </div>
@@ -32,16 +42,21 @@ const Comments: FunctionComponent<Props> = ({ comments, user }) => {
               <Form method="post" replace>
                 <input type="hidden" name="commentId" value={comment.id} />
                 <input type="hidden" name="userId" value={user?.id} />
-                <Button name="_action" value="delete" variant="unstyled" aria-label="Delete Comment">
+                <Button
+                  aria-label="Delete Comment"
+                  className="rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700 hover:dark:text-gray-400"
+                  name="_action"
+                  title="Delete Comment"
+                  value="delete"
+                  variant="unstyled"
+                >
                   <IconCross />
                 </Button>
               </Form>
             ) : null}
-          </div>
-        </div>
-      ))}
+          </li>
+        ))}
+      </ul>
     </>
   )
 }
-
-export default Comments
