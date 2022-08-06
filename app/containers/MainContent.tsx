@@ -48,7 +48,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting }) =
               <span>Sort by: {data.sortBy || 'Most Upvotes'}</span>
               <IconDown />
             </Popover.Trigger>
-            <Popover.Content className="dropdown" sideOffset={10}>
+            <Popover.Content className="dropdown z-10" sideOffset={10}>
               <Popover.Close className="hidden" ref={closeRef} />
               {Object.values(sortByEnum).map((sortBy) => (
                 <Button
