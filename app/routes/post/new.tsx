@@ -1,5 +1,5 @@
-import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useCatch, useTransition } from 'remix'
+import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
+import { Form, Link, useActionData, useCatch, useTransition } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
@@ -155,7 +155,7 @@ export const CatchBoundary = () => {
   if (caught.status === 401) {
     return (
       <div className="mx-auto max-w-md p-4" role="alert">
-        <main className="space-y-2 rounded-lg border border-red-200 bg-red-100 p-4 text-center text-red-500 shadow duration-500 animate-in slide-in-from-top-full">
+        <main className="space-y-2 rounded-lg border border-red-200 bg-red-100 p-4 text-center text-red-500 shadow animate-in slide-in-from-top-full duration-500">
           <p>You must be logged in to create a post.</p>
           <Link className="inline-block underline" prefetch="intent" to="/auth">
             Log in

@@ -2,7 +2,7 @@ import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as Popover from '@radix-ui/react-popover'
 import Avatar from 'boring-avatars'
 import type { FunctionComponent, RefObject } from 'react'
-import { Form, Link } from 'remix'
+import { Form, Link } from '@remix-run/react'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
 import { useRouteData } from '~/hooks'

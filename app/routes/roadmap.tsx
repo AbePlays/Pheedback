@@ -1,6 +1,6 @@
 import type { Post, Comment, Upvote, User } from '@prisma/client'
-import { LoaderFunction, MetaFunction, useLoaderData } from 'remix'
-import { Link } from 'remix'
+import { LoaderFunction, MetaFunction } from '@remix-run/node'
+import { Link, useLoaderData } from '@remix-run/react'
 import * as Tabs from '@radix-ui/react-tabs'
 
 import { Card } from '~/components'

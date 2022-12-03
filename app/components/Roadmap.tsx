@@ -1,6 +1,6 @@
 import type { Comment, Post, Upvote } from '@prisma/client'
 import type { FunctionComponent } from 'react'
-import { Link } from 'remix'
+import { Link } from '@remix-run/react'
 
 interface Props {
   content: (Post & { comments: Comment[]; upvotes: Upvote[] })[]

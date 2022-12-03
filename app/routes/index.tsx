@@ -1,6 +1,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { type HeadersFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
+import { Link, useCatch, useTransition } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
-import { HeadersFunction, Link, LoaderFunction, MetaFunction, useCatch, useTransition } from 'remix'
 
 import { Card, ErrorToast } from '~/components'
 import { LeftMenu, MainContent, MenuDialogContent } from '~/containers'

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, json, Link, redirect, useActionData, useTransition } from 'remix'
+import { type ActionFunction, type LoaderFunction, type MetaFunction, json, redirect } from '@remix-run/node'
+import { Form, Link, useActionData, useTransition } from '@remix-run/react'
 
 import { Button } from '~/components'
 import { IconArrowBack, IconLoading } from '~/icons'
@@ -68,7 +68,7 @@ export default function AuthRoute() {
           Go Back
         </Link>
         <div className="flex h-full w-full flex-1 items-center justify-center">
-          <div className="w-full max-w-lg rounded-xl bg-gray-50 p-8 shadow-2xl duration-300 animate-in fade-in zoom-in dark:bg-gray-800 dark:text-gray-300 md:p-12">
+          <div className="w-full max-w-lg rounded-xl bg-gray-50 p-8 shadow-2xl animate-in fade-in zoom-in duration-300 dark:bg-gray-800 dark:text-gray-300 md:p-12">
             <Form className="space-y-4" method="post" ref={formRef} replace>
               {loginType === 'register' ? (
                 <CustomInput

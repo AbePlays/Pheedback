@@ -1,7 +1,7 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import Avatar from 'boring-avatars'
 import type { FunctionComponent } from 'react'
-import { Link, useFetcher } from 'remix'
+import { Link, useFetcher } from '@remix-run/react'
 
 import { Button, Card } from '~/components'
 import { IconChevron, IconComment } from '~/icons'

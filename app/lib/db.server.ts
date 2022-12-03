@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { createCookieSessionStorage, redirect } from 'remix'
+import { createCookieSessionStorage, redirect } from '@remix-run/node'
 
 import { assertString, db } from '~/utils'
 

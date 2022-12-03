@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react'
-import { Form } from 'remix'
+import { Form } from '@remix-run/react'
 
 import { Button } from '~/components'
 import { categoryOptions } from '~/data'

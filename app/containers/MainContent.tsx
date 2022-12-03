@@ -2,7 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as Popover from '@radix-ui/react-popover'
 import type { FunctionComponent, RefObject } from 'react'
-import { Form, Link } from 'remix'
+import { Form, Link } from '@remix-run/react'
 
 import { Button, Card, Feedback } from '~/components'
 import { sortByEnum } from '~/data'
@@ -52,7 +52,7 @@ const MainContent: FunctionComponent<Props> = ({ closeRef, isFormSubmitting }) =
               <Popover.Close className="hidden" ref={closeRef} />
               {Object.values(sortByEnum).map((sortBy) => (
                 <Button
-                  className="dropdown-item"
+                  className="dropdown-item text-black dark:text-white"
                   disabled={isFormSubmitting}
                   form="sortby-form"
                   key={sortBy}

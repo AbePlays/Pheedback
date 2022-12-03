@@ -1,6 +1,6 @@
 import type { Post, User } from '@prisma/client'
-import type { ActionFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, redirect, useActionData, useCatch, useLoaderData, useTransition } from 'remix'
+import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
+import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from '@remix-run/react'
 
 import { Button, Card, ErrorToast, Input } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'

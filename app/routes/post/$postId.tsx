@@ -1,7 +1,7 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
+import { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
+import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
-import type { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from 'remix'
-import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from 'remix'
 
 import { Button, Card, ErrorToast, Feedback } from '~/components'
 import { Comments } from '~/containers'
@@ -123,9 +123,11 @@ export default function PostRoute() {
         </div>
 
         {/* Comments */}
-        <Card>
-          <Comments comments={comments} user={user} />
-        </Card>
+        {comments.length > 0 ? (
+          <Card>
+            <Comments comments={comments} user={user} />
+          </Card>
+        ) : null}
 
         {/* Comment Form */}
         <Card>

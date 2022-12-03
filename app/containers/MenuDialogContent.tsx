@@ -3,7 +3,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import Avatar from 'boring-avatars'
 import type { FunctionComponent } from 'react'
 import { useEffect, useRef } from 'react'
-import { Form, Link } from 'remix'
+import { Form, Link } from '@remix-run/react'
 
 import { Button, Card, CategoryFilter, RoadMap } from '~/components'
 import { useRouteData } from '~/hooks'

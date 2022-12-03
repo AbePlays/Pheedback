@@ -1,7 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Comment, User } from '@prisma/client'
 import Avatar from 'boring-avatars'
-import { Form } from 'remix'
+import { Form } from '@remix-run/react'
 
 import { Button } from '~/components'
 import { IconCross } from '~/icons'
@@ -20,7 +20,7 @@ export default function Comments({ comments, user }: Props) {
       <h2 className="font-bold">
         {comments.length} Comment{comments.length > 1 && 's'}
       </h2>
-      <ul className="my-8 space-y-8 px-2 md:px-4" ref={parent}>
+      <ul className="mt-8 mb-4 space-y-8 px-2 md:px-4" ref={parent}>
         {comments.map((comment) => (
           <li className="flex justify-between gap-4" key={comment.id}>
             <div className="flex gap-4">
@@ -29,12 +29,12 @@ export default function Comments({ comments, user }: Props) {
               </div>
               <div>
                 <h2 className="font-bold">
-                  {comment.user.fullname}
+                  {comment.user.username.trim()}
                   <span className="font-normal text-gray-500 dark:text-gray-500" title={comment.createdAt.toString()}>
-                    · {timeDifference(new Date(comment.createdAt))}
+                    {` ·`} {timeDifference(new Date(comment.createdAt))}
                   </span>
                 </h2>
-                <span className="text-gray-500 dark:text-gray-500">@{comment.user.username}</span>
+                {/* <span className="text-gray-500 dark:text-gray-500">@{comment.user.username}</span> */}
                 <p className="mt-2 text-gray-600 dark:text-gray-400">{comment.content}</p>
               </div>
             </div>

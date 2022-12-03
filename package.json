@@ -12,7 +12,6 @@
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "format": "npm run prettier -- --write",
     "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
-    "postinstall": "remix setup node",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "validate": "npm run check-types && npm run check-format && npm run lint && npm run build"
   },
@@ -22,14 +21,14 @@
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-popover": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.1",
+    "@remix-run/node": "^1.8.0",
     "@remix-run/react": "^1.8.0",
     "@remix-run/serve": "^1.8.0",
     "@remix-run/vercel": "^1.8.0",
     "bcrypt": "5.1.0",
     "boring-avatars": "^1.7.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "remix": "^1.8.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.8.0",
