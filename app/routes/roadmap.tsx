@@ -63,7 +63,7 @@ export default function RoadmapRoute() {
           <h2 className="text-xl font-bold">Roadmap</h2>
         </div>
         <Link
-          className="link-btn py-3 px-4 focus:ring-white focus:ring-offset-gray-700"
+          className="link-btn px-4 py-3 focus:ring-white focus:ring-offset-gray-700"
           prefetch="intent"
           to="/post/new"
         >

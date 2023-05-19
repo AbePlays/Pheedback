@@ -34,7 +34,7 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
             <h2 className="font-bold">{post.title}</h2>
             <p className="text-gray-500 dark:text-gray-400">{post.detail}</p>
           </div>
-          <span className="block w-max rounded-lg bg-blue-50 py-2 px-3 text-sm font-semibold text-blue-600 dark:bg-blue-200">
+          <span className="block w-max rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-600 dark:bg-blue-200">
             {post.category}
           </span>
         </div>

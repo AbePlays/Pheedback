@@ -20,7 +20,7 @@ export default function Comments({ comments, user }: Props) {
       <h2 className="font-bold">
         {comments.length} Comment{comments.length > 1 && 's'}
       </h2>
-      <ul className="mt-8 mb-4 space-y-8 px-2 md:px-4" ref={parent}>
+      <ul className="mb-4 mt-8 space-y-8 px-2 md:px-4" ref={parent}>
         {comments.map((comment) => (
           <li className="flex justify-between gap-4" key={comment.id}>
             <div className="flex gap-4">

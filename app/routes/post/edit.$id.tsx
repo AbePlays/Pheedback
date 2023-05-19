@@ -103,7 +103,7 @@ export default function EditPostRoute() {
             <span className="font-normal text-gray-500">Add a short, descriptive headline</span>
           </label>
           <Input
-            className="mt-4 mb-8"
+            className="mb-8 mt-4"
             defaultValue={post?.title}
             id="title-input"
             name="title"
@@ -123,7 +123,7 @@ export default function EditPostRoute() {
             <span className="font-normal text-gray-500">Choose a category for your feedback</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
+            className="mb-8 mt-4 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={post?.category}
             id="category-input"
             name="category"
@@ -148,7 +148,7 @@ export default function EditPostRoute() {
             <span className="font-normal text-gray-500">Change feedback state</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
+            className="mb-8 mt-4 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={post?.status}
             id="status-input"
             name="status"
@@ -175,7 +175,7 @@ export default function EditPostRoute() {
             </span>
           </label>
           <textarea
-            className="mt-4 mb-8 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
+            className="mb-8 mt-4 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={post?.detail}
             id="detail-input"
             name="detail"

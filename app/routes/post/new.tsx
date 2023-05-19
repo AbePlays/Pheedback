@@ -57,7 +57,7 @@ export default function NewPostRoute() {
             <span className="font-normal text-gray-500">Add a short, descriptive headline</span>
           </label>
           <Input
-            className="mt-4 mb-8"
+            className="mb-8 mt-4"
             defaultValue={actionData?.fields?.title}
             id="title-input"
             name="title"
@@ -77,7 +77,7 @@ export default function NewPostRoute() {
             <span className="font-normal text-gray-500">Choose a category for your feedback</span>
           </label>
           <select
-            className="mt-4 mb-8 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
+            className="mb-8 mt-4 block h-12 w-full rounded-lg border border-gray-300 bg-gray-100 px-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={actionData?.fields?.category}
             id="category-input"
             name="category"
@@ -91,7 +91,7 @@ export default function NewPostRoute() {
             ))}
           </select>
           {actionData?.fieldErrors?.category ? (
-            <p className="mb-4 -mt-4 text-sm text-red-600" id="category-error" role="alert">
+            <p className="-mt-4 mb-4 text-sm text-red-600" id="category-error" role="alert">
               lol
               {actionData.fieldErrors.category}
             </p>
@@ -105,7 +105,7 @@ export default function NewPostRoute() {
             </span>
           </label>
           <textarea
-            className="mt-4 mb-8 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
+            className="mb-8 mt-4 w-full rounded-lg border border-gray-300 bg-gray-100 p-4 outline-none focus:ring-2 focus:ring-fuchsia-700 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-fuchsia-400"
             defaultValue={actionData?.fields?.detail}
             id="detail-input"
             name="detail"
