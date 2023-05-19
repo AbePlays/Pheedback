@@ -1,7 +1,8 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
+import { type SerializeFrom } from '@remix-run/node'
+import { Link, useFetcher } from '@remix-run/react'
 import Avatar from 'boring-avatars'
 import type { FunctionComponent } from 'react'
-import { Link, useFetcher } from '@remix-run/react'
 
 import { Button, Card } from '~/components'
 import { IconChevron, IconComment } from '~/icons'
@@ -9,7 +10,7 @@ import { formatDate } from '~/utils'
 
 interface Props {
   asLink?: boolean
-  post: Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] }
+  post: SerializeFrom<Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] }>
   user: User
 }
 
@@ -27,7 +28,7 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
             </div>
             <div className="text-sm">
               <h2 className="font-bold">{post.user?.username}</h2>
-              <span className="text-gray-500 dark:text-gray-400">{formatDate(post.createdAt)}</span>
+              <span className="text-gray-500 dark:text-gray-400">{formatDate(new Date(post.createdAt))}</span>
             </div>
           </div>
           <div>

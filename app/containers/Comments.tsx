@@ -1,14 +1,15 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Comment, User } from '@prisma/client'
-import Avatar from 'boring-avatars'
+import { type SerializeFrom } from '@remix-run/node'
 import { Form } from '@remix-run/react'
+import Avatar from 'boring-avatars'
 
 import { Button } from '~/components'
 import { IconCross } from '~/icons'
 import { timeDifference } from '~/utils'
 
 interface Props {
-  comments: (Comment & { user: User })[]
+  comments: SerializeFrom<(Comment & { user: User })[]>
   user: User
 }
 

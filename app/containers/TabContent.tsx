@@ -1,10 +1,11 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
+import { type SerializeFrom } from '@remix-run/node'
 import type { FunctionComponent } from 'react'
 
 import { StatusCard } from '~/components'
 
 interface Props {
-  content: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
+  content: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
   desc: string
   title?: string
   user: User

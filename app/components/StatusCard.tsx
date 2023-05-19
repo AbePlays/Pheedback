@@ -1,6 +1,7 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
-import type { ComponentProps, FunctionComponent } from 'react'
+import { type SerializeFrom } from '@remix-run/node'
 import { Link, useFetcher } from '@remix-run/react'
+import type { ComponentProps, FunctionComponent } from 'react'
 
 import { IconChevron, IconComment } from '~/icons'
 import Button from './Button'
@@ -8,7 +9,7 @@ import Card from './Card'
 
 interface Props {
   color: string
-  post: Post & { comments: Comment[]; upvotes: Upvote[] }
+  post: SerializeFrom<Post & { comments: Comment[]; upvotes: Upvote[] }>
   user: User
 }
 

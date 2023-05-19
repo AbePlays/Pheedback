@@ -1,5 +1,5 @@
 import type { Post, Comment, Upvote, User } from '@prisma/client'
-import { LoaderFunction, MetaFunction } from '@remix-run/node'
+import { type LoaderFunction, type MetaFunction, type SerializeFrom } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import * as Tabs from '@radix-ui/react-tabs'
 
@@ -10,9 +10,9 @@ import { db } from '~/utils'
 import { getUser } from '~/lib/db.server'
 
 interface ILoaderData {
-  inProgress: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
-  live: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
-  planned: (Post & { comments: Comment[]; upvotes: Upvote[] })[]
+  inProgress: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
+  live: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
+  planned: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
   user: User
 }
 
