@@ -12,6 +12,7 @@
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "format": "npm run prettier -- --write",
     "lint": "eslint --ignore-path .gitignore --ext .js,.jsx,.ts,.tsx .",
+    "postinstall": "prisma generate",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|json|ts|tsx)\"",
     "validate": "npm run check-types && npm run check-format && npm run lint && npm run build"
   },
