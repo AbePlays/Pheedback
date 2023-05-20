@@ -1,5 +1,5 @@
-import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node'
-import { Form, Link, type V2_MetaFunction, useActionData, useNavigation } from '@remix-run/react'
+import { ActionArgs, LoaderArgs, redirect } from '@remix-run/node'
+import { Form, Link, useActionData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
@@ -9,13 +9,13 @@ import { validatePostForm } from '~/utils'
 
 export const meta: V2_MetaFunction = () => [{ title: 'Create | Pheedback', description: 'Create a Pheedback' }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request)
   if (!userId) throw new Response('Unauthorized', { status: 401 })
   return {}
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
   const formData = Object.fromEntries(await request.formData())
 
   const errors = validatePostForm(formData)

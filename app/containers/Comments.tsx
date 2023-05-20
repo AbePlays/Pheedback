@@ -10,7 +10,7 @@ import { timeDifference } from '~/utils'
 
 interface Props {
   comments: SerializeFrom<(Comment & { user: User })[]>
-  user: User
+  user: Partial<User> | null
 }
 
 export default function Comments({ comments, user }: Props) {

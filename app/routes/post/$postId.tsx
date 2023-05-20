@@ -1,5 +1,4 @@
-import type { Comment, Post, Upvote, User } from '@prisma/client'
-import { ActionFunction, HeadersFunction, LoaderFunction } from '@remix-run/node'
+import { ActionArgs, HeadersFunction, LoaderArgs } from '@remix-run/node'
 import { Form, Link, useActionData, useLoaderData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
@@ -9,11 +8,6 @@ import { IconArrowBack } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
-type TLoaderData = {
-  post: Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] }
-  user: User
-}
-
 export const headers: HeadersFunction = () => {
   return { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59' }
 }
@@ -22,7 +16,7 @@ export const meta: V2_MetaFunction = ({ data }) => [
   { title: `${data?.post?.title || 'Post'} | Pheedback`, description: `${data?.post?.detail || 'Checkout this post'}` },
 ]
 
-export const loader: LoaderFunction = async ({ params, request }) => {
+export async function loader({ params, request }: LoaderArgs) {
   //TODO: Parallelize fetching user and post data
   const { postId } = params
   const user = await getUser(request)
@@ -47,7 +41,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   return { post, user }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
   const formData = Object.fromEntries(await request.formData())
 
   if (formData && formData._action) {
@@ -76,7 +70,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function PostRoute() {
   const actionData = useActionData()
-  const loaderData = useLoaderData<TLoaderData>()
+  const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
   const inputRef = useRef<HTMLTextAreaElement>(null)
 

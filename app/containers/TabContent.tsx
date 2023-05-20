@@ -1,6 +1,5 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
-import type { FunctionComponent } from 'react'
 
 import { StatusCard } from '~/components'
 
@@ -8,10 +7,10 @@ interface Props {
   content: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
   desc: string
   title?: string
-  user: User
+  user: Partial<User> | null
 }
 
-const TabContent: FunctionComponent<Props> = ({ content, desc, title, user }) => {
+export default function TabContent({ content, desc, title, user }: Props) {
   return (
     <>
       <div className="my-6">
@@ -30,5 +29,3 @@ const TabContent: FunctionComponent<Props> = ({ content, desc, title, user }) =>
     </>
   )
 }
-
-export default TabContent

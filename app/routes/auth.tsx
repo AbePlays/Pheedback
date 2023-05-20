@@ -1,4 +1,4 @@
-import { json, redirect, type ActionFunction, type LoaderFunction } from '@remix-run/node'
+import { ActionArgs, LoaderArgs, json, redirect } from '@remix-run/node'
 import { Form, Link, useActionData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -12,14 +12,14 @@ export const meta: V2_MetaFunction = () => [
   { title: 'Auth | Pheedback', description: 'Sign In or Create an account to get started!' },
 ]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   // redirect user to home if already logged in
   const user = await getUser(request)
   if (user) return redirect('/')
   return {}
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
   const formData = Object.fromEntries(await request.formData())
 
   // validate form and return error if invalid

@@ -1,6 +1,5 @@
-import type { Post, User } from '@prisma/client'
-import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node'
-import { Form, Link, type V2_MetaFunction, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
+import { ActionArgs, LoaderArgs, redirect } from '@remix-run/node'
+import { Form, Link, useActionData, useLoaderData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
@@ -10,12 +9,7 @@ import { db, validateEditPostForm } from '~/utils'
 
 export const meta: V2_MetaFunction = () => [{ title: 'Edit Post | Pheedback', description: 'Edit this post' }]
 
-type TLoaderData = {
-  post: Post
-  user: User
-}
-
-export const loader: LoaderFunction = async ({ params, request }) => {
+export async function loader({ params, request }: LoaderArgs) {
   const { id: postId } = params
   const user = await getUser(request)
 
@@ -29,7 +23,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
   return { post, user }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export async function action({ request }: ActionArgs) {
   const formData = Object.fromEntries(await request.formData())
 
   if (formData && formData._action) {
@@ -71,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function EditPostRoute() {
   const actionData = useActionData()
-  const loaderData = useLoaderData<TLoaderData>()
+  const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
 
   const { post } = loaderData

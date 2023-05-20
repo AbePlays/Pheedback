@@ -35,15 +35,15 @@ function MainContent({ closeRef, isFormSubmitting }: Props) {
 
   return (
     <>
-      <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm text-white dark:border dark:border-gray-600 sm:p-6 sm:text-base md:rounded-lg">
-        <div className="hidden text-black sm:flex sm:items-center sm:gap-2">
+      <Card className="flex flex-wrap items-center gap-2 rounded-none border-0 bg-gray-700 p-3 text-sm dark:border dark:border-gray-600 sm:p-6 sm:text-base md:rounded-lg">
+        <div className="hidden text-black dark:text-white sm:flex sm:items-center sm:gap-2">
           <IconBulb aria-label="" />
           <span className="font-bold">{data?.posts?.length || 0} Suggestions</span>
         </div>
         <Form action="/" hidden id="sortby-form">
           <input type="hidden" name="category" value={data?.category || ''} />
         </Form>
-        <div className="flex flex-1 items-center text-black sm:justify-center">
+        <div className="flex flex-1 items-center text-black dark:text-white sm:justify-center">
           <Popover.Root>
             <Popover.Trigger aria-label="Sort by" className="flex gap-2" disabled={Boolean(isFormSubmitting)}>
               <span>Sort by: {data.sortBy || 'Most Upvotes'}</span>
@@ -53,7 +53,7 @@ function MainContent({ closeRef, isFormSubmitting }: Props) {
               <Popover.Close className="hidden" ref={closeRef} />
               {Object.values(sortByEnum).map((sortBy) => (
                 <Button
-                  className="dropdown-item text-black dark:text-white"
+                  className="dropdown-item"
                   disabled={isFormSubmitting}
                   form="sortby-form"
                   key={sortBy}
@@ -68,7 +68,7 @@ function MainContent({ closeRef, isFormSubmitting }: Props) {
           </Popover.Root>
         </div>
         <Link
-          className="link-btn px-4 py-3 focus:ring-white focus:ring-offset-gray-700 dark:focus:ring-fuchsia-600"
+          className="link-btn px-4 py-3 text-white focus:ring-white focus:ring-offset-gray-700 dark:focus:ring-fuchsia-600"
           prefetch="intent"
           to="/post/new"
         >

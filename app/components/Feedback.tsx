@@ -10,8 +10,8 @@ import { formatDate } from '~/utils'
 
 interface Props {
   asLink?: boolean
-  post: SerializeFrom<Post & { user: User; comments: (Comment & { user: User })[]; upvotes: Upvote[] }>
-  user: User
+  post: SerializeFrom<Post & { user: Partial<User>; comments: (Comment & { user: User })[]; upvotes: Upvote[] }>
+  user: Partial<User> | null
 }
 
 const btnClasses =
@@ -48,10 +48,10 @@ const Content: FunctionComponent<Omit<Props, 'user'>> = ({ post }) => {
   )
 }
 
-const Cta: FunctionComponent<{ post: Props['post']; userId: string }> = ({ post, userId }) => {
+const Cta: FunctionComponent<{ post: Props['post']; userId?: string }> = ({ post, userId }) => {
   const fetcher = useFetcher()
 
-  const isUpvotesToggled = Boolean(userId) && fetcher.submission?.formData.get('userId') === userId
+  const isUpvotesToggled = Boolean(userId) && fetcher.formData?.get('userId') === userId
 
   const currCount = post.upvotes.length
   const hasUserLikedPost = post.upvotes.some((upvote) => upvote.userId === userId)
@@ -71,7 +71,7 @@ const Cta: FunctionComponent<{ post: Props['post']; userId: string }> = ({ post,
   )
 }
 
-const Feedback: FunctionComponent<Props> = ({ asLink = false, post, user }) => {
+export default function Feedback({ asLink = false, post, user }: Props) {
   if (asLink) {
     return (
       <>
@@ -90,5 +90,3 @@ const Feedback: FunctionComponent<Props> = ({ asLink = false, post, user }) => {
     </>
   )
 }
-
-export default Feedback

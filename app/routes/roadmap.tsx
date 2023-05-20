@@ -1,7 +1,6 @@
-import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as Tabs from '@radix-ui/react-tabs'
-import { type LoaderFunction, type SerializeFrom } from '@remix-run/node'
-import { Link, type V2_MetaFunction, useLoaderData } from '@remix-run/react'
+import { type LoaderArgs } from '@remix-run/node'
+import { Link, useLoaderData, type V2_MetaFunction } from '@remix-run/react'
 
 import { Card } from '~/components'
 import { TabContent } from '~/containers'
@@ -9,18 +8,11 @@ import { IconArrowBack } from '~/icons'
 import { getUser } from '~/lib/db.server'
 import { db } from '~/utils'
 
-interface ILoaderData {
-  inProgress: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
-  live: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
-  planned: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
-  user: User
-}
-
 export const meta: V2_MetaFunction = () => [
   { title: 'Roadmap | Pheedback', description: 'Checkout the roadmap for Pheedback' },
 ]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   // TODO: parallelize this
   const user = await getUser(request)
 
@@ -29,9 +21,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     include: { comments: true, upvotes: true },
   })
 
-  const inProgress: (Post & { comments: Comment[] })[] = []
-  const live: (Post & { comments: Comment[] })[] = []
-  const planned: (Post & { comments: Comment[] })[] = []
+  const inProgress: typeof posts = []
+  const live: typeof posts = []
+  const planned: typeof posts = []
 
   posts.forEach((post) => {
     if (post.status === 'Live') {
@@ -47,7 +39,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function RoadmapRoute() {
-  const { inProgress, live, planned, user } = useLoaderData<ILoaderData>()
+  const { inProgress, live, planned, user } = useLoaderData<typeof loader>()
 
   return (
     <div className="mx-auto mt-0 max-w-screen-xl md:mt-8 md:px-4">

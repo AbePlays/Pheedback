@@ -1,5 +1,5 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { type HeadersFunction, type LoaderFunction } from '@remix-run/node'
+import { LoaderArgs, type HeadersFunction } from '@remix-run/node'
 import { useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
@@ -16,7 +16,7 @@ export const headers: HeadersFunction = () => {
 
 export const meta: V2_MetaFunction = () => [{ title: 'Home | Pheedback', description: 'Welcome to Pheedback!' }]
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   //TODO: Fetch user data and posts in parallel, export logic to a function
   const user = await getUser(request)
 
@@ -84,7 +84,7 @@ export default function IndexRoute() {
     <main className="mx-auto max-w-screen-xl md:flex md:flex-col md:gap-4 md:px-4 md:pt-8 lg:flex-row">
       <LeftMenu closeRef={closeRef} isFormSubmitting={isFormSubmitting} />
       <div className="flex-1">
-        <Card className="flex h-20 items-center justify-between rounded-none border-0 bg-[url('/background-header.png')] bg-cover bg-no-repeat p-4 text-white md:hidden">
+        <Card className="flex h-20 items-center justify-between !rounded-none border-0 bg-[url('/background-header.png')] bg-cover bg-no-repeat p-4 text-white md:hidden">
           <h2 className="text-lg font-bold">Pheedback Board</h2>
           <DialogPrimitive.Root>
             <DialogPrimitive.Trigger aria-label="Menu">
