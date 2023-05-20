@@ -1,6 +1,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { type HeadersFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
-import { useTransition } from '@remix-run/react'
+import { useNavigation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
 import { Card } from '~/components'
@@ -71,11 +71,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function IndexRoute() {
-  const transition = useTransition()
-
+  const navigation = useNavigation()
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  const isFormSubmitting = Boolean(transition.submission)
+  const isFormSubmitting = navigation.state === 'loading'
 
   useEffect(() => {
     if (isFormSubmitting) {

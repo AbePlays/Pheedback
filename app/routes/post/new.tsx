@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
@@ -34,9 +34,9 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function NewPostRoute() {
   const actionData = useActionData()
-  const transition = useTransition()
+  const navigation = useNavigation()
 
-  const isFormSubmitting = Boolean(transition.submission)
+  const isFormSubmitting = navigation.state === 'submitting'
 
   return (
     <main className="mx-auto max-w-screen-xl p-4">

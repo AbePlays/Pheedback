@@ -1,6 +1,6 @@
+import { json, redirect, type ActionFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
+import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
-import { type ActionFunction, type LoaderFunction, type MetaFunction, json, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useTransition } from '@remix-run/react'
 
 import { Button } from '~/components'
 import { IconArrowBack, IconLoading } from '~/icons'
@@ -42,14 +42,14 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function AuthRoute() {
   const actionData = useActionData()
-  const transition = useTransition()
+  const navigation = useNavigation()
 
   const formRef = useRef<HTMLFormElement>(null)
   const [loginType, setLoginType] = useState<'login' | 'register'>('login')
 
   const toggleLoginType = () => setLoginType((prev) => (prev === 'login' ? 'register' : 'login'))
 
-  const isFormSubmitting = transition.submission
+  const isFormSubmitting = navigation.state === 'submitting'
 
   useEffect(() => {
     // reset form on transition

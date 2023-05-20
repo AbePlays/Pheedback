@@ -1,6 +1,6 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
 import { Button, Card, Feedback } from '~/components'
@@ -80,13 +80,12 @@ export const action: ActionFunction = async ({ request }) => {
 export default function PostRoute() {
   const actionData = useActionData()
   const loaderData = useLoaderData<TLoaderData>()
-  const transition = useTransition()
-
+  const navigation = useNavigation()
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const { post, user } = loaderData
   const comments = post.comments
-  const isAdding = transition.submission?.formData.get('_action') === 'create'
+  const isAdding = navigation.formData?.get('_action') === 'create'
 
   useEffect(() => {
     if (!isAdding && inputRef.current) {

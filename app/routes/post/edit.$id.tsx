@@ -1,6 +1,6 @@
 import type { Post, User } from '@prisma/client'
 import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
@@ -77,11 +77,11 @@ export const action: ActionFunction = async ({ request }) => {
 export default function EditPostRoute() {
   const actionData = useActionData()
   const loaderData = useLoaderData<TLoaderData>()
-  const transition = useTransition()
+  const navigation = useNavigation()
 
   const { post } = loaderData
-  const isSaving = transition.submission?.formData.get('_action') === 'edit'
-  const isDeleting = transition.submission?.formData.get('_action') === 'delete'
+  const isSaving = navigation.formData?.get('_action') === 'edit'
+  const isDeleting = navigation.formData?.get('_action') === 'delete'
 
   return (
     <main className="mx-auto max-w-screen-xl p-4">
