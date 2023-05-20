@@ -1,8 +1,8 @@
 import type { Post, User } from '@prisma/client'
 import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react'
 
-import { Button, Card, ErrorToast, Input } from '~/components'
+import { Button, Card, Input } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
 import { getUser } from '~/lib/db.server'
@@ -231,44 +231,5 @@ export default function EditPostRoute() {
         </Form>
       </Card>
     </main>
-  )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-
-  switch (caught.status) {
-    case 401:
-      return (
-        <ErrorToast>
-          <p>You must be logged in to edit a post.</p>
-          <Link className="inline-block underline" prefetch="intent" to="/auth">
-            Log in
-          </Link>
-        </ErrorToast>
-      )
-    case 404:
-      return (
-        <ErrorToast>
-          <p>Post not found.</p>
-          <Link className="inline-block underline" prefetch="intent" to="/">
-            Go Home
-          </Link>
-        </ErrorToast>
-      )
-    default: {
-      throw new Error(`Unhandled error: ${caught.status}`)
-    }
-  }
-}
-
-export function ErrorBoundary() {
-  return (
-    <ErrorToast>
-      <p>Sorry. There was an error loading the post.</p>
-      <Link className="inline-block underline" prefetch="intent" to="/">
-        Go Home
-      </Link>
-    </ErrorToast>
   )
 }

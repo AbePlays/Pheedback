@@ -1,9 +1,9 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { type HeadersFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
-import { Link, useCatch, useTransition } from '@remix-run/react'
+import { useTransition } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
-import { Card, ErrorToast } from '~/components'
+import { Card } from '~/components'
 import { LeftMenu, MainContent, MenuDialogContent } from '~/containers'
 import { sortByEnum } from '~/data'
 import { IconMenu } from '~/icons'
@@ -104,32 +104,5 @@ export default function IndexRoute() {
         <MainContent closeRef={closeRef} isFormSubmitting={isFormSubmitting} />
       </div>
     </main>
-  )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-
-  switch (caught.status) {
-    case 401:
-      return (
-        <ErrorToast>
-          <p>You must be logged in view your upvotes.</p>
-          <Link className="inline-block underline" prefetch="intent" to="/auth">
-            Log in
-          </Link>
-        </ErrorToast>
-      )
-    default: {
-      throw new Error(`Unhandled error: ${caught.status}`)
-    }
-  }
-}
-
-export function ErrorBoundary() {
-  return (
-    <ErrorToast>
-      <p>Something went wrong. Please try again after some time.</p>
-    </ErrorToast>
   )
 }

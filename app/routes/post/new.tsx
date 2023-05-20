@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useCatch, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useTransition } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
@@ -147,23 +147,4 @@ export default function NewPostRoute() {
       </Card>
     </main>
   )
-}
-
-export const CatchBoundary = () => {
-  const caught = useCatch()
-
-  if (caught.status === 401) {
-    return (
-      <div className="mx-auto max-w-md p-4" role="alert">
-        <main className="space-y-2 rounded-lg border border-red-200 bg-red-100 p-4 text-center text-red-500 shadow animate-in slide-in-from-top-full duration-500">
-          <p>You must be logged in to create a post.</p>
-          <Link className="inline-block underline" prefetch="intent" to="/auth">
-            Log in
-          </Link>
-        </main>
-      </div>
-    )
-  }
-
-  throw new Error(`Unexpected caught response with status: ${caught.status}`)
 }

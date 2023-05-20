@@ -1,9 +1,9 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
 import { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { Form, Link, useActionData, useCatch, useLoaderData, useTransition } from '@remix-run/react'
+import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
-import { Button, Card, ErrorToast, Feedback } from '~/components'
+import { Button, Card, Feedback } from '~/components'
 import { Comments } from '~/containers'
 import { IconArrowBack } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
@@ -20,8 +20,8 @@ export const headers: HeadersFunction = () => {
 
 export const meta: MetaFunction = ({ data }) => {
   return {
-    title: `${data.post.title || 'Post'} | Pheedback`,
-    description: `${data.post.detail || 'Checkout this post'}`,
+    title: `${data?.post?.title || 'Post'} | Pheedback`,
+    description: `${data?.post?.detail || 'Checkout this post'}`,
   }
 }
 
@@ -176,35 +176,5 @@ export default function PostRoute() {
         </Card>
       </main>
     </div>
-  )
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-
-  switch (caught.status) {
-    case 404:
-      return (
-        <ErrorToast>
-          <p>Post not found.</p>
-          <Link className="inline-block underline" prefetch="intent" to="/">
-            Go Home
-          </Link>
-        </ErrorToast>
-      )
-    default: {
-      throw new Error(`Unhandled error: ${caught.status}`)
-    }
-  }
-}
-
-export function ErrorBoundary() {
-  return (
-    <ErrorToast>
-      <p>Sorry. There was an error loading the post.</p>
-      <Link className="inline-block underline" prefetch="intent" to="/">
-        Go Home
-      </Link>
-    </ErrorToast>
   )
 }

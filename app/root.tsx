@@ -1,5 +1,15 @@
 import { type LinksFunction } from '@remix-run/node'
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch } from '@remix-run/react'
+import {
+  Link,
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
+} from '@remix-run/react'
 
 import globalStyles from '~/styles/global.css'
 import appStyles from '~/styles/tailwind.css'
@@ -33,37 +43,41 @@ export default function App() {
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary() {
-  return (
-    <Document title="Error!">
-      <ErrorToast>
-        <p>Something went wrong. Please try again after some time.</p>
-      </ErrorToast>
-    </Document>
-  )
-}
+  const error = useRouteError()
 
-// https://remix.run/docs/en/v1/api/conventions#catchboundary
-export function CatchBoundary() {
-  const caught = useCatch()
+  let children: React.ReactNode = <p>Something went wrong. Please try again after some time.</p>
 
-  let message
-  switch (caught.status) {
-    case 401:
-      message = <p>Oops! Looks like you tried to visit a page that you do not have access to.</p>
-      break
-    case 404:
-      message = <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      break
-
-    default:
-      throw new Error(caught.data || caught.statusText)
+  if (isRouteErrorResponse(error)) {
+    switch (error.status) {
+      case 401:
+        children = (
+          <p>
+            Access Denied. To access this page, please{' '}
+            <Link className="inline-block underline" prefetch="intent" to="/auth">
+              log in
+            </Link>{' '}
+            to your account.
+          </p>
+        )
+        break
+      case 404:
+        children = (
+          <>
+            <p>Page not found.</p>
+            <Link className="inline-block underline" prefetch="intent" to="/">
+              Go Home
+            </Link>
+          </>
+        )
+        break
+      default:
+        break
+    }
   }
 
   return (
-    <Document title="Error">
-      <ErrorToast>
-        <p>{message}</p>
-      </ErrorToast>
+    <Document title="Error!">
+      <ErrorToast>{children}</ErrorToast>
     </Document>
   )
 }
