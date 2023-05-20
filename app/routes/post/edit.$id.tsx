@@ -1,6 +1,6 @@
 import type { Post, User } from '@prisma/client'
-import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
+import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node'
+import { Form, Link, type V2_MetaFunction, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
@@ -8,12 +8,7 @@ import { IconArrowBack, IconLoading } from '~/icons'
 import { getUser } from '~/lib/db.server'
 import { db, validateEditPostForm } from '~/utils'
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Edit Post | Pheedback',
-    description: 'Edit this post',
-  }
-}
+export const meta: V2_MetaFunction = () => [{ title: 'Edit Post | Pheedback', description: 'Edit this post' }]
 
 type TLoaderData = {
   post: Post

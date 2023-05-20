@@ -1,11 +1,14 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
   appDirectory: 'app',
-  browserBuildDirectory: 'public/build',
+  assetsBuildDirectory: 'public/build',
   future: {
     v2_errorBoundary: true,
+    v2_meta: true,
+    v2_normalizeFormMethod: true,
   },
   publicPath: '/build/',
-  serverBuildDirectory: 'api/_build',
+  serverBuildPath: 'api/index.js',
   serverDependenciesToBundle: ['@formkit/auto-animate/react'],
+  serverModuleFormat: 'cjs',
 }

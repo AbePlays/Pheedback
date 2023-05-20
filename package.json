@@ -2,7 +2,7 @@
   "private": true,
   "name": "pheedback",
   "description": "",
-  "license": "",
+  "license": "MIT",
   "scripts": {
     "build:css": "tailwindcss -m -i app/styles/app.css -o app/styles/tailwind.css",
     "build": "npm run build:css && remix build",

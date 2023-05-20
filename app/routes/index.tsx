@@ -1,6 +1,6 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { type HeadersFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
-import { useNavigation } from '@remix-run/react'
+import { type HeadersFunction, type LoaderFunction } from '@remix-run/node'
+import { useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
 import { Card } from '~/components'
@@ -14,9 +14,7 @@ export const headers: HeadersFunction = () => {
   return { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59' }
 }
 
-export const meta: MetaFunction = () => {
-  return { title: 'Home | Pheedback', description: 'Welcome to Pheedback!' }
-}
+export const meta: V2_MetaFunction = () => [{ title: 'Home | Pheedback', description: 'Welcome to Pheedback!' }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   //TODO: Fetch user data and posts in parallel, export logic to a function

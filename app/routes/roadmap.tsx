@@ -1,13 +1,13 @@
-import type { Post, Comment, Upvote, User } from '@prisma/client'
-import { type LoaderFunction, type MetaFunction, type SerializeFrom } from '@remix-run/node'
-import { Link, useLoaderData } from '@remix-run/react'
+import type { Comment, Post, Upvote, User } from '@prisma/client'
 import * as Tabs from '@radix-ui/react-tabs'
+import { type LoaderFunction, type SerializeFrom } from '@remix-run/node'
+import { Link, type V2_MetaFunction, useLoaderData } from '@remix-run/react'
 
 import { Card } from '~/components'
 import { TabContent } from '~/containers'
 import { IconArrowBack } from '~/icons'
-import { db } from '~/utils'
 import { getUser } from '~/lib/db.server'
+import { db } from '~/utils'
 
 interface ILoaderData {
   inProgress: SerializeFrom<(Post & { comments: Comment[]; upvotes: Upvote[] })[]>
@@ -16,12 +16,9 @@ interface ILoaderData {
   user: User
 }
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Roadmap | Pheedback',
-    description: 'Checkout the roadmap for Pheedback',
-  }
-}
+export const meta: V2_MetaFunction = () => [
+  { title: 'Roadmap | Pheedback', description: 'Checkout the roadmap for Pheedback' },
+]
 
 export const loader: LoaderFunction = async ({ request }) => {
   // TODO: parallelize this

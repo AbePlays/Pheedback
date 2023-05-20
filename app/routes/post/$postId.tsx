@@ -1,6 +1,6 @@
 import type { Comment, Post, Upvote, User } from '@prisma/client'
-import { ActionFunction, HeadersFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
-import { Form, Link, useActionData, useLoaderData, useNavigation } from '@remix-run/react'
+import { ActionFunction, HeadersFunction, LoaderFunction } from '@remix-run/node'
+import { Form, Link, useActionData, useLoaderData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 
 import { Button, Card, Feedback } from '~/components'
@@ -18,12 +18,9 @@ export const headers: HeadersFunction = () => {
   return { 'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=59' }
 }
 
-export const meta: MetaFunction = ({ data }) => {
-  return {
-    title: `${data?.post?.title || 'Post'} | Pheedback`,
-    description: `${data?.post?.detail || 'Checkout this post'}`,
-  }
-}
+export const meta: V2_MetaFunction = ({ data }) => [
+  { title: `${data?.post?.title || 'Post'} | Pheedback`, description: `${data?.post?.detail || 'Checkout this post'}` },
+]
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   //TODO: Parallelize fetching user and post data

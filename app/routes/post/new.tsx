@@ -1,5 +1,5 @@
-import { ActionFunction, LoaderFunction, MetaFunction, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
+import { ActionFunction, LoaderFunction, redirect } from '@remix-run/node'
+import { Form, Link, type V2_MetaFunction, useActionData, useNavigation } from '@remix-run/react'
 
 import { Button, Card, Input } from '~/components'
 import { categoryOptions } from '~/data'
@@ -7,12 +7,7 @@ import { IconArrowBack, IconLoading } from '~/icons'
 import { createPost, getUserId } from '~/lib/db.server'
 import { validatePostForm } from '~/utils'
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Create | Pheedback',
-    description: 'Create a Pheedback',
-  }
-}
+export const meta: V2_MetaFunction = () => [{ title: 'Create | Pheedback', description: 'Create a Pheedback' }]
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request)

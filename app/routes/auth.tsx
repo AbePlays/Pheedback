@@ -1,5 +1,5 @@
-import { json, redirect, type ActionFunction, type LoaderFunction, type MetaFunction } from '@remix-run/node'
-import { Form, Link, useActionData, useNavigation } from '@remix-run/react'
+import { json, redirect, type ActionFunction, type LoaderFunction } from '@remix-run/node'
+import { Form, Link, useActionData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
 import { useEffect, useRef, useState } from 'react'
 
 import { Button } from '~/components'
@@ -8,12 +8,9 @@ import { getUser, login, register } from '~/lib/db.server'
 import { CustomInput } from '~/templates'
 import { validateAuthForm } from '~/utils'
 
-export const meta: MetaFunction = () => {
-  return {
-    title: 'Auth | Pheedback',
-    description: 'Sign In or Create an account to get started!',
-  }
-}
+export const meta: V2_MetaFunction = () => [
+  { title: 'Auth | Pheedback', description: 'Sign In or Create an account to get started!' },
+]
 
 export const loader: LoaderFunction = async ({ request }) => {
   // redirect user to home if already logged in
