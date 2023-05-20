@@ -26,7 +26,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn build
       - run: yarn validate
       - run: mkdir -p /home/runner/.cache/yarn/v6
         continue-on-error: true
