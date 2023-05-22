@@ -43,7 +43,7 @@ export default function RoadmapRoute() {
 
   return (
     <div className="mx-auto mt-0 max-w-screen-xl md:mt-8 md:px-4">
-      <Card className="flex items-center justify-between gap-2 rounded-none border-0 bg-gray-700 p-4 text-sm text-white dark:border dark:border-gray-600 sm:p-6 sm:text-base md:rounded-lg">
+      <Card className="flex items-center justify-between gap-2 rounded-none border-0 bg-gray-700 p-4 text-sm dark:border dark:border-gray-600 dark:text-white sm:p-6 sm:text-base md:rounded-lg">
         <div className="space-y-2">
           <Link className="group flex items-center gap-2 font-medium" to="/">
             <IconArrowBack className="transition-all duration-300 group-hover:-translate-x-1" />
@@ -52,7 +52,7 @@ export default function RoadmapRoute() {
           <h2 className="text-xl font-bold">Roadmap</h2>
         </div>
         <Link
-          className="link-btn px-4 py-3 focus:ring-white focus:ring-offset-gray-700"
+          className="link-btn px-4 py-3 text-white focus:ring-white focus:ring-offset-gray-700"
           prefetch="intent"
           to="/post/new"
         >
