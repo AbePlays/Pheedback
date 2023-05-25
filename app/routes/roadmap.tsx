@@ -1,29 +1,44 @@
+import type { Comment, Post, Upvote } from '@prisma/client'
 import * as Tabs from '@radix-ui/react-tabs'
-import { type LoaderArgs } from '@remix-run/node'
+import { json, type LoaderArgs } from '@remix-run/node'
 import { Link, useLoaderData, type V2_MetaFunction } from '@remix-run/react'
 
 import { Card } from '~/components'
 import { TabContent } from '~/containers'
 import { IconArrowBack } from '~/icons'
 import { getUser } from '~/lib/db.server'
-import { db } from '~/utils'
+import { db, redis } from '~/utils'
 
 export const meta: V2_MetaFunction = () => [
   { title: 'Roadmap | Pheedback', description: 'Checkout the roadmap for Pheedback' },
 ]
 
+type Posts = (Post & {
+  comments: Comment[]
+  upvotes: Upvote[]
+})[]
+
 export async function loader({ request }: LoaderArgs) {
   // TODO: parallelize this
   const user = await getUser(request)
 
-  const posts = await db.post.findMany({
-    where: { status: { not: 'Suggestion' } },
-    include: { comments: true, upvotes: true },
-  })
+  let posts: Posts = []
+  const cachedData = await redis.get<Posts>('roadmap')
 
-  const inProgress: typeof posts = []
-  const live: typeof posts = []
-  const planned: typeof posts = []
+  if (cachedData) {
+    posts = cachedData
+  } else {
+    posts = await db.post.findMany({
+      where: { status: { not: 'Suggestion' } },
+      include: { comments: true, upvotes: true },
+    })
+
+    await redis.set('roadmap', posts)
+  }
+
+  const inProgress: Posts = []
+  const live: Posts = []
+  const planned: Posts = []
 
   posts.forEach((post) => {
     if (post.status === 'Live') {
@@ -35,7 +50,7 @@ export async function loader({ request }: LoaderArgs) {
     }
   })
 
-  return { inProgress, live, planned, user }
+  return json({ inProgress, live, planned, user }, { headers: { 'X-REDIS-CACHE': cachedData ? 'HIT' : 'MISS' } })
 }
 
 export default function RoadmapRoute() {
