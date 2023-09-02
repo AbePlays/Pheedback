@@ -15,7 +15,51 @@
     @apply flex h-12 items-center justify-center rounded-lg bg-fuchsia-600 font-medium transition-all duration-300 outline-none hover:-translate-y-1 hover:opacity-70 focus:ring-2 focus:ring-fuchsia-700 focus:ring-offset-1 dark:ring-offset-gray-800;
   }
 
-  .tab-btn[data-state="active"] {
+  .tab-btn[data-state='active'] {
     @apply border-fuchsia-500;
+  }
+}
+
+@keyframes overlay-show {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-hide {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-show {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dialog-hide {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
   }
 }

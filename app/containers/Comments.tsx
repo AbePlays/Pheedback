@@ -1,12 +1,12 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Comment, User } from '@prisma/client'
 import { type SerializeFrom } from '@remix-run/node'
-import { Form } from '@remix-run/react'
+import { Form, useNavigation, useSubmit } from '@remix-run/react'
 import Avatar from 'boring-avatars'
+import React from 'react'
 
-import { Button } from '~/components'
-import { IconCross } from '~/icons'
 import { timeDifference } from '~/utils'
+import CommentDeletionDialog from './CommentDeletionDialog'
 
 interface Props {
   comments: SerializeFrom<(Comment & { user: User })[]>
@@ -15,6 +15,11 @@ interface Props {
 
 export default function Comments({ comments, user }: Props) {
   const [parent] = useAutoAnimate<HTMLUListElement>()
+  const navigation = useNavigation()
+  const formRef = React.useRef<HTMLFormElement>(null)
+  const submit = useSubmit()
+
+  console.log(navigation)
 
   return (
     <>
@@ -40,20 +45,19 @@ export default function Comments({ comments, user }: Props) {
               </div>
             </div>
             {user?.id === comment.userId ? (
-              <Form method="post" replace>
-                <input type="hidden" name="commentId" value={comment.id} />
-                <input type="hidden" name="userId" value={user?.id} />
-                <Button
-                  aria-label="Delete Comment"
-                  className="rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-700 dark:text-gray-200 dark:hover:bg-gray-700 hover:dark:text-gray-400"
-                  name="_action"
-                  title="Delete Comment"
-                  value="delete"
-                  variant="unstyled"
-                >
-                  <IconCross />
-                </Button>
-              </Form>
+              <>
+                <Form method="post" ref={formRef} replace>
+                  <input type="hidden" name="commentId" value={comment.id} />
+                  <input type="hidden" name="userId" value={user?.id} />
+                  <input type="hidden" name="_action" value="delete" />
+
+                  <CommentDeletionDialog
+                    acceptHandler={() => submit(formRef.current)}
+                    // isSubmitting
+                    isSubmitting={navigation.state === 'submitting'}
+                  />
+                </Form>
+              </>
             ) : null}
           </li>
         ))}
