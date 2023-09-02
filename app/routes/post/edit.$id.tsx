@@ -1,7 +1,16 @@
 import { ActionArgs, LoaderArgs, redirect } from '@remix-run/node'
-import { Form, Link, useActionData, useLoaderData, useNavigation, type V2_MetaFunction } from '@remix-run/react'
+import {
+  Form,
+  Link,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+  useSubmit,
+  type V2_MetaFunction,
+} from '@remix-run/react'
+import React from 'react'
 
-import { Button, Card, Input } from '~/components'
+import { Button, Card, Input, Modal } from '~/components'
 import { categoryOptions, statusOptions } from '~/data'
 import { IconArrowBack, IconLoading } from '~/icons'
 import { getUser } from '~/lib/db.server'
@@ -57,16 +66,20 @@ export async function action({ request }: ActionArgs) {
           status: 500,
         })
       }
+
+      return redirect('/')
     }
   }
 
-  return redirect('/')
+  return redirect(`/post/${formData.id}`)
 }
 
 export default function EditPostRoute() {
   const actionData = useActionData()
   const loaderData = useLoaderData<typeof loader>()
   const navigation = useNavigation()
+  const formRef = React.useRef<HTMLFormElement>(null)
+  const submit = useSubmit()
 
   const { post } = loaderData
   const isSaving = navigation.formData?.get('_action') === 'edit'
@@ -84,7 +97,7 @@ export default function EditPostRoute() {
       </Link>
       <Card className="mx-auto mt-8 max-w-screen-sm sm:p-12">
         <h1 className="text-xl font-bold sm:text-2xl">Edit Feedback</h1>
-        <Form className="mt-8" method="post">
+        <Form className="mt-8" method="post" ref={formRef}>
           <input name="id" type="hidden" value={post.id} />
           <label className="font-bold" htmlFor="title-input">
             Feedback Title
@@ -185,20 +198,41 @@ export default function EditPostRoute() {
           ) : null}
 
           <div className="mt-8 flex flex-col justify-end gap-4 sm:flex-row">
-            <Button
-              className="mr-auto flex w-full items-center justify-center bg-red-600 focus:ring-red-600 sm:w-max"
-              name="_action"
-              value="delete"
-            >
-              {isDeleting ? (
-                <>
-                  <IconLoading className="mr-2" />
-                  Deleting...
-                </>
-              ) : (
-                'Delete'
-              )}
-            </Button>
+            <Modal>
+              <Modal.Button asChild>
+                <Button className="mr-auto flex w-full items-center justify-center bg-red-600 focus:ring-red-600 sm:w-max">
+                  Delete
+                </Button>
+              </Modal.Button>
+
+              <Modal.Content title="Are you absolutely sure?">
+                <p className="mt-6">
+                  This action cannot be undone. This will permanently delete your post and remove your data from our
+                  servers.
+                </p>
+
+                <div className="mt-6 flex gap-4 justify-end">
+                  <Modal.Close asChild>
+                    <Button className="bg-red-600 focus:ring-red-600 max-w-fit" disabled={isDeleting}>
+                      Cancel
+                    </Button>
+                  </Modal.Close>
+                  <Button
+                    className="max-w-fit"
+                    disabled={isDeleting}
+                    onClick={() => {
+                      const formData = new FormData(formRef.current!)
+                      formData.set('_action', 'delete')
+                      submit(formData, { method: 'POST' })
+                    }}
+                  >
+                    {isDeleting ? <IconLoading className="mr-2" /> : null}
+                    Okay
+                  </Button>
+                </div>
+              </Modal.Content>
+            </Modal>
+
             <Button className="flex items-center justify-center sm:w-max" name="_action" type="submit" value="edit">
               {isSaving ? (
                 <>
@@ -209,6 +243,7 @@ export default function EditPostRoute() {
                 'Save Changes'
               )}
             </Button>
+
             <Link
               className="link-btn flex items-center justify-center bg-indigo-500 px-8 font-medium text-white focus:ring-indigo-500"
               prefetch="intent"

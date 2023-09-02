@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 
 import { Button, Card, Feedback } from '~/components'
 import { Comments } from '~/containers'
-import { IconArrowBack } from '~/icons'
+import { IconArrowBack, IconLoading } from '~/icons'
 import { createComment, getUser } from '~/lib/db.server'
 import { db, validateCommentForm } from '~/utils'
 
@@ -151,7 +151,14 @@ export default function PostRoute() {
               </p>
             ) : null}
             <Button className="ml-auto mt-4 block w-max" disabled={!user?.id} name="_action" value="create">
-              Post Comment
+              {isAdding ? (
+                <>
+                  <IconLoading aria-hidden className="mr-2" />
+                  <span>Posting...</span>
+                </>
+              ) : (
+                <span>Post Comment</span>
+              )}
             </Button>
             {!user?.id ? (
               <p className="mt-4 text-center text-red-600">
